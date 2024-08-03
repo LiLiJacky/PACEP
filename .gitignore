@@ -1,2 +1,47 @@
+# Virtual environment
 venv/
+ENV/
+env/
+
+# Byte-compiled / optimized / DLL files
 __pycache__/
+*.py[cod]
+*$py.class
+
+# JetBrains IDE settings
+.idea/**/*
+!.idea/codeStyles
+!.idea/misc.xml
+!.idea/modules.xml
+!.idea/vcs.xml
+!.idea/workspace.xml
+
+# Logs and databases
+*.log
+*.sqlite3
+
+# Unit test / coverage reports
+.coverage
+.tox/
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Environments
+.env
+.env.*
+
+# Others
+.DS_Store
+*.egg
+*.egg-info
+dist
+build
+*.bak
+*.swp
+output/
