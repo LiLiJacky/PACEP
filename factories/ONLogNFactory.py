@@ -1,4 +1,4 @@
-# algorithm_factory/NLogNFactory.py
+# algorithm_factory/ONLogNFactory.py
 from interfaces.Algorithm import Algorithm
 
 
@@ -15,8 +15,10 @@ class MergeSortAlgorithm(Algorithm):
     def complexity_space(self):
         return "O(n)"
 
-    def get_calculate(self):
-        return self.merge_sort(self.data)
+    def get_calculate(self, index):
+        self.data = self.merge_sort(self.data)
+        print(self.data)
+        return self.merge_sort(self.data)[index]
 
     def merge_sort(self, data):
         if len(data) <= 1:
@@ -42,7 +44,7 @@ class MergeSortAlgorithm(Algorithm):
     def get_calculate_range(self, range):
         return range
 
-class NLogNFactory:
+class ONLogNFactory:
     def get_algorithm(self, algorithm_name, data, *args):
         algorithms = {
             "merge_sort": MergeSortAlgorithm,
@@ -62,7 +64,7 @@ class NLogNFactory:
 if __name__ == "__main__":
     data = [(1, 50), (2, 20), (3, 30), (4, 40), (5, 10)]
 
-    factory = NLogNFactory()
+    factory = ONLogNFactory()
 
     algorithm = factory.get_algorithm("merge_sort", data)
     print(f"Algorithm Name: {algorithm.name}")  # 输出: Merge Sort

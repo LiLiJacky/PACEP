@@ -1,7 +1,3 @@
-from typing import Any, List, Dict, Optional, Tuple
-from collections import defaultdict, deque
-import logging
-
 from configuration.SharedBufferCacheConfig import SharedBufferCacheConfig
 from sharedbuffer.Lockable import Lockable
 from sharedbuffer.NodeId import NodeId
@@ -9,6 +5,8 @@ from sharedbuffer.ShareBufferNode import SharedBufferNode
 from sharedbuffer.SharedBuffer import SharedBuffer
 from sharedbuffer.SharedBufferEdge import SharedBufferEdge
 
+from typing import Any, List, Dict, Optional, Tuple, Deque
+from collections import defaultdict, deque
 
 class SharedBufferAccessor:
     def __init__(self, shared_buffer: 'SharedBuffer'):
@@ -30,13 +28,13 @@ class SharedBufferAccessor:
         if previous_node_id is not None:
             self.lock_node(previous_node_id, version)
 
-        current_node_id = NodeId(event_id, self.get_original_name_from_internal(state_name))
+        current_node_id = NodeId(event_id, state_name)
         current_node = self.shared_buffer.get_entry(current_node_id)
         if current_node is None:
             current_node = Lockable(SharedBufferNode(), 0)
             self.lock_event(event_id)
 
-        current_node.getElement().addEdge(SharedBufferEdge(previous_node_id, version))
+        current_node.get_element().add_edge(SharedBufferEdge(previous_node_id, version))
         self.shared_buffer.upsert_entry(current_node_id, current_node)
 
         return current_node_id
@@ -46,17 +44,13 @@ class SharedBufferAccessor:
     ) -> List[Dict[str, List['EventId']]]:
         result = []
 
-        # stack to remember the current extraction states
         extraction_states = deque()
-
-        # get the starting shared buffer entry for the previous relation
         entry_lock = self.shared_buffer.get_entry(node_id)
 
         if entry_lock is not None:
-            entry = entry_lock.getElement()
+            entry = entry_lock.get_element()
             extraction_states.append(self.ExtractionState((node_id, entry), version, deque()))
 
-            # use a depth first search to reconstruct the previous relations
             while extraction_states:
                 extraction_state = extraction_states.pop()
                 current_path = extraction_state.getPath()
@@ -67,25 +61,25 @@ class SharedBufferAccessor:
 
                     while current_path:
                         current_path_entry = current_path.pop()[0]
-                        page = current_path_entry.getPageName()
-                        complete_path[page].append(current_path_entry.getEventId())
+                        page = current_path_entry.page_name
+                        complete_path[page].append(current_path_entry.event_id)
                     result.append(complete_path)
                 else:
                     current_path.append(current_entry)
 
                     first_match = True
-                    for lockable_edge in current_entry[1].getEdges():
-                        edge = lockable_edge.getElement()
+                    for lockable_edge in current_entry[1].get_edges():
+                        edge = lockable_edge.get_element()
                         current_version = extraction_state.getVersion()
-                        if current_version.isCompatibleWith(edge.getDeweyNumber()):
-                            target = edge.getTarget()
+                        if current_version.is_compatible_with(edge.get_dewey_number()):
+                            target = edge.get_target()
                             new_path = current_path if first_match else deque(current_path)
                             first_match = False
 
                             extraction_states.append(
                                 self.ExtractionState(
-                                    (target, self.shared_buffer.get_entry(target).getElement()) if target else None,
-                                    edge.getDeweyNumber(),
+                                    (target, self.shared_buffer.get_entry(target).get_element()) if target else None,
+                                    edge.get_dewey_number(),
                                     new_path
                                 )
                             )
@@ -97,7 +91,7 @@ class SharedBufferAccessor:
         for pattern, event_ids in match.items():
             events = []
             for event_id in event_ids:
-                event = self.shared_buffer.get_event(event_id).getElement()
+                event = self.shared_buffer.get_event(event_id).get_element()
                 events.append(event)
             materialized_match[pattern] = events
 
@@ -107,8 +101,8 @@ class SharedBufferAccessor:
         shared_buffer_node = self.shared_buffer.get_entry(node)
         if shared_buffer_node is not None:
             shared_buffer_node.lock()
-            for edge in shared_buffer_node.getElement().getEdges():
-                if version.isCompatibleWith(edge.getElement().getDeweyNumber()):
+            for edge in shared_buffer_node.get_element().get_edges():
+                if version.is_compatible_with(edge.get_element().get_dewey_number()):
                     edge.lock()
             self.shared_buffer.upsert_entry(node, shared_buffer_node)
 
@@ -124,25 +118,30 @@ class SharedBufferAccessor:
                 break
 
             current_version = versions_to_examine.pop()
-            edges = cur_buffer_node.getElement().getEdges()
+            edges = cur_buffer_node.get_element().get_edges()
+            edges_to_remove = []
             edges_iterator = iter(edges)
             while True:
                 try:
                     shared_buffer_edge = next(edges_iterator)
-                    edge = shared_buffer_edge.getElement()
-                    if current_version.isCompatibleWith(edge.getDeweyNumber()):
+                    edge = shared_buffer_edge.get_element()
+                    if current_version.is_compatible_with(edge.get_dewey_number()):
                         if shared_buffer_edge.release():
-                            edges_iterator.remove()
-                            target_id = edge.getTarget()
+                            edges_to_remove.append(shared_buffer_edge)
+                            target_id = edge.get_target()
                             if target_id is not None:
                                 nodes_to_examine.append(target_id)
-                                versions_to_examine.append(edge.getDeweyNumber())
+                                versions_to_examine.append(edge.get_dewey_number())
                 except StopIteration:
                     break
 
+            # Remove edges after iteration to avoid modifying list during iteration
+            for edge in edges_to_remove:
+                edges.remove(edge)
+
             if cur_buffer_node.release():
                 self.shared_buffer.remove_entry(cur_node)
-                self.release_event(cur_node.getEventId())
+                self.release_event(cur_node.event_id)
             else:
                 self.shared_buffer.upsert_entry(cur_node, cur_buffer_node)
 
@@ -169,7 +168,7 @@ class SharedBufferAccessor:
             self,
             entry: Tuple['NodeId', 'SharedBufferNode'],
             version: 'DeweyNumber',
-            path: deque
+            path: Deque
         ):
             self.entry = entry
             self.version = version
@@ -178,7 +177,7 @@ class SharedBufferAccessor:
         def getEntry(self) -> Tuple['NodeId', 'SharedBufferNode']:
             return self.entry
 
-        def getPath(self) -> deque:
+        def getPath(self) -> Deque:
             return self.path
 
         def getVersion(self) -> 'DeweyNumber':
@@ -193,8 +192,7 @@ class SharedBufferAccessor:
 # events_buffer_cache_slots = 100
 # entry_cache_slots = 50
 # cache_statistics_interval = 300  # 单位是秒
-
 if __name__ == "__main__":
-    config = SharedBufferCacheConfig.from_config('config.ini')
+    config = SharedBufferCacheConfig.from_config('../config.ini')
     shared_buffer = SharedBuffer(config)
     accessor = SharedBufferAccessor(shared_buffer)

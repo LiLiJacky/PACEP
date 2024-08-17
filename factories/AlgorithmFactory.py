@@ -27,7 +27,7 @@ ALGORITHM_FACTORY_MAP = {
     "sum_value": "factories.ONFactory.ONFactory",
     "min_value": "factories.ONFactory.ONFactory",
     "max_value": "factories.ONFactory.ONFactory",
-    "merge_sort": "factories.OLogNFactory.OLogNFactory",
+    "merge_sort": "factories.ONLogNFactory.ONLogNFactory",
     "binary_search_timestamp": "factories.OLogNFactory.OLogNFactory",
     "bubble_sort": "factories.ON2Factory.ON2Factory",
     "triplet_product_sum": "factories.ON3Factory.ON3Factory",
@@ -37,7 +37,7 @@ ALGORITHM_FACTORY_MAP = {
 
 
 class AlgorithmFactory:
-    def __init__(self):
+    def __init__(self, *args):
         self.algorithm_sub_map = ALGORITHM_SUB_MAP
         self.algorithm_factory_map = ALGORITHM_FACTORY_MAP
 
@@ -80,6 +80,10 @@ class AlgorithmFactory:
         module = importlib.import_module(module_path)
         factory_class = getattr(module, class_name)
         factory = factory_class()
+
+        # 判断是否超过范围
+        if args and args[0] >= len(data):
+            return factory.get_algorithm(full_name, data, 0)
         return factory.get_algorithm(full_name, data, *args)
 
     def get_algorithm_sub_map(self):

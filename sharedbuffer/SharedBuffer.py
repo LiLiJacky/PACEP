@@ -5,9 +5,9 @@ from collections import defaultdict
 from typing import Any, Dict, Optional, Iterator
 
 from configuration.SharedBufferCacheConfig import SharedBufferCacheConfig
-from shared_buffer.EventId import EventId
-from shared_buffer.Lockable import Lockable
-from shared_buffer.NodeId import NodeId
+from sharedbuffer.EventId import EventId
+from sharedbuffer.Lockable import Lockable
+from sharedbuffer.NodeId import NodeId
 
 
 class SharedBuffer:
@@ -33,6 +33,8 @@ class SharedBuffer:
         Timer(self.cache_statistics_interval.total_seconds(), log_cache_statistics).start()
 
     def get_accessor(self):
+        # 延迟导入
+        from sharedbuffer.SharedBufferAccessor import SharedBufferAccessor
         return SharedBufferAccessor(self)
 
     def advance_time(self, timestamp: int):
@@ -99,10 +101,6 @@ class SharedBuffer:
         self.entry_cache.clear()
         self.events_buffer.update(self.events_buffer_cache)
         self.events_buffer_cache.clear()
-
-class SharedBufferAccessor:
-    def __init__(self, buffer: SharedBuffer):
-        self.buffer = buffer
 
 
 if __name__ == "__main__":

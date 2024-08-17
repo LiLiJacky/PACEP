@@ -17,3 +17,6 @@ class Data(DataItem):
         Returns the timestamp of the data item.
         """
         return self.timestamp
+
+    def get_id(self):
+        return self.variable_name

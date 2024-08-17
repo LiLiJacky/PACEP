@@ -15,14 +15,16 @@ class BubbleSortAlgorithm(Algorithm):
     def complexity_space(self):
         return "O(1)"
 
-    def get_calculate(self):
+    def get_calculate(self, index):
         data = self.data[:]
         n = len(data)
+        if index >= n:
+            return -1
         for i in range(n):
             for j in range(0, n - i - 1):
                 if data[j][1] > data[j + 1][1]:
                     data[j], data[j + 1] = data[j + 1], data[j]
-        return data
+        return data[index]
 
     def get_calculate_range(self, range):
         return range
@@ -35,7 +37,7 @@ class ON2Factory:
         if algorithm_name in algorithms:
             if algorithm_name == "bubble_sort":
                 if len(args) == 1:
-                    return algorithms[algorithm_name](data, args[0])
+                    return algorithms[algorithm_name](data).get_calculate(args[0])
                 else:
                     raise ValueError("binary_search_timestamp algorithm requires one argument for the target timestamp")
             return algorithms[algorithm_name](data)

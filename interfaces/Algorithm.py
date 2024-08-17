@@ -2,7 +2,7 @@
 from abc import ABC, abstractmethod
 
 class Algorithm(ABC):
-    def __init__(self, data):
+    def __init__(self, data, *args):
         self.data = data
 
     @property
