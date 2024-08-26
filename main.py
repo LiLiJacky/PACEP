@@ -3,7 +3,7 @@ import os
 from configuration.SharedBufferCacheConfig import SharedBufferCacheConfig
 from generator.RegexPatternGenerator import RegexPatternGenerator
 from nfa.NFA import NFA, TimerService
-from nfa.RegexToState import RegexToState
+from nfa.ABRegexToStateAppend import RegexToState
 from sharedbuffer.SharedBuffer import SharedBuffer
 from sharedbuffer.SharedBufferAccessor import SharedBufferAccessor
 from simulated_data.SimulateData2 import DataSource

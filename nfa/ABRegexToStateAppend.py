@@ -10,7 +10,6 @@ from models.CountConstraint import CountConstraint
 from models.TimeConstarint import TimeConstraint
 from models.TypeConstraint import TypeConstraint
 from models.ValueConstraint import ValueConstraint
-from models.TimesConstraint import TimesConstraint
 from nfa.State import State, StateType
 from nfa.StateTransition import StateTransition
 from nfa.StateTransitionAction import StateTransitionAction
@@ -92,47 +91,116 @@ class RegexToState:
         return expanded_variables
 
     def _create_states_and_transitions(self, parsed_states: List[tuple]):
-        # 创建终止状态提前
-        self.final_state = State("Final", StateType.Final)
-        self.states.append(self.final_state)
+        # 创建开始状态
+        self.start_state = State("Start", StateType.Start)
+        self.states.append(self.start_state)
 
-        # 初始化队列，存储 (current_state, edge_type, next_state)
-        queue = deque([self.final_state])
+        # 初始化队列，存储 (current_state, edge_type, previous_state)
+        queue = deque([(self.start_state, StateTransitionAction.TAKE)])
 
-        # 从后向前处理 parsed_states
-        for state, min_repeat, max_repeat in reversed(parsed_states):
+        for state, min_repeat, max_repeat in parsed_states:
             next_queue = deque()
 
+            # 判断是否可能是Start
             current_state_type = StateType.Normal
+            # for previous_state, edge_type in queue:
+            #     if previous_state.name == "PlaceholderStart":
+            #         current_state_type = StateType.Start
 
             if max_repeat == 1 and min_repeat == 1:  # 普通状态
                 current_state = State(f"{state}", current_state_type)
-                self.states.insert(0, current_state)  # 将状态插入到列表的开头
-                # 更新队列中的所有 next_state 指针，添加边
-                for next_state in queue:
-                    self._add_transition(current_state, StateTransitionAction.TAKE, next_state)
+                self.states.append(current_state)
+                # 更新队列中的所有previous指针，添加边
+                for previous_state, edge_type in queue:
+                    self._add_transition(previous_state, edge_type, current_state)
                 self._add_transition(current_state, StateTransitionAction.IGNORE, current_state)
-                next_queue.append((current_state))
+                next_queue.append((current_state, StateTransitionAction.TAKE))
 
-            else:  # 需要接受多次事件的状态，不再展开
-                kleene_state = State(f"{state}[i]", current_state_type)
-                self.states.insert(0, kleene_state)  # 将状态插入到列表的开头
-                for next_state in queue:
-                    self._add_transition(kleene_state, StateTransitionAction.PROCEED, next_state)
-                self._add_transition(kleene_state, StateTransitionAction.TAKE, kleene_state)
-                self._add_transition(kleene_state, StateTransitionAction.IGNORE, kleene_state)
+            elif max_repeat == 1 and min_repeat == 0:  # 选择状态
+                current_state = State(f"{state}", current_state_type)
+                self.states.append(current_state)
+                original_queue = list(queue)
 
-                # 添加 TimesConstraint 而不是展开状态
-                times_constraint = TimesConstraint([state], min_times=min_repeat, max_times=max_repeat)
-                self.constraints.add_constraint(times_constraint)
+                # 原来的previous不变
+                for previous_state, edge_type in original_queue:
+                    next_queue.append((previous_state, edge_type))
 
-                next_queue = deque([kleene_state])
+                # 为选择状态创建新的previous并添加边
+                for previous_state, edge_type in original_queue:
+                    self._add_transition(previous_state, edge_type, current_state)
+                    self._add_transition(current_state, StateTransitionAction.IGNORE, current_state)
+                    next_queue.append((current_state, StateTransitionAction.TAKE))
+
+            elif max_repeat == float('inf'):  # 处理无上界状态
+                if min_repeat == 0:  # K* 展开为 K[i]
+                    kleene_state = State(f"{state}[i]", current_state_type)
+                    self.states.append(kleene_state)
+                    for previous_state, edge_type in queue:
+                        self._add_transition(previous_state, edge_type, kleene_state)
+                    self._add_transition(kleene_state, StateTransitionAction.TAKE, kleene_state)
+                    self._add_transition(kleene_state, StateTransitionAction.IGNORE, kleene_state)
+                    next_queue = deque([(kleene_state, StateTransitionAction.PROCEED)])
+
+                elif min_repeat >= 1:  # 处理 K+、K{2,} 等无上界状态
+                    previous_state = None
+                    for i in range(1, min_repeat + 1):
+                        current_state = State(f"{state}[{i}]", current_state_type)
+                        self.states.append(current_state)
+
+                        if i == 1:
+                            for prev_state, edge_type in queue:
+                                self._add_transition(prev_state, edge_type, current_state)
+                        else:
+                            self._add_transition(previous_state, StateTransitionAction.TAKE, current_state)
+                        self._add_transition(current_state, StateTransitionAction.IGNORE, current_state)
+                        previous_state = current_state
+
+                    kleene_state = State(f"{state}[i]", current_state_type)
+                    self.states.append(kleene_state)
+                    self._add_transition(previous_state, StateTransitionAction.TAKE, kleene_state)
+                    self._add_transition(kleene_state, StateTransitionAction.TAKE, kleene_state)
+                    self._add_transition(kleene_state, StateTransitionAction.IGNORE, kleene_state)
+                    next_queue = deque([(kleene_state, StateTransitionAction.PROCEED)])
+
+            elif isinstance(max_repeat, int):  # 处理上下界都存在的状态
+                previous_state = None
+                for i in range(1, max_repeat + 1):
+                    current_state = State(f"{state}[{i}]", current_state_type)
+                    self.states.append(current_state)
+
+                    if i == 1:
+                        for prev_state, edge_type in queue:
+                            self._add_transition(prev_state, edge_type, current_state)
+                    else:
+                        self._add_transition(previous_state, StateTransitionAction.TAKE, current_state)
+
+                    self._add_transition(current_state, StateTransitionAction.IGNORE, current_state)
+
+                    if i >= min_repeat:
+                        next_queue.append((current_state, StateTransitionAction.TAKE))
+
+                    previous_state = current_state
+
+                # 如果下界为0，保留原有的previous指针
+                if min_repeat == 0:
+                    for prev_state, edge_type in queue:
+                        next_queue.append((prev_state, edge_type))
 
             queue = next_queue
 
-        # 处理剩余的 next_state，将其类型设置为 Start
-        for next_state in queue:
-            next_state.state_type = StateType.Start  # 修改状态类型为 Start
+        # 创建终止状态
+        self.final_state = State("Final", StateType.Final)
+        self.states.append(self.final_state)
+
+        # 处理剩余的previous状态指向终止状态的边
+        for previous_state, edge_type in queue:
+            if edge_type == StateTransitionAction.PROCEED:
+                self._add_transition(previous_state, edge_type, self.final_state)
+            else:
+                self._add_transition(previous_state, StateTransitionAction.TAKE, self.final_state)
+
+        # 删除占位符状态
+        #  self.states.remove(self.start_state)
 
         # Apply constraints to transitions
         self._apply_constraints()
@@ -153,37 +221,37 @@ class RegexToState:
         # 处理 value_constraints
         for value_constraint in self.constraints.value_constrain:
             last_var = value_constraint.variables[-1]
-            base_last_var = last_var.split('[')[0]  # 提取基础变量名
             for state in self.states:
                 for transition in state.get_state_transitions():
-                    source_name = transition.get_source_state().get_name()
-                    base_source_name = source_name.split('[')[0]
-                    traget_name = transition.get_target_state().get_name()
+                    target_name = transition.get_target_state().get_name()
+                    base_target_name = target_name.split('[')[0]
 
-                    if source_name == traget_name:
-                        # 处理自转移逻辑
-                        continue
-
-                    if base_source_name == base_last_var and transition.get_action() in [
+                    if base_target_name == last_var and transition.get_action() in [
                         StateTransitionAction.TAKE, StateTransitionAction.PROCEED]:
                         transition.add_condition(value_constraint)
 
         # 处理 time_constraints
         for time_constraint in self.constraints.time_constrain:
-            last_var = time_constraint.variables[-1]  # 使用最后一个变量
-            base_last_var = last_var.split('[')[0]  # 提取基础变量名
+            original_variables = time_constraint.variables
+            expanded_variables = self._expand_variables(original_variables)  # 通过状态创建中的逻辑获取展开后的变量
+            first_expanded_variable = expanded_variables[0]
             max_time = time_constraint.max_time
 
             for state in self.states:
                 for transition in state.get_state_transitions():
                     source_name = transition.get_source_state().get_name()
-                    base_source_name = source_name.split('[')[0]
+                    target_name = transition.get_target_state().get_name()
+                    base_target_name = target_name.split('[')[0]
 
-                    if base_source_name == base_last_var:
-                        current_variables = [last_var, source_name]
+                    # 跳过 Start 状态
+                    if source_name == "Start":
+                        continue
+
+                    if base_target_name in expanded_variables:
+                        current_variables = [first_expanded_variable, target_name]
                         if transition.get_action() == StateTransitionAction.IGNORE:
-                            new_expression = f"0 <= time - {last_var}.time <= {max_time}"
-                            current_variables = [last_var, "NOW.EVENT"]
+                            new_expression = f"0 <= time - {first_expanded_variable}.time <= {max_time}"
+                            current_variables = [first_expanded_variable, "NOW.EVENT"]
                         else:
                             new_expression = f"0 <= {current_variables[-1]} - {current_variables[0]} <= {max_time}"
 
@@ -196,33 +264,14 @@ class RegexToState:
         # 处理 type_constraints
         for type_constraint in self.constraints.type_constrain:
             last_var = type_constraint.variables[-1]
-            base_last_var = last_var.split('[')[0]  # 提取基础变量名
             for state in self.states:
                 for transition in state.get_state_transitions():
-                    if transition.get_action == StateTransitionAction.PROCEED:
-                        # Proceed 边只需要考虑value constrain
-                        continue
-                    source_name = transition.get_source_state().get_name()
-                    base_source_name = source_name.split('[')[0]
+                    target_name = transition.get_target_state().get_name()
+                    base_target_name = target_name.split('[')[0]
 
-                    if base_source_name == base_last_var and transition.get_action() in [
-                        StateTransitionAction.TAKE]:
+                    if base_target_name == last_var and transition.get_action() in [
+                        StateTransitionAction.TAKE, StateTransitionAction.PROCEED]:
                         transition.add_condition(type_constraint)
-
-        # 处理 times_constraints
-        for times_constraint in self.constraints.times_constrain:
-            last_var = times_constraint.variables[-1]
-            base_last_var = last_var.split('[')[0]  # 提取基础变量名
-            for state in self.states:
-                for transition in state.get_state_transitions():
-                    source_name = transition.get_source_state().get_name()
-                    base_source_name = source_name.split('[')[0]
-
-                    if base_source_name == base_last_var and transition.get_action() == StateTransitionAction.PROCEED:
-                        # 创建一个新的 TimesConstraint 并添加到 transition 中
-                        new_times_constraint = TimesConstraint([last_var], min_times=times_constraint.min_times,
-                                                               max_times=times_constraint.max_times)
-                        transition.add_condition(new_times_constraint)
 
     def draw(self):
         current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -272,4 +321,3 @@ if __name__ == "__main__":
     test = RegexToState(regex, variables_constraints_collection)
     test.generate_states_and_transitions()
     test.draw()
-    test.run_tests()

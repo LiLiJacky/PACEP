@@ -136,11 +136,21 @@ class StateDrawer:
 
     def add_state(self, name, state_type):
         """
-        添加一个状态到图中。
-        :param name: 状态名
-        :param state_type: 状态类型（Start, Normal, Final）
-        """
+           添加一个状态到图中。
+           :param name: 状态名
+           :param state_type: 状态类型（Start, Normal, Final）
+           """
         shape = 'doublecircle' if state_type == 'Final' else 'circle'
+
+        # 特别处理 Start 状态
+        # if state_type == 'Start':
+        #     self.graph.node(name, name, shape=shape, _attributes={'style': 'filled', 'color': 'lightblue'})
+        #     # 添加一个隐式的起始节点，表示小箭头
+        #     self.graph.node('start', '', shape='point', width='0.1')
+        #     self.graph.edge('start', name)
+        # else:
+        #     self.graph.node(name, name, shape=shape)
+
         self.graph.node(name, name, shape=shape)
 
     def add_edge(self, source, target, label, style='solid', arrowhead='normal'):
@@ -152,25 +162,56 @@ class StateDrawer:
         """
         self.graph.edge(source, target, label=label, _attributes={'style': style, 'arrowhead': arrowhead})
 
-    def draw(self, states, transitions):
+    def draw(self, states):
         """
-        根据给定的状态和转换生成图。
+        根据给定的状态生成图，包括状态及其转换。
         :param states: 状态列表
-        :param transitions: 转换列表
         """
         for state in states:
             self.add_state(state.get_name(), state.get_state_type())
 
-        for transition in transitions:
-            source = transition.get_source_state().get_name()
-            target = transition.get_target_state().get_name()
-            label = transition.get_condition().expression if transition.get_condition() else ''
-            if transition.get_action() == StateTransitionAction.IGNORE:
-                self.add_edge(source, target, label, style='dashed')
-            elif transition.get_action() == StateTransitionAction.PROCEED:
-                self.add_edge(source, target, label, style='dashed', arrowhead='diamond')
-            else:
-                self.add_edge(source, target, label)
+            # 处理每个状态的转换
+            for transition in state.get_state_transitions():
+                source = transition.get_source_state().get_name()
+                target = transition.get_target_state().get_name()
+
+                # 处理多个条件约束
+                label_parts = []
+                if transition.get_condition():
+                    constraint_collection = transition.get_condition()
+
+                    if constraint_collection.value_constrain:
+                        label_parts.append(
+                            "Value: " + ", ".join(c.expression for c in constraint_collection.value_constrain))
+
+                    if constraint_collection.time_constrain:
+                        label_parts.append("Time: " + ", ".join(
+                            f"{c.min_time} <= {c.variables[-1]} - {c.variables[0]} <= {c.max_time}" for c in
+                            constraint_collection.time_constrain))
+
+                    if constraint_collection.count_constrain:
+                        label_parts.append("Count: " + ", ".join(
+                            f"{c.min_count} <= {c.variables[-1]} - {c.variables[0]} <= {c.max_count}" for c in
+                            constraint_collection.count_constrain))
+
+                    if constraint_collection.type_constrain:
+                        label_parts.append(
+                            "Type: " + ", ".join(f"{c.variables_name}" for c in constraint_collection.type_constrain))
+
+                    if constraint_collection.times_constrain:
+                        label_parts.append("Times: " + ", ".join(
+                            f"{c.min_times} <= {c.variables[-1]} <= {c.max_times}" for c in
+                            constraint_collection.times_constrain))
+
+                label = "\n".join(label_parts) if label_parts else ''
+
+                # 根据转换的操作类型设置边的样式
+                if transition.get_action() == StateTransitionAction.IGNORE:
+                    self.add_edge(source, target, label, style='dashed')
+                elif transition.get_action() == StateTransitionAction.PROCEED:
+                    self.add_edge(source, target, label, style='dashed', arrowhead='diamond')
+                else:
+                    self.add_edge(source, target, label)
 
         return self.graph
 

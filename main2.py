@@ -5,7 +5,7 @@ from generator.RegexPatternGenerator import RegexPatternGenerator
 from sharedbuffer.EventId import EventId
 from simulated_data.SimulateData2 import DataSource, data_consumer
 from util.NFADrawer import NFADrawer, png_output_path
-from nfa.RegexToState import RegexToState
+from nfa.ABRegexToStateAppend import RegexToState
 from nfa.NFA import NFA, TimerService
 from sharedbuffer.SharedBuffer import SharedBuffer, SharedBufferCacheConfig
 from sharedbuffer.SharedBufferAccessor import SharedBufferAccessor

@@ -5,6 +5,11 @@ from datetime import datetime
 
 from factories.AlgorithmFactory import AlgorithmFactory
 from generator.DataGenerator import DataGenerator
+from models.ConstraintCollection import ConstraintCollection
+from models.CountConstraint import CountConstraint
+from models.TimeConstarint import TimeConstraint
+from models.TypeConstraint import TypeConstraint
+from models.ValueConstraint import ValueConstraint
 
 
 class RegexPatternGenerator:
@@ -14,6 +19,7 @@ class RegexPatternGenerator:
         self.variable_domains = {}
         self.algorithm_factory = AlgorithmFactory()
         self.regex = ""
+        self.constrains_collection = ConstraintCollection()
 
     def generate_variable(self, name, quantifier=None):
         """
@@ -115,58 +121,48 @@ class RegexPatternGenerator:
 
         return result
 
-    def set_constrains(self, regex, num_value_constrains, num_count_constrains, num_time_constrains):
+    def set_constraints(self, regex, num_value_constraints, num_count_constraints, num_time_constraints):
         """
         设置变量之间的约束条件，并返回变量和求值方法的结构。
         :param regex: 生成的正则表达式
-        :param num_value_constrains: 数值约束条件数量
-        :param num_count_constrains: 计数约束条件数量
-        :param num_time_constrains: 时间约束条件数量
+        :param num_value_constraints: 数值约束条件数量
+        :param num_count_constraints: 计数约束条件数量
+        :param num_time_constraints: 时间约束条件数量
         :return: 包含变量和求值方法的结构
         """
         variables = self.parse_regex_variables(regex)
-        constrains = {
-            "value_constrain": [],
-            "window_constrain_type": None,
-            "time_constrain": [],
-            "count_constrain": []
-        }
-
-        print(variables)
+        constraintCollection = ConstraintCollection()
 
         # 保持变量顺序与正则表达式中的一致
         all_vars = sorted(variables, key=lambda var: regex.index(var))
 
-        # 生成 value_constrain
-        for _ in range(num_value_constrains):
-            num_vars_in_constrain = random.randint(2, len(all_vars))
-            selected_vars = random.sample(all_vars, num_vars_in_constrain)
+        # 生成 value_constraint
+        for _ in range(num_value_constraints):
+            num_vars_in_constraint = random.randint(2, len(all_vars))
+            selected_vars = random.sample(all_vars, num_vars_in_constraint)
             selected_vars = sorted(selected_vars, key=lambda var: regex.index(var))
 
-            value_constrain_expr_parts = []
+            value_constraint_expr_parts = []
             for var in selected_vars:
                 quantifier_match = re.search(rf"{var}([*+?{{\d+,?\d*}}]*)", regex)
                 quantifier = quantifier_match.group(1) if quantifier_match else ''
                 algo_expression = self.select_algorithm(var, quantifier)
-                value_constrain_expr_parts.append(algo_expression)
+                value_constraint_expr_parts.append(algo_expression)
 
-            # 为每个变量生成一个在其范围内的随机值
             random_values = [random.randint(int(var.get("value_range")[0]), int(var.get("value_range")[1])) for var in
-                             value_constrain_expr_parts]
-            # 计算这些随机值的总和
+                             value_constraint_expr_parts]
             total_sum = sum(random_values)
             left = total_sum - 10
 
-            value_constrain_expr_par = [item['algorithm_description'] for item in value_constrain_expr_parts]
-            value_constrain_expr = str(left) + " < " + ' + '.join(value_constrain_expr_par) + " < " + str(total_sum)
-            constrains["value_constrain"].append({
-                "variables": selected_vars,
-                "expression": value_constrain_expr
-            })
+            value_constraint_expr_par = [item['algorithm_description'] for item in value_constraint_expr_parts]
+            value_constraint_expr = str(left) + " < " + ' + '.join(value_constraint_expr_par) + " < " + str(total_sum)
+            constraintCollection.add_constraint(ValueConstraint(
+                variables=selected_vars,
+                expression=value_constraint_expr
+            ))
 
         # 生成上下界约束
-        for _ in range(num_value_constrains):
-            # 选择一个变量和上下界
+        for _ in range(num_value_constraints):
             var = random.choice(all_vars)
             lower_bound = random.randint(1, 10)
             upper_bound = lower_bound + random.randint(1, 10)
@@ -174,42 +170,40 @@ class RegexPatternGenerator:
             include_upper = random.choice([True, False])
             lower_symbol = "<=" if include_lower else "<"
             upper_symbol = "<=" if include_upper else "<"
-            constrain_expr = f"{lower_bound} {lower_symbol} {var} {upper_symbol} {upper_bound}"
-            constrains["value_constrain"].append({
-                "variables": [var],
-                "expression": constrain_expr
-            })
+            constraint_expr = f"{lower_bound} {lower_symbol} {var} {upper_symbol} {upper_bound}"
+            constraintCollection.add_constraint(ValueConstraint(
+                variables=[var],
+                expression=constraint_expr
+            ))
 
-        # 生成全局 count_constrain
-        if num_count_constrains > 0:
+        # 生成全局 count_constraint
+        if num_count_constraints > 0:
             min_count = sum([1 if '{' not in var else int(re.search(r'{(\d+),?', var).group(1)) for var in variables])
             max_count = min_count + random.randint(1, 5)
-            constrains["window_constrain_type"] = "count_constrain"
-            constrains["count_constrain"].append({
-                "variables": all_vars,
-                "min_count": min_count,
-                "max_count": max_count
-            })
-            num_count_constrains -= 1
+            constraintCollection.add_constraint(CountConstraint(
+                variables=all_vars,
+                min_count=min_count,
+                max_count=max_count
+            ))
+            num_count_constraints -= 1
 
-        # 生成其他 count_constrains
-        for _ in range(num_count_constrains):
-            num_vars_in_constrain = random.randint(2, len(all_vars))
-            selected_vars = random.sample(all_vars, num_vars_in_constrain)
+        # 生成其他 count_constraints
+        for _ in range(num_count_constraints):
+            num_vars_in_constraint = random.randint(2, len(all_vars))
+            selected_vars = random.sample(all_vars, num_vars_in_constraint)
             kleene_vars = [var for var in selected_vars if any(quant in self.regex for quant in ['*', '+', '{', '?'])]
             if kleene_vars:
                 min_count = sum(
                     [1 if '{' not in var else int(re.search(r'{(\d+),?', var).group(1)) for var in selected_vars])
                 max_count = min_count + random.randint(1, 5)
-                constrains["window_constrain_type"] = "count_constrain"
-                constrains["count_constrain"].append({
-                    "variables": selected_vars,
-                    "min_count": min_count,
-                    "max_count": max_count
-                })
+                constraintCollection.add_constraint(CountConstraint(
+                    variables=selected_vars,
+                    min_count=min_count,
+                    max_count=max_count
+                ))
 
-        # 生成全局 time_constrain
-        if num_time_constrains > 0:
+        # 生成全局 time_constraint
+        if num_time_constraints > 0:
             total_time = 0
             for var in all_vars:
                 if any(quant in var for quant in ['*', '+', '{', '?']):
@@ -218,18 +212,18 @@ class RegexPatternGenerator:
                     total_time += random.randint(20, 30)
             min_time = 0  # 默认情况下，设置min_time为0
             max_time = total_time
-            constrains["window_constrain_type"] = "time_constrain"
-            constrains["time_constrain"].append({
-                "variables": all_vars,
-                "min_time": min_time,
-                "max_time": max_time
-            })
-            num_time_constrains -= 1
+            constraintCollection.add_constraint(TimeConstraint(
+                variables=all_vars,
+                min_time=min_time,
+                max_time=max_time
+            ))
+            num_time_constraints -= 1
 
-        # 生成其他 time_constrains
-        for _ in range(num_time_constrains):
-            num_vars_in_constrain = random.randint(2, len(all_vars))
-            selected_vars = random.sample(all_vars, num_vars_in_constrain)
+        # 生成其他 time_constraints
+        for _ in range(num_time_constraints):
+            num_vars_in_constraint = random.randint(2, len(all_vars))
+            selected_vars = random.sample(all_vars, num_vars_in_constraint)
+            selected_vars = sorted(selected_vars, key=lambda var: regex.index(var))
             total_time = 0
             for var in selected_vars:
                 if any(quant in var for quant in ['*', '+', '{', '?']):
@@ -238,17 +232,26 @@ class RegexPatternGenerator:
                     total_time += random.randint(20, 30)
             min_time = 0  # 默认情况下，设置min_time为0
             max_time = total_time
-            constrains["window_constrain_type"] = "time_constrain"
-            constrains["time_constrain"].append({
-                "variables": selected_vars,
-                "min_time": min_time,
-                "max_time": max_time
-            })
+            constraintCollection.add_constraint(TimeConstraint(
+                variables=selected_vars,
+                min_time=min_time,
+                max_time=max_time
+            ))
+
+        # 生成 type_constraint 基于正则表达式字母，保持顺序
+        for letter in sorted(set(re.findall(r'[A-Z]', regex)), key=regex.index):
+            constraintCollection.add_constraint(TypeConstraint(
+                variables=[letter],
+                variables_name=[letter]
+            ))
+
+        constraintCollection.window_constrain_type = "time_constrains"
+        self.constrains_collection = constraintCollection
 
         return {
             "variables": all_vars,
             "regex": regex,
-            "constrains": constrains,
+            "constraints": constraintCollection,
             "domain": self.variable_domains
         }
 
@@ -264,9 +267,9 @@ if __name__ == "__main__":
     num_time_constrains = 2
 
     regex = generator.generate_regex(num_variables, num_kleene)
-    result = generator.set_constrains(regex, num_value_constrains, num_count_constrains, num_time_constrains)
+    result = generator.set_constraints(regex, num_value_constrains, num_count_constrains, num_time_constrains)
 
     print(f"Variables: {result['variables']}")
     print(f"Regex: {result['regex']}")
-    print(f"Constrains: {result['constrains']}")
+    print(f"Constrains: {result['constraints']}")
     print(f"Variables_Domain: {result['domain']}")

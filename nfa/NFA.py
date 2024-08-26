@@ -3,6 +3,7 @@ import time
 from typing import List, Dict, Optional, Collection, Tuple
 from dataclasses import dataclass
 
+from interfaces.Constraint import Constraint
 from nfa.ComputationState import ComputationState
 from nfa.NFAState import NFAState
 from sharedbuffer.SharedBufferAccessor import SharedBufferAccessor
@@ -377,7 +378,7 @@ class NFA:
             for state_transition in state_transitions:
                 try:
                     if self.check_filter_condition(context, state_transition.get_condition(), event):
-                        if state_transition.get_action() == 'PROCEED':
+                        if state_transition.get_action() == StateTransitionAction.PROCEED:
                             states.append(state_transition.get_target_state())
                         else:
                             outgoing_edges.add(state_transition)
@@ -387,9 +388,8 @@ class NFA:
         return outgoing_edges
 
     @staticmethod
-    def check_filter_condition(context: ConditionContext, condition, event):
-        return True
-        # return condition is None or condition.filter(event, context)
+    def check_filter_condition(context: ConditionContext, condition: Constraint, event):
+        return condition is None or condition.validate(event, context)
 
     @staticmethod
     def extract_current_matches(shared_buffer_accessor: SharedBufferAccessor,
