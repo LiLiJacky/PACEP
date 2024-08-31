@@ -1,7 +1,6 @@
 from typing import List, Optional, Union
 
 from interfaces.Constraint import Constraint
-from models.TimesConstraint import TimesConstraint
 from models.CountConstraint import CountConstraint
 from models.TimeConstarint import TimeConstraint
 from models.TypeConstraint import TypeConstraint
@@ -15,7 +14,6 @@ class ConstraintCollection:
         self._time_constrain = []
         self._count_constrain = []
         self._type_constrain = []
-        self._times_constrain = []
 
     def add_constraint(self, constraint: Constraint):
         if isinstance(constraint, ValueConstraint):
@@ -27,8 +25,6 @@ class ConstraintCollection:
         elif isinstance(constraint, TypeConstraint):
             if constraint not in self._type_constrain:
                 self._type_constrain.append(constraint)
-        elif isinstance(constraint, TimesConstraint):
-            self._add_or_merge_times_constraint(constraint)
         else:
             raise ValueError(f"Unknown constraint type: {type(constraint).__name__}")
 
@@ -76,14 +72,6 @@ class ConstraintCollection:
         # 如果表达式不符合预期格式，返回原始表达式（或者根据需要抛出异常）
         return expr1
 
-    def _add_or_merge_times_constraint(self, new_constraint: TimesConstraint):
-        for existing_constraint in self._times_constrain:
-            if existing_constraint.variables == new_constraint.variables:
-                existing_constraint.min_times = max(existing_constraint.min_times, new_constraint.min_times)
-                existing_constraint.max_times = min(existing_constraint.max_times, new_constraint.max_times)
-                return
-        self._times_constrain.append(new_constraint)
-
     @property
     def value_constrain(self) -> List[Constraint]:
         return self._value_constrain
@@ -108,30 +96,26 @@ class ConstraintCollection:
     def type_constrain(self) -> List[Constraint]:
         return self._type_constrain
 
-    @property
-    def times_constrain(self) -> List[Constraint]:
-        return self._times_constrain
-
     def validate(self, event, context: 'ConditionContext'):
         # 验证类型是否满足
         for tp in self._type_constrain:
-            if not tp.validate(event):
+            if not tp.validate(event, context):
                 return False
 
         # 验证所有time_constrain
-        # for tc in self.time_constrain:
-        #     if not tc.validate():
-        #         return False
+        for tc in self.time_constrain:
+            if not tc.validate(event, context):
+                return False
 
-        # 验证所有times_constrain
-        # for tc in self._times_constrain:
-        #     if not tc.validate(event):
-        #         return False
+        # 验证所有count_constrain
+        for tc in self._count_constrain:
+            if not tc.validate(event, context):
+                return False
 
         # 验证所有value_constrain
-        # for vc in self.value_constrain:
-        #     if not vc.validate():
-        #         return False
+        for vc in self.value_constrain:
+            if not vc.validate(event, context):
+                return False
 
         # 如果所有验证都通过，返回True
         return True
@@ -141,7 +125,6 @@ class ConstraintCollection:
         time_constraints_str = ', '.join(str(c) for c in self._time_constrain)
         count_constraints_str = ', '.join(str(c) for c in self._count_constrain)
         type_constraints_str = ', '.join(str(c) for c in self._type_constrain)
-        times_constraints_str = ', '.join(str(c) for c in self._times_constrain)
         window_constraint_str = str(self._window_constrain_type) if self._window_constrain_type else 'None'
 
         return (f"ConstraintCollection(\n"
@@ -149,6 +132,5 @@ class ConstraintCollection:
                 f"  Time Constraints: [{time_constraints_str}],\n"
                 f"  Count Constraints: [{count_constraints_str}],\n"
                 f"  Type Constraints: [{type_constraints_str}],\n"
-                f"  Times Constraints: [{times_constraints_str}],\n" 
                 f"  Window Constraint: {window_constraint_str}\n"
                 f")")

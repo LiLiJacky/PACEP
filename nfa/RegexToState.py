@@ -8,9 +8,6 @@ from generator.RegexPatternGenerator import RegexPatternGenerator
 from models.ConstraintCollection import ConstraintCollection
 from models.CountConstraint import CountConstraint
 from models.TimeConstarint import TimeConstraint
-from models.TypeConstraint import TypeConstraint
-from models.ValueConstraint import ValueConstraint
-from models.TimesConstraint import TimesConstraint
 from nfa.State import State, StateType
 from nfa.StateTransition import StateTransition
 from nfa.StateTransitionAction import StateTransitionAction
@@ -58,39 +55,6 @@ class RegexToState:
             parsed_states.append((state, min_repeat, max_repeat))
         return parsed_states
 
-    def _expand_variables(self, variables):
-        expanded_variables = []
-
-        for var in variables:
-            if var.endswith('*'):
-                base_name = var[:-1]
-                expanded_variables.append(f"{base_name}[i]")  # K* 展开为 K[i]
-            elif var.endswith('+'):
-                base_name = var[:-1]
-                expanded_variables.append(f"{base_name}[1]")  # K+ 展开为 K[1] 和 K[i]
-                expanded_variables.append(f"{base_name}[i]")
-            elif '{' in var and '}' in var:
-                base_name, repeat_info = var.split('{')
-                repeat_info = repeat_info.rstrip('}')
-                if ',' in repeat_info:
-                    min_repeat, max_repeat = repeat_info.split(',')
-                    min_repeat = int(min_repeat) if min_repeat else 0
-                    max_repeat = int(max_repeat) if max_repeat else float('inf')
-
-                    for i in range(1, max_repeat + 1):
-                        expanded_variables.append(f"{base_name}[{i}]")
-                        if max_repeat == float('inf'):
-                            expanded_variables.append(f"{base_name}[i]")
-                            break
-                else:
-                    repeat_count = int(repeat_info)
-                    for i in range(1, repeat_count + 1):
-                        expanded_variables.append(f"{base_name}[{i}]")
-            else:
-                expanded_variables.append(var)  # 普通状态
-
-        return expanded_variables
-
     def _create_states_and_transitions(self, parsed_states: List[tuple]):
         # 创建终止状态提前
         self.final_state = State("Final", StateType.Final)
@@ -123,7 +87,7 @@ class RegexToState:
                 self._add_transition(kleene_state, StateTransitionAction.IGNORE, kleene_state)
 
                 # 添加 TimesConstraint 而不是展开状态
-                times_constraint = TimesConstraint([state], min_times=min_repeat, max_times=max_repeat)
+                times_constraint = CountConstraint([state], min_count=min_repeat, max_count=max_repeat)
                 self.constraints.add_constraint(times_constraint)
 
                 next_queue = deque([kleene_state])
@@ -162,30 +126,35 @@ class RegexToState:
 
                     if source_name == traget_name:
                         # 处理自转移逻辑
+                        if (len(value_constraint.variables) == 1 and '[' in value_constraint.expression
+                                and base_source_name == base_last_var and transition.get_action() == StateTransitionAction.TAKE):
+                            transition.add_condition(value_constraint)
                         continue
 
                     if base_source_name == base_last_var and transition.get_action() in [
                         StateTransitionAction.TAKE, StateTransitionAction.PROCEED]:
+                        if len(value_constraint.variables) == 1 and '[' in value_constraint.expression:
+                            continue
                         transition.add_condition(value_constraint)
 
         # 处理 time_constraints
         for time_constraint in self.constraints.time_constrain:
             last_var = time_constraint.variables[-1]  # 使用最后一个变量
-            base_last_var = last_var.split('[')[0]  # 提取基础变量名
             max_time = time_constraint.max_time
+            first_var = time_constraint.variables[0]  # 使用最后一个变量
 
             for state in self.states:
                 for transition in state.get_state_transitions():
                     source_name = transition.get_source_state().get_name()
                     base_source_name = source_name.split('[')[0]
 
-                    if base_source_name == base_last_var:
-                        current_variables = [last_var, source_name]
+                    if self.regex.index(first_var) < self.regex.index(base_source_name) <= self.regex.index(last_var):
+                        current_variables = [first_var, base_source_name]
                         if transition.get_action() == StateTransitionAction.IGNORE:
-                            new_expression = f"0 <= time - {last_var}.time <= {max_time}"
-                            current_variables = [last_var, "NOW.EVENT"]
+                            new_expression = f"0 <= time - {first_var}.time <= {max_time}"
+                            current_variables = [first_var, "NOW.EVENT"]
                         else:
-                            new_expression = f"0 <= {current_variables[-1]} - {current_variables[0]} <= {max_time}"
+                            new_expression = f"0 <= {base_source_name} - {first_var}.time <= {max_time}"
 
                         new_time_constraint = TimeConstraint(current_variables, 0, max_time)
                         new_time_constraint.expression = new_expression
@@ -209,19 +178,18 @@ class RegexToState:
                         StateTransitionAction.TAKE]:
                         transition.add_condition(type_constraint)
 
-        # 处理 times_constraints
-        for times_constraint in self.constraints.times_constrain:
-            last_var = times_constraint.variables[-1]
-            base_last_var = last_var.split('[')[0]  # 提取基础变量名
+        # 处理 count_constraints
+        for count_constraint in self.constraints.count_constrain:
+            last_name = count_constraint.variables[0]
             for state in self.states:
                 for transition in state.get_state_transitions():
                     source_name = transition.get_source_state().get_name()
                     base_source_name = source_name.split('[')[0]
 
-                    if base_source_name == base_last_var and transition.get_action() == StateTransitionAction.PROCEED:
+                    if base_source_name == last_name and transition.get_action() == StateTransitionAction.PROCEED:
                         # 创建一个新的 TimesConstraint 并添加到 transition 中
-                        new_times_constraint = TimesConstraint([last_var], min_times=times_constraint.min_times,
-                                                               max_times=times_constraint.max_times)
+                        new_times_constraint = CountConstraint([last_name], min_count=count_constraint.min_count,
+                                                               max_count=count_constraint.max_count)
                         transition.add_condition(new_times_constraint)
 
     def draw(self):

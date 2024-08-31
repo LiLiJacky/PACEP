@@ -7,11 +7,16 @@ class CountConstraint(Constraint):
         super().__init__(variables)
         self.min_count = min_count
         self.max_count = max_count
-        self.expression = f"{min_count} <= {variables[-1]} - {variables[0]} <= {max_count}"
+        if variables[-1] != variables[0]:
+            self.expression = f"{min_count} <= {variables[-1]} - {variables[0]} <= {max_count}"
+        else:
+            self.expression = f"{min_count} <= size({variables[0]}) <= {max_count}"
 
-    def validate(self, data: Dict[str, Any]) -> bool:
+    def validate(self, data, context) -> bool:
+        kleene_name = context.computation_state.current_state_name
+        kleene_events = context.get_events_for_pattern(kleene_name)
         try:
-            count = len([var for var in self.variables if var in data])
+            count = len(kleene_events)
             return self.min_count <= count <= self.max_count
         except Exception as e:
             print(f"Validation error: {e}")

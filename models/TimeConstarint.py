@@ -7,12 +7,17 @@ class TimeConstraint(Constraint):
         super().__init__(variables)
         self.min_time = min_time
         self.max_time = max_time
-        self.expression = f"{min_time} <= {variables[-1]} - {variables[0]} <= {max_time}"
+        if variables[-1] != variables[0]:
+            self.expression = f"{min_time} <= {variables[-1]} - {variables[0]} <= {max_time}"
+        else:
+            self.expression = f"{min_time} <= {variables[0]}[i] - {variables[0]}[0] <= {max_time}"
 
-    def validate(self, data: Dict[str, Any]) -> bool:
+    def validate(self, event, context) -> bool:
+        first_variables = self.variables[0]
+        first_event = context.get_events_for_pattern(first_variables)
         try:
-            times = [data[var]['timestamp'] for var in self.variables]
-            time_span = max(times) - min(times)
+            time = event.timestamp
+            time_span = time - first_event[0].timestamp
             return self.min_time <= time_span <= self.max_time
         except Exception as e:
             print(f"Validation error: {e}")

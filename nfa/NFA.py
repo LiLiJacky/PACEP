@@ -3,6 +3,7 @@ import time
 from typing import List, Dict, Optional, Collection, Tuple
 from dataclasses import dataclass
 
+from aftermatch.NoSkipStrategy import NoSkipStrategy
 from interfaces.Constraint import Constraint
 from nfa.ComputationState import ComputationState
 from nfa.NFAState import NFAState
@@ -169,7 +170,7 @@ class NFA:
             else:
                 new_partial_matches.append(computation_state)
 
-        # self.process_matches_according_to_skip_strategy(shared_buffer_accessor, nfa_state, after_match_skip_strategy, potential_matches, new_partial_matches, result)
+        self.process_matches_according_to_skip_strategy(shared_buffer_accessor, nfa_state, after_match_skip_strategy, potential_matches, new_partial_matches, result)
 
         nfa_state.set_new_partial_matches(new_partial_matches)
         shared_buffer_accessor.advance_time(timestamp)
@@ -394,7 +395,8 @@ class NFA:
     @staticmethod
     def extract_current_matches(shared_buffer_accessor: SharedBufferAccessor,
                                 computation_state: ComputationState) -> Dict[str, List[EventId]]:
-        if computation_state.get_previous_buffer_entry() is None:
+        if shared_buffer_accessor.extract_patterns(computation_state.get_previous_buffer_entry(),computation_state.get_version()) is None\
+                or computation_state.get_current_state_name() != computation_state.get_previous_buffer_entry().page_name:
             return {}
 
         paths = shared_buffer_accessor.extract_patterns(computation_state.get_previous_buffer_entry(),

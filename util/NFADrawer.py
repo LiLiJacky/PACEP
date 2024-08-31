@@ -186,22 +186,17 @@ class StateDrawer:
 
                     if constraint_collection.time_constrain:
                         label_parts.append("Time: " + ", ".join(
-                            f"{c.min_time} <= {c.variables[-1]} - {c.variables[0]} <= {c.max_time}" for c in
+                            c.expression for c in
                             constraint_collection.time_constrain))
 
                     if constraint_collection.count_constrain:
                         label_parts.append("Count: " + ", ".join(
-                            f"{c.min_count} <= {c.variables[-1]} - {c.variables[0]} <= {c.max_count}" for c in
+                            c.expression for c in
                             constraint_collection.count_constrain))
 
                     if constraint_collection.type_constrain:
                         label_parts.append(
                             "Type: " + ", ".join(f"{c.variables_name}" for c in constraint_collection.type_constrain))
-
-                    if constraint_collection.times_constrain:
-                        label_parts.append("Times: " + ", ".join(
-                            f"{c.min_times} <= {c.variables[-1]} <= {c.max_times}" for c in
-                            constraint_collection.times_constrain))
 
                 label = "\n".join(label_parts) if label_parts else ''
 

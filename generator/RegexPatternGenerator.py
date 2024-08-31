@@ -20,6 +20,7 @@ class RegexPatternGenerator:
         self.algorithm_factory = AlgorithmFactory()
         self.regex = ""
         self.constrains_collection = ConstraintCollection()
+        self.window_time = None
 
     def generate_variable(self, name, quantifier=None):
         """
@@ -143,16 +144,22 @@ class RegexPatternGenerator:
             selected_vars = sorted(selected_vars, key=lambda var: regex.index(var))
 
             value_constraint_expr_parts = []
+            total_min_range = 0
+            total_max_range = 0
             for var in selected_vars:
                 quantifier_match = re.search(rf"{var}([*+?{{\d+,?\d*}}]*)", regex)
                 quantifier = quantifier_match.group(1) if quantifier_match else ''
                 algo_expression = self.select_algorithm(var, quantifier)
                 value_constraint_expr_parts.append(algo_expression)
 
-            random_values = [random.randint(int(var.get("value_range")[0]), int(var.get("value_range")[1])) for var in
-                             value_constraint_expr_parts]
-            total_sum = sum(random_values)
-            left = total_sum - 10
+                # 计算变量的 value_range
+                min_range, max_range = algo_expression['value_range']
+                total_min_range += min_range
+                total_max_range += max_range
+
+            # 随机选择 total_sum 的范围
+            total_sum = random.randint(total_min_range, total_max_range)
+            left = int(total_sum * (1 - random.uniform(0.1,0.2)))
 
             value_constraint_expr_par = [item['algorithm_description'] for item in value_constraint_expr_parts]
             value_constraint_expr = str(left) + " < " + ' + '.join(value_constraint_expr_par) + " < " + str(total_sum)
@@ -177,15 +184,15 @@ class RegexPatternGenerator:
             ))
 
         # 生成全局 count_constraint
-        if num_count_constraints > 0:
-            min_count = sum([1 if '{' not in var else int(re.search(r'{(\d+),?', var).group(1)) for var in variables])
-            max_count = min_count + random.randint(1, 5)
-            constraintCollection.add_constraint(CountConstraint(
-                variables=all_vars,
-                min_count=min_count,
-                max_count=max_count
-            ))
-            num_count_constraints -= 1
+        # if num_count_constraints > 0:
+        #     min_count = sum([1 if '{' not in var else int(re.search(r'{(\d+),?', var).group(1)) for var in variables])
+        #     max_count = min_count + random.randint(1, 5)
+        #     constraintCollection.add_constraint(CountConstraint(
+        #         variables=all_vars,
+        #         min_count=min_count,
+        #         max_count=max_count
+        #     ))
+        #     num_count_constraints -= 1
 
         # 生成其他 count_constraints
         for _ in range(num_count_constraints):
@@ -203,21 +210,21 @@ class RegexPatternGenerator:
                 ))
 
         # 生成全局 time_constraint
-        if num_time_constraints > 0:
-            total_time = 0
-            for var in all_vars:
-                if any(quant in var for quant in ['*', '+', '{', '?']):
-                    total_time += random.randint(40, 60)
-                else:
-                    total_time += random.randint(20, 30)
-            min_time = 0  # 默认情况下，设置min_time为0
-            max_time = total_time
-            constraintCollection.add_constraint(TimeConstraint(
-                variables=all_vars,
-                min_time=min_time,
-                max_time=max_time
-            ))
-            num_time_constraints -= 1
+        # if num_time_constraints > 0:
+        total_time = 0
+        for var in all_vars:
+            if any(quant in var for quant in ['*', '+', '{', '?']):
+                total_time += random.randint(40, 60)
+            else:
+                total_time += random.randint(20, 30)
+        max_time = total_time
+        self.window_time = max_time
+            # constraintCollection.add_constraint(TimeConstraint(
+            #     variables=all_vars,
+            #     min_time=min_time,
+            #     max_time=max_time
+            # ))
+            # num_time_constraints -= 1
 
         # 生成其他 time_constraints
         for _ in range(num_time_constraints):

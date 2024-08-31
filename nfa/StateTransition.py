@@ -1,7 +1,6 @@
 import hashlib
 from typing import TypeVar, Generic
 from interfaces.Constraint import Constraint
-from models.TimesConstraint import TimesConstraint
 from models.CountConstraint import CountConstraint
 from models.TimeConstarint import TimeConstraint
 from models.TypeConstraint import TypeConstraint
@@ -49,30 +48,26 @@ class StateTransition(Generic[T]):
             if not merged:
                 self.condition.time_constrain.append(constraint)
         elif isinstance(constraint, CountConstraint):
-            # 忽略 CountConstraint
-            return
-        elif isinstance(constraint, TypeConstraint):
-            if constraint not in self.condition.type_constrain:
-                self.condition.type_constrain.append(constraint)
-        elif isinstance(constraint, TimesConstraint):
             merged = False
-            for existing_constraint in self.condition.times_constrain:
+            for existing_constraint in self.condition.count_constrain:
                 if existing_constraint.variables == constraint.variables:
                     # 合并两个 TimesConstraint 的次数范围
-                    new_min_times = max(existing_constraint.min_times, constraint.min_times)
-                    new_max_times = min(existing_constraint.max_times, constraint.max_times)
+                    new_min_times = max(existing_constraint.min_count, constraint.min_count)
+                    new_max_times = min(existing_constraint.max_count, constraint.max_count)
 
                     # 更新现有约束的次数范围
-                    existing_constraint.min_times = new_min_times
-                    existing_constraint.max_times = new_max_times
+                    existing_constraint.min_count = new_min_times
+                    existing_constraint.max_count = new_max_times
                     merged = True
                     break
 
             if not merged:
-                self.condition.times_constrain.append(constraint)
+                self.condition.count_constrain.append(constraint)
+        elif isinstance(constraint, TypeConstraint):
+            if constraint not in self.condition.type_constrain:
+                self.condition.type_constrain.append(constraint)
         else:
             raise ValueError(f"Unknown constraint type: {type(constraint).__name__}")
-
 
     def get_action(self) -> 'StateTransitionAction':
         return self.action

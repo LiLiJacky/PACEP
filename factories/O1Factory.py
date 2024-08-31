@@ -17,7 +17,6 @@ class FirstValueAlgorithm(Algorithm):
         return "O(1)"
 
     def get_calculate(self):
-        print(self.data)
         return self.data[0][1]  # 返回第一个值的 value
 
     def get_calculate_range(self, range):

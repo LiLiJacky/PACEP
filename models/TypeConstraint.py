@@ -9,7 +9,7 @@ class TypeConstraint(Constraint):
         super().__init__(variables)
         self.variables_name = variables_name
 
-    def validate(self, data) -> bool:
+    def validate(self, data, context) -> bool:
         try:
             return data.event.variable_name in self.variables_name
         except Exception as e:
