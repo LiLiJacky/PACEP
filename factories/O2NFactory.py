@@ -22,13 +22,15 @@ class SubsetSumAlgorithm(Algorithm):
         for i in range(n + 1):
             for subset in combinations(self.data, i):
                 all_subsets.append(subset)
-        return [sum(value for _, value in subset) for subset in all_subsets]
+
+        result = [sum(value for _, value in subset) for subset in all_subsets]
+        return result[len(result) // 2]
 
     def get_calculate_range(self, range):
         return range
 
 
-class O2nFactory:
+class O2NFactory:
     def get_algorithm(self, algorithm_name, data, *args):
         algorithms = {
             "subset_sum": SubsetSumAlgorithm,
@@ -43,7 +45,7 @@ class O2nFactory:
 if __name__ == "__main__":
     data = [(1, 50), (2, 20), (3, 30), (4, 40), (5, 10)]
 
-    factory = O2nFactory()
+    factory = O2NFactory()
 
     algorithm = factory.get_algorithm("subset_sum", data)
     print(f"Algorithm Name: {algorithm.name}")  # 输出: Subset Sum

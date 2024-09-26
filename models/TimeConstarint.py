@@ -17,7 +17,11 @@ class TimeConstraint(Constraint):
         first_event = context.get_events_for_pattern(first_variables)
         try:
             time = event.timestamp
-            time_span = time - first_event[0].timestamp
+            if len(first_event) > 0:
+                time_span = time - first_event[0].timestamp
+            else:
+                # 可能获取之前的模式有问题，先暴力用starttimestamp代替
+                time_span = time - context.computation_state.start_timestamp
             return self.min_time <= time_span <= self.max_time
         except Exception as e:
             print(f"Validation error: {e}")

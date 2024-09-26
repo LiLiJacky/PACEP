@@ -35,6 +35,9 @@ class ExpressionCalculate:
         # 计算中间表达式的值
         middle_value = self._evaluate_expression(middle_expression, values)
 
+        if isinstance(middle_value, tuple):
+            print("i need to know why")
+
         # 判断左侧和右侧表达式是否都满足条件
         is_left_satisfied = self._apply_operator(left_value, middle_value, left_operator)
         is_right_satisfied = self._apply_operator(middle_value, right_value, right_operator)
@@ -56,13 +59,13 @@ class ExpressionCalculate:
                 if re.match(r'^[A-Z]\[i\]$', sub_expr):  # A[i] 格式
                     base_var = sub_expr.split('[')[0]  # 提取基础变量名，如 A
                 total_sum += values.get(base_var, 0)[0][1]
-            elif re.match(r'\w+\([A-Z]\)', sub_expr):  # algorithm(K) 格式
-                algorithm_name, var = re.match(r'(\w+)\(([A-Z])\)', sub_expr).groups()
-                algorithm_result = self._apply_algorithm(algorithm_name, values[var])
-                total_sum += algorithm_result
             elif re.match(r'\w+\([A-Z]\)\[\d+\]', sub_expr):  # algorithm(K)[num] 格式
                 algorithm_name, var, num = re.match(r'(\w+)\(([A-Z])\)\[(\d+)\]', sub_expr).groups()
                 algorithm_result = self._apply_algorithm(algorithm_name, values[var], int(num))
+                total_sum += algorithm_result
+            elif re.match(r'\w+\([A-Z]\)', sub_expr):  # algorithm(K) 格式
+                algorithm_name, var = re.match(r'(\w+)\(([A-Z])\)', sub_expr).groups()
+                algorithm_result = self._apply_algorithm(algorithm_name, values[var])
                 total_sum += algorithm_result
             else:
                 raise ValueError(f"Unrecognized sub-expression format: {sub_expr}")
@@ -74,15 +77,22 @@ class ExpressionCalculate:
         if full_name:
             if func_name == 'nth' or 'sort' in func_name or func_name == 'combinations_square':
                 algorithm = self.algorithm_factory.get_algorithm(full_name, values, args)
+                result = algorithm.get_calculate(args[0])
             else:
                 algorithm = self.algorithm_factory.get_algorithm(full_name, values)
+                result = algorithm.get_calculate()
 
-            result = algorithm.get_calculate()
+            if isinstance(result, tuple):
+                print("i need to know why")
             return result
         else:
             raise ValueError(f"Unknown function '{func_name}' in expression")
 
     def _apply_operator(self, left_value: float, right_value: float, operator: str) -> bool:
+        if isinstance(left_value, tuple):
+            print("i need to know why")
+        if isinstance(right_value, tuple):
+            print("i need to know why")
         if operator == '<':
             return left_value < right_value
         elif operator == '<=':

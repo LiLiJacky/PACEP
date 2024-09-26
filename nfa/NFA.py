@@ -117,7 +117,9 @@ class NFA:
 
     def create_initial_nfa_state(self) -> NFAState:
         starting_states = [ComputationState.create_start_state(state.get_name()) for state in self.states.values() if state.is_start()]
-        return NFAState(starting_states)
+        nfa_state = NFAState()
+        nfa_state.set_new_partial_matches(starting_states)
+        return nfa_state
 
     def get_state(self, computation_state: ComputationState) -> State:
         return self.states.get(computation_state.get_current_state_name())
@@ -126,7 +128,7 @@ class NFA:
         state = self.get_state(computation_state)
         if state is None:
             raise RuntimeError(f"State {computation_state.get_current_state_name()} does not exist in the NFA.")
-        return state.is_start()
+        return state.is_start() and computation_state.get_start_timestamp() == -1
 
     def is_stop_state(self, computation_state: ComputationState) -> bool:
         state = self.get_state(computation_state)
@@ -178,7 +180,7 @@ class NFA:
         return result, timeout_result
 
     def is_state_timed_out(self, computation_state: ComputationState, timestamp: int, start_timestamp: int, window_time: int) -> bool:
-        return not self.is_start_state(computation_state) and 0 < window_time <= timestamp - start_timestamp
+        return not (self.is_start_state(computation_state) and computation_state.get_start_timestamp() == -1) and 0 < window_time <= timestamp - start_timestamp
 
     def do_process(self, shared_buffer_accessor: SharedBufferAccessor, nfa_state: NFAState, event_wrapper: EventWrapper, after_match_skip_strategy, timer_service) -> Collection[Dict[str, List]]:
         new_partial_matches = []
@@ -273,7 +275,7 @@ class NFA:
         resulting_computation_states = []
         for edge in edges:
             if edge.get_action().name == 'IGNORE':
-                if not self.is_start_state(computation_state):
+                if not (self.is_start_state(computation_state) and computation_state.get_start_timestamp() == -1):
                     version = None
                     if self.is_equivalent_state(edge.get_target_state(), self.get_state(computation_state)):
                         to_increase = self.calculate_increasing_self_state(outgoing_edges.total_ignore_branches,
@@ -326,8 +328,10 @@ class NFA:
             total_branches = self.calculate_increasing_self_state(outgoing_edges.total_ignore_branches,
                                                                   outgoing_edges.total_take_branches)
             start_version = computation_state.get_version().increase(total_branches)
+
+
             start_state = ComputationState.create_start_state(computation_state.get_current_state_name(),
-                                                              start_version)
+                                                          start_version)
             resulting_computation_states.append(start_state)
 
         if computation_state.get_previous_buffer_entry():
@@ -351,7 +355,7 @@ class NFA:
             while states_to_check:
                 current_state = states_to_check.pop()
                 for transition in current_state.get_state_transitions():
-                    if transition.get_action() == 'PROCEED' and self.check_filter_condition(context,
+                    if transition.get_action().name == 'PROCEED' and self.check_filter_condition(context,
                                                                                             transition.get_condition(),
                                                                                             event):
                         if transition.get_target_state().is_final():
@@ -396,6 +400,7 @@ class NFA:
     def extract_current_matches(shared_buffer_accessor: SharedBufferAccessor,
                                 computation_state: ComputationState) -> Dict[str, List[EventId]]:
         if shared_buffer_accessor.extract_patterns(computation_state.get_previous_buffer_entry(),computation_state.get_version()) is None\
+                or computation_state.get_previous_buffer_entry() is None \
                 or computation_state.get_current_state_name() != computation_state.get_previous_buffer_entry().page_name:
             return {}
 

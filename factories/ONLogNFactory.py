@@ -17,8 +17,7 @@ class MergeSortAlgorithm(Algorithm):
 
     def get_calculate(self, index):
         self.data = self.merge_sort(self.data)
-        print(self.data)
-        return self.merge_sort(self.data)[index]
+        return self.merge_sort(self.data)[index][1]
 
     def merge_sort(self, data):
         if len(data) <= 1:
@@ -52,7 +51,7 @@ class ONLogNFactory:
         if algorithm_name in algorithms:
             if algorithm_name == "merge_sort":
                 if len(args) == 1:
-                    return algorithms[algorithm_name](data, args[0])
+                    return algorithms[algorithm_name](data, args[0][0])
                 else:
                     raise ValueError("merge_sort algorithm requires one argument for the index")
             return algorithms[algorithm_name](data)
@@ -66,9 +65,9 @@ if __name__ == "__main__":
 
     factory = ONLogNFactory()
 
-    algorithm = factory.get_algorithm("merge_sort", data)
+    algorithm = factory.get_algorithm("merge_sort", 2)
     print(f"Algorithm Name: {algorithm.name}")  # 输出: Merge Sort
     print(f"Time Complexity: {algorithm.complexity_time}")  # 输出: O(n log n)
     print(f"Space Complexity: {algorithm.complexity_space}")  # 输出: O(n)
-    sorted_data = algorithm.get_calculate()
+    sorted_data = algorithm.get_calculate(2)
     print(f"Sorted Data: {sorted_data}")  # 输出: [(5, 10), (2, 20), (3, 30), (4, 40), (1, 50)]

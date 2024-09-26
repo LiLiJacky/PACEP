@@ -14,6 +14,8 @@ def data_producer(variable_name, distribution, interval_range, output_queue):
     while True:
         # Generate data item
         data_value = int(distribution.rvs())
+
+        # Create a data item with the generated data
         timestamp = datetime.now()
         data_item = Data(variable_name, data_value, timestamp)
 
@@ -77,7 +79,7 @@ class DataSource:
 
         try:
             while True:
-                time.sleep(1)  # Keep the main process alive
+                time.sleep(0.001)  # Keep the main process alive
         except KeyboardInterrupt:
             for process in processes:
                 process.terminate()

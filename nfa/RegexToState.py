@@ -8,6 +8,7 @@ from generator.RegexPatternGenerator import RegexPatternGenerator
 from models.ConstraintCollection import ConstraintCollection
 from models.CountConstraint import CountConstraint
 from models.TimeConstarint import TimeConstraint
+from models.TypeConstraint import TypeConstraint
 from nfa.State import State, StateType
 from nfa.StateTransition import StateTransition
 from nfa.StateTransitionAction import StateTransitionAction
@@ -15,12 +16,13 @@ from util.NFADrawer import StateDrawer
 
 
 class RegexToState:
-    def __init__(self, regex: str, constraints: ConstraintCollection):
+    def __init__(self, regex: str, constraints: ConstraintCollection, contiguity_strategy):
         self.regex = regex
         self.constraints = constraints
         self.states = []
         self.start_state = None
         self.final_state = None
+        self.contiguity_strategy = contiguity_strategy
 
     def generate_states_and_transitions(self):
         # Parse regex and generate states and transitions
@@ -69,29 +71,25 @@ class RegexToState:
 
             current_state_type = StateType.Normal
 
-            if max_repeat == 1 and min_repeat == 1:  # 普通状态
-                current_state = State(f"{state}", current_state_type)
-                self.states.insert(0, current_state)  # 将状态插入到列表的开头
-                # 更新队列中的所有 next_state 指针，添加边
-                for next_state in queue:
-                    self._add_transition(current_state, StateTransitionAction.TAKE, next_state)
+            isKleene = False if max_repeat == 1 and min_repeat == 1 else True
+            current_state = State(f"{state}", current_state_type) if not isKleene else State(f"{state}[i]", current_state_type)
+            current_action = StateTransitionAction.TAKE if not isKleene else StateTransitionAction.PROCEED
+            self.states.insert(0, current_state)  # 将状态插入到列表的开头
+            # 更新队列中的所有 next_state 指针，添加边
+            for next_state in queue:
+                self._add_transition(current_state, current_action, next_state)
+            # 判断当前状态的连续策略
+            if not state in self.contiguity_strategy['STRICT']:
                 self._add_transition(current_state, StateTransitionAction.IGNORE, current_state)
-                next_queue.append((current_state))
-
-            else:  # 需要接受多次事件的状态，不再展开
-                kleene_state = State(f"{state}[i]", current_state_type)
-                self.states.insert(0, kleene_state)  # 将状态插入到列表的开头
-                for next_state in queue:
-                    self._add_transition(kleene_state, StateTransitionAction.PROCEED, next_state)
-                self._add_transition(kleene_state, StateTransitionAction.TAKE, kleene_state)
-                self._add_transition(kleene_state, StateTransitionAction.IGNORE, kleene_state)
-
-                # 添加 TimesConstraint 而不是展开状态
+            # Kleene
+            if isKleene:
+                # 添加自转移take边
+                self._add_transition(current_state, StateTransitionAction.TAKE, current_state)
+                # 根据模式符号添加 count_constrain
                 times_constraint = CountConstraint([state], min_count=min_repeat, max_count=max_repeat)
                 self.constraints.add_constraint(times_constraint)
 
-                next_queue = deque([kleene_state])
-
+            next_queue.append(current_state)
             queue = next_queue
 
         # 处理剩余的 next_state，将其类型设置为 Start
@@ -126,14 +124,14 @@ class RegexToState:
 
                     if source_name == traget_name:
                         # 处理自转移逻辑
-                        if (len(value_constraint.variables) == 1 and '[' in value_constraint.expression
+                        if (len(value_constraint.variables) == 1 and '[i]' in value_constraint.expression
                                 and base_source_name == base_last_var and transition.get_action() == StateTransitionAction.TAKE):
                             transition.add_condition(value_constraint)
                         continue
 
                     if base_source_name == base_last_var and transition.get_action() in [
                         StateTransitionAction.TAKE, StateTransitionAction.PROCEED]:
-                        if len(value_constraint.variables) == 1 and '[' in value_constraint.expression:
+                        if len(value_constraint.variables) == 1 and '[i]' in value_constraint.expression:
                             continue
                         transition.add_condition(value_constraint)
 
@@ -147,9 +145,11 @@ class RegexToState:
                 for transition in state.get_state_transitions():
                     source_name = transition.get_source_state().get_name()
                     base_source_name = source_name.split('[')[0]
+                    base_first_var = first_var.split('[')[0]
+                    base_last_var2 = last_var.split('[')[0]
 
-                    if self.regex.index(first_var) < self.regex.index(base_source_name) <= self.regex.index(last_var):
-                        current_variables = [first_var, base_source_name]
+                    if self.regex.index(base_first_var) < self.regex.index(base_source_name) <= self.regex.index(base_last_var2):
+                        current_variables = [first_var, source_name]
                         if transition.get_action() == StateTransitionAction.IGNORE:
                             new_expression = f"0 <= time - {first_var}.time <= {max_time}"
                             current_variables = [first_var, "NOW.EVENT"]
@@ -237,7 +237,7 @@ if __name__ == "__main__":
     variables_constraints_collection.window_constrain_type = "window_constrain"
     print(f"Generated Constrain: {variables_constraints_collection}")
 
-    test = RegexToState(regex, variables_constraints_collection)
+    test = RegexToState(regex, variables_constraints_collection, contiguity_strategy={'STRICT': []})
     test.generate_states_and_transitions()
     test.draw()
     test.run_tests()

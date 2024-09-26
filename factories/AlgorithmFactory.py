@@ -15,7 +15,8 @@ ALGORITHM_SUB_MAP = {
     "bubble_sort": "bubble_sort",
     "triplet_sum": "triplet_product_sum",
     "permutations": "permutations",
-    "combinations_square": "combinations_square_average_sum"
+    "combinations_square": "combinations_square_average_sum",
+    "subset_sum": "subset_sum"
 }
 
 ALGORITHM_FACTORY_MAP = {
@@ -32,7 +33,8 @@ ALGORITHM_FACTORY_MAP = {
     "bubble_sort": "factories.ON2Factory.ON2Factory",
     "triplet_product_sum": "factories.ON3Factory.ON3Factory",
     "permutations": "factories.ONFactorialFactory.ONFactorialFactory",
-    "combinations_square_average_sum": "factories.ONkFactory.ONkFactory"
+    "combinations_square_average_sum": "factories.ONkFactory.ONkFactory",
+    "subset_sum": "factories.O2NFactory.O2NFactory"
 }
 
 
@@ -82,9 +84,9 @@ class AlgorithmFactory:
         factory = factory_class()
 
         # 判断是否超过范围
-        if args and args[0] >= len(data):
+        if args and args[0][0] >= len(data):
             return factory.get_algorithm(full_name, data, 0)
-        return factory.get_algorithm(full_name, data, *args)
+        return factory.get_algorithm(full_name, data, args)
 
     def get_algorithm_sub_map(self):
         return self.algorithm_sub_map

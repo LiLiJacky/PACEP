@@ -7,6 +7,7 @@ def DataGenerator(variable_name):
     """
     # Randomly select a distribution type
     distribution_types = ['uniform', 'normal', 'exponential']
+
     selected_distribution = np.random.choice(distribution_types)
 
     distribution_info = {}

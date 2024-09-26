@@ -13,9 +13,20 @@ class ValueConstraint(Constraint):
     def validate(self, data, context) -> bool:
         try:
             # 如果表达式中只有一个变量
-            if len(self.variables) == 1:
+            if len(self.variables) == 1 and ('[' not in self.expression or '[i]' in self.expression):
                 single_var = self.variables[0]
                 values = {single_var: [[data.event.timestamp, data.event.value]]}
+            # 单个Kleene算法求值
+            elif len(self.variables) == 1 and '[' in self.expression:
+                single_var = self.variables[0]
+                var_name = f"{single_var}[i]"
+                values = {}
+                values_event_list = context.get_events_for_pattern(var_name)
+                values_list = []
+                for e in values_event_list:
+                    values_list.append([e.event.timestamp, e.event.value])
+
+                values[single_var] = values_list
             # 如果表达式中包含多个变量
             else:
                 values = {}
@@ -29,11 +40,10 @@ class ValueConstraint(Constraint):
                             values_list.append([e.event.timestamp, e.event.value])
                         values[var] = values_list
                     elif re.search(rf'\b{var}\b', self.expression):  # 普通变量
-                        values[var] = [[context.get_events_for_pattern(var)[0].event.timestamp, context.get_events_for_pattern(var)[0].event.value]]
+                        values[var] = context.get_events_for_pattern(var)[0].event.timestamp, context.get_events_for_pattern(var)[0].event.value
                     else:
                         raise ValueError(f"Unrecognized variable format: {var}")
 
-                # 处理最后一个变量，即触发事件
                 values[data.event.variable_name] = [[data.event.timestamp, data.event.value]]
 
             return self.expression_calculate.calculate(values)

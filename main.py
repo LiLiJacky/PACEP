@@ -17,10 +17,10 @@ if __name__ == "__main__":
     generator = RegexPatternGenerator()
 
     # Generate regex and variable distributions
-    num_variables = 5  # Number of regular variables
+    num_variables = 0  # Number of regular variables
     num_kleene = 2  # Number of Kleene closure variables
     num_value_constrains = 2  # Number of constrains between variables
-    num_time_constrains = 2
+    num_time_constrains = 1
     num_count_constrains = 0
 
     regex = generator.generate_regex(num_variables, num_kleene)
@@ -87,7 +87,7 @@ if __name__ == "__main__":
                 if matches:
                     print(f"Match found: {matches}")
                     break  # 如果匹配成功，可以选择终止处理，或者继续处理其他事件
-            time.sleep(0.1)  # To prevent the main loop from consuming too much CPU
+            time.sleep(0.001)  # To prevent the main loop from consuming too much CPU
     except KeyboardInterrupt:
         for process in processes:
             process.terminate()
