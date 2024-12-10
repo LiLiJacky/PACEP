@@ -1,4 +1,7 @@
 # algorithm_factory/ONFactory.py
+import numpy as np
+import pandas as pd
+
 from interfaces.Algorithm import Algorithm
 
 
@@ -17,6 +20,8 @@ class AverageValueAlgorithm(Algorithm):
 
     def get_calculate(self):
         total = sum(value for timestamp, value in self.data)
+        if len(self.data) == 0:
+            return 0
         return total / len(self.data)
 
     def get_calculate_range(self, range):
@@ -79,6 +84,39 @@ class MaxValueAlgorithm(Algorithm):
     def get_calculate_range(self, range):
         return range
 
+
+class LeastSquaresAlgorithm(Algorithm):
+    @property
+    def name(self):
+        return "Least Squares"
+
+    @property
+    def complexity_time(self):
+        return "O(n)"
+
+    @property
+    def complexity_space(self):
+        return "O(1)"
+
+    def get_calculate(self):
+        data = np.array(self.data)
+        # Convert Unix timestamps to ordinal dates
+        time_stamp = np.array([pd.to_datetime(ts, unit='s').toordinal() for ts in data[:, 0]])
+        values = data[:, 1]
+        n = len(time_stamp)
+        sum_timestamp = np.sum(time_stamp)
+        sum_value = np.sum(values)
+        sum_tv = np.sum(values * time_stamp)
+        sum_timestamp_squared = np.sum(time_stamp ** 2)
+
+        numerator = n * sum_tv - sum_value * sum_timestamp
+        denominator = n * sum_timestamp_squared - sum_timestamp ** 2
+
+        return numerator / denominator if denominator != 0 else 0
+
+    def get_calculate_range(self, range):
+        return range
+
 class ONFactory:
     def get_algorithm(self, algorithm_name, data, *args):
         algorithms = {
@@ -86,11 +124,15 @@ class ONFactory:
             "sum_value": SumValueAlgorithm,
             "min_value": MinValueAlgorithm,
             "max_value": MaxValueAlgorithm,
+            "least_squares": LeastSquaresAlgorithm,
         }
         if algorithm_name in algorithms:
             return algorithms[algorithm_name](data)
         else:
             raise ValueError(f"Unknown algorithm: {algorithm_name}")
+
+    def get_time_complexity(self, n: int):
+        return n
 
 
 # 使用示例

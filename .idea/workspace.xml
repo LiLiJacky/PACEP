@@ -1,0 +1,666 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="09d9fc46-1900-4950-8fab-5adb2c360a59" name="Changes" comment="&quot;lazy handle finished&quot;">
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/jars/esper8.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/jars/flink.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/jars/sase.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/results/kleene/core/3_6_60000000.stream" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/results/kleene/core/5_6_60000000.stream" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/results/kleene/core/core_3_100.query" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/results/kleene/core/core_5_100.query" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/results/kleene/core/core_declaration_3_100.query" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/results/kleene/core/core_declaration_5_100.query" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/results/kleene/core/core_metadata_3_100.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/results/kleene/core/core_metadata_5_100.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/results/kleene/esper/esper_3_100.query" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/results/kleene/esper/esper_5_100.query" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/results/kleene/results/core_3_100_6_Time.query_except.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/results/kleene/results/core_5_100_6_Time.query_except.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/results/kleene/results/esper8_3_100_6_Time.query_except.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/results/kleene/results/esper8_5_100_6_Time.query_except.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/results/kleene/results/flink_3_100_6_Time.query_except.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/results/kleene/results/flink_5_100_6_Time.query_except.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/results/kleene/results/sase_3_100_6_Time.query_except.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/results/kleene/results/sase_5_100_6_Time.query_except.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/results/kleene/sase/sase_3_100.query" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/results/kleene/sase/sase_5_100.query" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/results/kleene/streams/3_6_60000000.stream" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/results/kleene/streams/5_6_60000000.stream" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/esper/target/classes/com/cepl/espertest/App.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/esper/target/classes/com/cepl/espertest/BuySellEvent.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/esper/target/classes/com/cepl/espertest/EventListener.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/esper/target/classes/com/cepl/espertest/MyEvent.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/esper/target/classes/com/cepl/espertest/SmartHomesEvent.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/esper/target/classes/com/cepl/espertest/TaxiEvent.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/esper/target/espertest-1.0-SNAPSHOT-jar-with-dependencies.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/esper/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/esper/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/.gradle/8.11.1/checksums/checksums.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/.gradle/8.11.1/checksums/md5-checksums.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/.gradle/8.11.1/checksums/sha1-checksums.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/.gradle/8.11.1/executionHistory/executionHistory.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/.gradle/8.11.1/executionHistory/executionHistory.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/.gradle/8.11.1/fileChanges/last-build.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/.gradle/8.11.1/fileHashes/fileHashes.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/.gradle/8.11.1/fileHashes/fileHashes.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/.gradle/8.11.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/.gradle/8.11.1/gc.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/.gradle/buildOutputCleanup/cache.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/.gradle/file-system.probe" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/.gradle/vcs-1/gc.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/classes/java/main/edu/puc/flink/Conditions$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/classes/java/main/edu/puc/flink/Conditions$10.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/classes/java/main/edu/puc/flink/Conditions$11.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/classes/java/main/edu/puc/flink/Conditions$2.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/classes/java/main/edu/puc/flink/Conditions$3.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/classes/java/main/edu/puc/flink/Conditions$4.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/classes/java/main/edu/puc/flink/Conditions$5.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/classes/java/main/edu/puc/flink/Conditions$6.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/classes/java/main/edu/puc/flink/Conditions$7.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/classes/java/main/edu/puc/flink/Conditions$8.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/classes/java/main/edu/puc/flink/Conditions$9.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/classes/java/main/edu/puc/flink/Conditions.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/classes/java/main/edu/puc/flink/Event.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/classes/java/main/edu/puc/flink/FileEventSource.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/classes/java/main/edu/puc/flink/FileSmartHomesEventSource.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/classes/java/main/edu/puc/flink/FileStockEventSource.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/classes/java/main/edu/puc/flink/FileTaxiEventSource.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/classes/java/main/edu/puc/flink/Main$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/classes/java/main/edu/puc/flink/Main.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/classes/java/main/edu/puc/flink/Smart$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/classes/java/main/edu/puc/flink/Smart.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/classes/java/main/edu/puc/flink/SmartHomesEvent.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/classes/java/main/edu/puc/flink/Stock$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/classes/java/main/edu/puc/flink/Stock.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/classes/java/main/edu/puc/flink/StockEvent.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/classes/java/main/edu/puc/flink/Taxi$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/classes/java/main/edu/puc/flink/Taxi.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/classes/java/main/edu/puc/flink/TaxiEvent.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/distributions/flink-1.0-SNAPSHOT.zip" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/libs/flink-1.0-SNAPSHOT.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/reports/problems/problems-report.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/resources/main/3_12_1000000.stream" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/resources/main/3_6_1000000.stream" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/resources/main/5_12_1000000.stream" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/resources/main/5_6_1000000.stream" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/resources/main/7_12_1000000.stream" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/resources/main/7_12_50000000.stream" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/resources/main/7_6_1000000.stream" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/scripts/flink" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/scripts/flink.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build/tmp/jar/MANIFEST.MF" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/algorithm/ExpressionCalculate.py" beforeDir="false" afterPath="$PROJECT_DIR$/algorithm/ExpressionCalculate.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/causal/dowhy/TwoCausalKleene.py" beforeDir="false" afterPath="$PROJECT_DIR$/causal/dowhy/TwoCausalKleene.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/A+B+C_test.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/A+B+C_test.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/A+B+C_test2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/A+B+C_test2.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/A+B+C_test2_1000.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/A+B+C_test2_1000.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/nasdaq/GOOG_MSFT.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/nasdaq/GOOG_MSFT.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/nasdaq/GOOG_MSFT_example.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/nasdaq/GOOG_MSFT_example.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/nasdaq/flash_crash_data_succeed_demo.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/nasdaq/flash_crash_data_succeed_demo.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/nasdaq/raise_fall_data_succeed_demo.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/nasdaq/raise_fall_data_succeed_demo.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/simulate_data/stock-small.stream" beforeDir="false" afterPath="$PROJECT_DIR$/data/simulate_data/stock-small.stream" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/simulate_data/stock.stream" beforeDir="false" afterPath="$PROJECT_DIR$/data/simulate_data/stock.stream" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/environment.yml" beforeDir="false" afterPath="$PROJECT_DIR$/environment.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiment/CausalKleene.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiment/CausalKleene.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiment/LatencyHanldeKleene.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiment/LatencyHanldeKleene.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiment/MKAdbyIndependence.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiment/MKAdbyIndependence.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiment/MulityKleene.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiment/MulityKleene.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiment/PrefixOptimization.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiment/PrefixOptimization.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiment/SingleKleene.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiment/SingleKleene.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiment/compare/A+B.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiment/compare/A+B.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiment/compare/AB+.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiment/compare/AB+.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiment/compare/AB+C.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiment/compare/AB+C.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/scripts/kleene.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/scripts/kleene.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/gradlew" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/gradlew.bat" beforeDir="false" afterPath="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/src/flink/gradlew.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiment/nasdaq/AB+C.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiment/nasdaq/AB+C.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiment/nasdaq/FlashCrashSingleKleene.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiment/nasdaq/FlashCrashSingleKleene.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiment/nasdaq/MMutilyKleene.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiment/nasdaq/MMutilyKleene.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiment/~$result.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/factories/AlgorithmFactory.py" beforeDir="false" afterPath="$PROJECT_DIR$/factories/AlgorithmFactory.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/factories/O1Factory.py" beforeDir="false" afterPath="$PROJECT_DIR$/factories/O1Factory.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/factories/ON2Factory.py" beforeDir="false" afterPath="$PROJECT_DIR$/factories/ON2Factory.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/factories/ONFactory.py" beforeDir="false" afterPath="$PROJECT_DIR$/factories/ONFactory.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lazy_calculate/DIRECT.py" beforeDir="false" afterPath="$PROJECT_DIR$/lazy_calculate/DIRECT.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lazy_calculate/DataBlock.py" beforeDir="false" afterPath="$PROJECT_DIR$/lazy_calculate/DataBlock.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lazy_calculate/DataEdge.py" beforeDir="false" afterPath="$PROJECT_DIR$/lazy_calculate/DataEdge.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lazy_calculate/DataEdgeType.py" beforeDir="false" afterPath="$PROJECT_DIR$/lazy_calculate/DataEdgeType.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lazy_calculate/LazyHandler.py" beforeDir="false" afterPath="$PROJECT_DIR$/lazy_calculate/LazyHandler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lazy_calculate/LazyHandlerDeduplication.py" beforeDir="false" afterPath="$PROJECT_DIR$/lazy_calculate/LazyHandlerDeduplication.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lazy_calculate/LazyHandlerWithShare.py" beforeDir="false" afterPath="$PROJECT_DIR$/lazy_calculate/LazyHandlerWithShare.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/ConstraintCollection.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/ConstraintCollection.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/CountConstraint.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/CountConstraint.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/TypeConstraint.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/TypeConstraint.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/ValueConstraint.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/ValueConstraint.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfa/ComputationState.py" beforeDir="false" afterPath="$PROJECT_DIR$/nfa/ComputationState.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfa/NFA.py" beforeDir="false" afterPath="$PROJECT_DIR$/nfa/NFA.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfa/NFAState.py" beforeDir="false" afterPath="$PROJECT_DIR$/nfa/NFAState.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfa/RegexToState.py" beforeDir="false" afterPath="$PROJECT_DIR$/nfa/RegexToState.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfa/SelectStrategy.py" beforeDir="false" afterPath="$PROJECT_DIR$/nfa/SelectStrategy.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nfa/State.py" beforeDir="false" afterPath="$PROJECT_DIR$/nfa/State.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sharedbuffer/SharedBufferAccessor.py" beforeDir="false" afterPath="$PROJECT_DIR$/sharedbuffer/SharedBufferAccessor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sharedbuffer/SharedBufferEdge.py" beforeDir="false" afterPath="$PROJECT_DIR$/sharedbuffer/SharedBufferEdge.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/simulated_data/SimulateDataByDataInfo.py" beforeDir="false" afterPath="$PROJECT_DIR$/simulated_data/SimulateDataByDataInfo.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/simulated_data/SimulateDataByFile.py" beforeDir="false" afterPath="$PROJECT_DIR$/simulated_data/SimulateDataByFile.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/util/CSVCompare.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/CSVCompare.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/util/ExperimentDrawer.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/ExperimentDrawer.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
+  <component name="ProjectId" id="2k1AHK7W307xL8mHub0EDYSRXtb" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "true",
+    "WebServerToolWindowPanel.toolwindow.highlight.mappings": "true",
+    "WebServerToolWindowPanel.toolwindow.highlight.symlinks": "true",
+    "WebServerToolWindowPanel.toolwindow.show.date": "false",
+    "WebServerToolWindowPanel.toolwindow.show.permissions": "false",
+    "WebServerToolWindowPanel.toolwindow.show.size": "false",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/Users/rillusory/PycharmProjects/PACEP/lazy_calculate",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "debugger.dataViews.python.type.renderers",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="PyDebuggerOptionsProvider">
+    <option name="mySupportGeventDebugging" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/lazy_calculate" />
+      <recent name="$PROJECT_DIR$/data" />
+      <recent name="$PROJECT_DIR$/nfa" />
+      <recent name="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/jars" />
+      <recent name="$PROJECT_DIR$/data/nasdaq" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/jars" />
+      <recent name="$PROJECT_DIR$/data/nasdaq" />
+      <recent name="$PROJECT_DIR$/algorithm" />
+      <recent name="$PROJECT_DIR$/test" />
+      <recent name="$PROJECT_DIR$/interfaces" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.TestPostponing">
+    <configuration name="AB+C" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="PACEP" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.11 (PACEP)" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/experiment/nasdaq" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/experiment/nasdaq/AB+C.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="AB+C" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="PACEP" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.11 (PACEP)" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/experiment/compare" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/experiment/compare/AB+C.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="RegexToState" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="PACEP" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/nfa" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/nfa/RegexToState.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestLazyHandler" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="PACEP" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test/TestLazyHandler.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestPostponing" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="PACEP" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.11 (PACEP)" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test/TestPostponing.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="ValueConstraint" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="PACEP" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/models" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/models/ValueConstraint.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.TestLazyHandler" />
+      <item itemvalue="Python.RegexToState" />
+      <item itemvalue="Python.TestPostponing" />
+      <item itemvalue="Python.ValueConstraint" />
+      <item itemvalue="Python.AB+C" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.TestPostponing" />
+        <item itemvalue="Python.TestLazyHandler" />
+        <item itemvalue="Python.RegexToState" />
+        <item itemvalue="Python.ValueConstraint" />
+        <item itemvalue="Python.AB+C" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="09d9fc46-1900-4950-8fab-5adb2c360a59" name="Changes" comment="" />
+      <created>1722440621038</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1722440621038</updated>
+      <workItem from="1722440644930" duration="1493000" />
+      <workItem from="1722442144332" duration="105499000" />
+      <workItem from="1723701559510" duration="6012000" />
+      <workItem from="1723786854027" duration="35534000" />
+      <workItem from="1723983719238" duration="93783000" />
+      <workItem from="1726111416578" duration="3714000" />
+      <workItem from="1726923579306" duration="1075000" />
+      <workItem from="1726924684116" duration="1286000" />
+      <workItem from="1726926238158" duration="1426000" />
+      <workItem from="1726996033085" duration="83464000" />
+      <workItem from="1727827517722" duration="25643000" />
+      <workItem from="1728751729106" duration="380000" />
+      <workItem from="1728752479841" duration="314000" />
+      <workItem from="1728752853797" duration="213046000" />
+      <workItem from="1731331244541" duration="30432000" />
+      <workItem from="1732016107863" duration="324000" />
+      <workItem from="1732016765335" duration="29567000" />
+      <workItem from="1732450166759" duration="82771000" />
+      <workItem from="1733109257236" duration="89129000" />
+    </task>
+    <task id="LOCAL-00001" summary="&quot;Pattern generate &amp; data generate &amp; only value constrains&quot;">
+      <option name="closed" value="true" />
+      <created>1722648797923</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1722648797923</updated>
+    </task>
+    <task id="LOCAL-00002" summary="&quot;finished regex to pattern, demo pattern recognization on static stream&quot;">
+      <option name="closed" value="true" />
+      <created>1723926096765</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1723926096765</updated>
+    </task>
+    <task id="LOCAL-00003" summary="&quot;basic complete type constraint adjudge&quot;">
+      <option name="closed" value="true" />
+      <created>1724683247131</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1724683247131</updated>
+    </task>
+    <task id="LOCAL-00004" summary="&quot;basic pattern recognize finished, maybe some bug in value constraint evaluation&quot;">
+      <option name="closed" value="true" />
+      <created>1725071529422</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1725071529422</updated>
+    </task>
+    <task id="LOCAL-00005" summary="&quot;test algorithm influence to computation latency&quot;">
+      <option name="closed" value="true" />
+      <created>1727354859710</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1727354859710</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="&quot;Pattern generate &amp; data generate &amp; only value constrains&quot;" />
+    <MESSAGE value="&quot;finished regex to pattern, demo pattern recognization on static stream&quot;" />
+    <MESSAGE value="&quot;basic complete type constraint adjudge&quot;" />
+    <MESSAGE value="&quot;basic pattern recognize finished, maybe some bug in value constraint evaluation&quot;" />
+    <MESSAGE value="&quot;test algorithm influence to computation latency&quot;" />
+    <MESSAGE value="add opencep code&#10;Update .gitignore and remove tracked files" />
+    <MESSAGE value="&quot;lazy handle finished&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;lazy handle finished&quot;" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/test/TestPatternRecognize.py</url>
+          <line>131</line>
+          <option name="timeStamp" value="130" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/main.py</url>
+          <line>81</line>
+          <option name="timeStamp" value="131" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/nfa/RegexToStateV100.py</url>
+          <line>286</line>
+          <option name="timeStamp" value="147" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/nfa/ABRegexToStateAppend.py</url>
+          <line>322</line>
+          <option name="timeStamp" value="149" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/test/TestCalculateOrderInfluence.py</url>
+          <line>125</line>
+          <option name="timeStamp" value="173" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/factories/ON2Factory.py</url>
+          <line>81</line>
+          <option name="timeStamp" value="176" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/factories/ON2Factory.py</url>
+          <line>26</line>
+          <option name="timeStamp" value="183" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/factories/ONLogNFactory.py</url>
+          <line>18</line>
+          <option name="timeStamp" value="188" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/factories/ONLogNFactory.py</url>
+          <line>56</line>
+          <option name="timeStamp" value="201" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/factories/O2NFactory.py</url>
+          <line>25</line>
+          <option name="timeStamp" value="210" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/simulated_data/SimulateDataByDataInfo.py</url>
+          <line>59</line>
+          <option name="timeStamp" value="213" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/experiment/MulityKleene.py</url>
+          <line>170</line>
+          <option name="timeStamp" value="234" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/experiment/LatencyHanldeKleene.py</url>
+          <line>161</line>
+          <option name="timeStamp" value="236" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/experiment/nasdaq/MMutilyKleene.py</url>
+          <line>116</line>
+          <option name="timeStamp" value="301" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/experiment/nasdaq/MMutilyKleene.py</url>
+          <line>315</line>
+          <option name="timeStamp" value="312" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/experiment/nasdaq/FlashCrashSingleKleene.py</url>
+          <line>275</line>
+          <option name="timeStamp" value="315" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/experiment/nasdaq/FlashCrashSingleKleene.py</url>
+          <line>251</line>
+          <option name="timeStamp" value="355" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/experiment/nasdaq/AB+C.py</url>
+          <line>116</line>
+          <option name="timeStamp" value="406" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/experiment/nasdaq/AB+C.py</url>
+          <line>373</line>
+          <option name="timeStamp" value="408" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/test/TestPostponing.py</url>
+          <line>143</line>
+          <option name="timeStamp" value="586" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/test/TestPostponing.py</url>
+          <line>68</line>
+          <option name="timeStamp" value="588" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/algorithm/ExpressionCalculate.py</url>
+          <line>90</line>
+          <option name="timeStamp" value="590" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="event_wrapper" />
+        <watch expression="regex" />
+        <watch expression="nfa_state" />
+        <watch expression="context.shared_buffer_accessor" />
+        <watch expression="nfa" />
+      </configuration>
+    </watches-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/PACEP$ONkFactory.coverage" NAME="ONkFactory Coverage Results" MODIFIED="1722579409105" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/factories" />
+    <SUITE FILE_PATH="coverage/PACEP$SharedBufferCacheConfig.coverage" NAME="SharedBufferCacheConfig Coverage Results" MODIFIED="1723053081739" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/configuration" />
+    <SUITE FILE_PATH="coverage/PACEP$AB_.coverage" NAME="AB+ Coverage Results" MODIFIED="1731405811987" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/experiment/compare" />
+    <SUITE FILE_PATH="coverage/PACEP$AlgoritmFactory.coverage" NAME="AlgoritmFactory Coverage Results" MODIFIED="1722533601541" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/factories" />
+    <SUITE FILE_PATH="coverage/PACEP$TestStateTransition.coverage" NAME="TestStateTransition Coverage Results" MODIFIED="1723115964095" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
+    <SUITE FILE_PATH="coverage/PACEP$TypeConstraint.coverage" NAME="TypeConstraint Coverage Results" MODIFIED="1724681089563" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/models" />
+    <SUITE FILE_PATH="coverage/PACEP$SimulateDataByFile.coverage" NAME="SimulateDataByFile Coverage Results" MODIFIED="1729787923600" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/simulated_data" />
+    <SUITE FILE_PATH="coverage/PACEP$SQLParser.coverage" NAME="SQLParser Coverage Results" MODIFIED="1722936931770" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/util" />
+    <SUITE FILE_PATH="coverage/PACEP$DeweyNumber.coverage" NAME="DeweyNumber Coverage Results" MODIFIED="1723041785510" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/util" />
+    <SUITE FILE_PATH="coverage/PACEP$AlgorithmFactory.coverage" NAME="AlgorithmFactory Coverage Results" MODIFIED="1727339551056" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/factories" />
+    <SUITE FILE_PATH="coverage/PACEP$SequenceMatcher.coverage" NAME="SequenceMatcher Coverage Results" MODIFIED="1722606641803" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/algorithm" />
+    <SUITE FILE_PATH="coverage/PACEP$ONFactory.coverage" NAME="ONFactory Coverage Results" MODIFIED="1722590786636" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/factories" />
+    <SUITE FILE_PATH="coverage/PACEP$SimulateData.coverage" NAME="SimulateData Coverage Results" MODIFIED="1722601436341" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/simulated_data" />
+    <SUITE FILE_PATH="coverage/PACEP$.coverage" NAME=" Coverage Results" MODIFIED="1723637382882" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
+    <SUITE FILE_PATH="coverage/PACEP$ONFactorialFactory.coverage" NAME="ONFactorialFactory Coverage Results" MODIFIED="1727340997733" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/factories" />
+    <SUITE FILE_PATH="coverage/PACEP$LatencyHanldeKleene.coverage" NAME="LatencyHanldeKleene Coverage Results" MODIFIED="1730458692855" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/experiment" />
+    <SUITE FILE_PATH="coverage/PACEP$SingleKleene.coverage" NAME="SingleKleene Coverage Results" MODIFIED="1728884431878" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/experiment" />
+    <SUITE FILE_PATH="coverage/PACEP$DataGenerator.coverage" NAME="DataGenerator Coverage Results" MODIFIED="1722587774485" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/generator" />
+    <SUITE FILE_PATH="coverage/PACEP$ValueConstraint.coverage" NAME="ValueConstraint Coverage Results" MODIFIED="1732694634768" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/models" />
+    <SUITE FILE_PATH="coverage/PACEP$SharedBuffer.coverage" NAME="SharedBuffer Coverage Results" MODIFIED="1723053510282" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/sharedbuffer" />
+    <SUITE FILE_PATH="coverage/PACEP$NFAState.coverage" NAME="NFAState Coverage Results" MODIFIED="1723553201242" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/nfa" />
+    <SUITE FILE_PATH="coverage/PACEP$CSVCompare.coverage" NAME="CSVCompare Coverage Results" MODIFIED="1729437117785" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/util" />
+    <SUITE FILE_PATH="coverage/PACEP$PrefixOptimization.coverage" NAME="PrefixOptimization Coverage Results" MODIFIED="1729590676382" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/experiment" />
+    <SUITE FILE_PATH="coverage/PACEP$ConstraintCollection.coverage" NAME="ConstraintCollection Coverage Results" MODIFIED="1724138961306" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/models" />
+    <SUITE FILE_PATH="coverage/PACEP$ON2Factory.coverage" NAME="ON2Factory Coverage Results" MODIFIED="1727315396474" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/factories" />
+    <SUITE FILE_PATH="coverage/PACEP$TestLazyHandler.coverage" NAME="TestLazyHandler Coverage Results" MODIFIED="1733394503938" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
+    <SUITE FILE_PATH="coverage/PACEP$main.coverage" NAME="main Coverage Results" MODIFIED="1727055779052" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PACEP$NFA.coverage" NAME="NFA Coverage Results" MODIFIED="1727160725411" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/nfa" />
+    <SUITE FILE_PATH="coverage/PACEP$TestPostponing.coverage" NAME="TestPostponing Coverage Results" MODIFIED="1733755658671" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
+    <SUITE FILE_PATH="coverage/PACEP$AB_C.coverage" NAME="AB+C Coverage Results" MODIFIED="1732664864267" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/experiment/nasdaq" />
+    <SUITE FILE_PATH="coverage/PACEP$main2.coverage" NAME="main2 Coverage Results" MODIFIED="1723643620540" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PACEP$FlashCrashSingleKleene.coverage" NAME="FlashCrashSingleKleene Coverage Results" MODIFIED="1732373303305" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/experiment/nasdaq" />
+    <SUITE FILE_PATH="coverage/PACEP$kleene.coverage" NAME="kleene Coverage Results" MODIFIED="1732263690095" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/scripts" />
+    <SUITE FILE_PATH="coverage/PACEP$RegexPatternGenerator.coverage" NAME="RegexPatternGenerator Coverage Results" MODIFIED="1724903915791" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/generator" />
+    <SUITE FILE_PATH="coverage/PACEP$RegexToState.coverage" NAME="RegexToState Coverage Results" MODIFIED="1733136812011" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/nfa" />
+    <SUITE FILE_PATH="coverage/PACEP$ABRegexToStateAppend.coverage" NAME="ABRegexToStateAppend Coverage Results" MODIFIED="1727056616933" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/nfa" />
+    <SUITE FILE_PATH="coverage/PACEP$EventId.coverage" NAME="EventId Coverage Results" MODIFIED="1723043379621" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/sharedbuffer" />
+    <SUITE FILE_PATH="coverage/PACEP$StateTransition.coverage" NAME="StateTransition Coverage Results" MODIFIED="1724119290716" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/nfa" />
+    <SUITE FILE_PATH="coverage/PACEP$TestPatternRecognize.coverage" NAME="TestPatternRecognize Coverage Results" MODIFIED="1727011610633" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
+    <SUITE FILE_PATH="coverage/PACEP$ONLogNFactory.coverage" NAME="ONLogNFactory Coverage Results" MODIFIED="1727318252557" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/factories" />
+    <SUITE FILE_PATH="coverage/PACEP$MulityKleene.coverage" NAME="MulityKleene Coverage Results" MODIFIED="1728988865609" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/experiment" />
+    <SUITE FILE_PATH="coverage/PACEP$MMutilyKleene.coverage" NAME="MMutilyKleene Coverage Results" MODIFIED="1730704582865" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/experiment/nasdaq" />
+    <SUITE FILE_PATH="coverage/PACEP$Lockable.coverage" NAME="Lockable Coverage Results" MODIFIED="1723043796847" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/sharedbuffer" />
+    <SUITE FILE_PATH="coverage/PACEP$stock_kleene.coverage" NAME="stock_kleene Coverage Results" MODIFIED="1732248899593" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/experiment/compare/core_experiment/cer-srt/scripts" />
+    <SUITE FILE_PATH="coverage/PACEP$AB_C__1_.coverage" NAME="AB+C (1) Coverage Results" MODIFIED="1732264252411" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/experiment/compare" />
+    <SUITE FILE_PATH="coverage/PACEP$NodeId.coverage" NAME="NodeId Coverage Results" MODIFIED="1723056765452" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/sharedbuffer" />
+    <SUITE FILE_PATH="coverage/PACEP$ShareBufferNode.coverage" NAME="ShareBufferNode Coverage Results" MODIFIED="1723050640976" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/sharedbuffer" />
+    <SUITE FILE_PATH="coverage/PACEP$NFADrawer.coverage" NAME="NFADrawer Coverage Results" MODIFIED="1723121869124" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/util" />
+    <SUITE FILE_PATH="coverage/PACEP$AB.coverage" NAME="AB+C Coverage Results" MODIFIED="1732376475267" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/experiment/nasdaq" />
+    <SUITE FILE_PATH="coverage/PACEP$TestCalculateOrcerInfluence.coverage" NAME="TestCalculateOrcerInfluence Coverage Results" MODIFIED="1726886502984" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
+    <SUITE FILE_PATH="coverage/PACEP$ExpressionCalculate.coverage" NAME="ExpressionCalculate Coverage Results" MODIFIED="1727317296855" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/algorithm" />
+    <SUITE FILE_PATH="coverage/PACEP$MKAdbyIndependence.coverage" NAME="MKAdbyIndependence Coverage Results" MODIFIED="1728878855655" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/experiment" />
+    <SUITE FILE_PATH="coverage/PACEP$A_B.coverage" NAME="A+B Coverage Results" MODIFIED="1731390779544" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/experiment/compare" />
+    <SUITE FILE_PATH="coverage/PACEP$SharedBufferEdge.coverage" NAME="SharedBufferEdge Coverage Results" MODIFIED="1723044571382" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/sharedbuffer" />
+    <SUITE FILE_PATH="coverage/PACEP$TestCalculateOrderInfluence.coverage" NAME="TestCalculateOrderInfluence Coverage Results" MODIFIED="1727177131789" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
+    <SUITE FILE_PATH="coverage/PACEP$CausalKleene.coverage" NAME="CausalKleene Coverage Results" MODIFIED="1728565577215" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/experiment" />
+    <SUITE FILE_PATH="coverage/PACEP$ExperimentDrawer.coverage" NAME="ExperimentDrawer Coverage Results" MODIFIED="1731738082518" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/util" />
+  </component>
+</project>

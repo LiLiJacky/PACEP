@@ -10,4 +10,7 @@ dependencies:
   - graphviz
   - pydot
   - cachetools
+  - numpy
+  - matplotlib
+  - scipy
 prefix: /Users/rillusory/miniconda3/envs/PACEP

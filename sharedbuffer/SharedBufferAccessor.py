@@ -1,4 +1,5 @@
 from configuration.SharedBufferCacheConfig import SharedBufferCacheConfig
+from models.ValueConstraint import ValueConstraint
 from sharedbuffer.Lockable import Lockable
 from sharedbuffer.NodeId import NodeId
 from sharedbuffer.ShareBufferNode import SharedBufferNode
@@ -23,7 +24,8 @@ class SharedBufferAccessor:
         state_name: str,
         event_id: 'EventId',
         previous_node_id: Optional['NodeId'],
-        version: 'DeweyNumber'
+        version: 'DeweyNumber',
+        lazy_constraints: List[ValueConstraint]
     ) -> 'NodeId':
         if previous_node_id is not None:
             self.lock_node(previous_node_id, version)
@@ -34,18 +36,19 @@ class SharedBufferAccessor:
             current_node = Lockable(SharedBufferNode(), 0)
             self.lock_event(event_id)
 
-        current_node.get_element().add_edge(SharedBufferEdge(previous_node_id, version))
+        current_node.get_element().add_edge(SharedBufferEdge(previous_node_id, version, lazy_constraints))
         self.shared_buffer.upsert_entry(current_node_id, current_node)
 
         return current_node_id
 
     def extract_patterns(
         self, node_id: 'NodeId', version: 'DeweyNumber'
-    ) -> List[Dict[str, List['EventId']]]:
+    ) -> Tuple[List[Dict[str, List['EventId']]], List['ValueConstraint']]:
         result = []
 
         extraction_states = deque()
         entry_lock = self.shared_buffer.get_entry(node_id)
+        latency_constrain = []
 
         if entry_lock is not None:
             entry = entry_lock.get_element()
@@ -66,7 +69,6 @@ class SharedBufferAccessor:
                     result.append(complete_path)
                 else:
                     current_path.append(current_entry)
-
                     first_match = True
                     for lockable_edge in current_entry[1].get_edges():
                         edge = lockable_edge.get_element()
@@ -76,6 +78,8 @@ class SharedBufferAccessor:
                             new_path = current_path if first_match else deque(current_path)
                             first_match = False
 
+                            if edge.lazy_calculate_value_constrain:
+                                latency_constrain.extend(edge.lazy_calculate_value_constrain)
                             extraction_states.append(
                                 self.ExtractionState(
                                     (target, self.shared_buffer.get_entry(target).get_element()) if target else None,
@@ -83,7 +87,7 @@ class SharedBufferAccessor:
                                     new_path
                                 )
                             )
-        return result
+        return result, latency_constrain
 
     def materialize_match(self, match: Dict[str, List['EventId']]) -> Dict[str, List[Any]]:
         materialized_match = defaultdict(list)

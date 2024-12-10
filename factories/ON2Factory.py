@@ -29,10 +29,36 @@ class BubbleSortAlgorithm(Algorithm):
     def get_calculate_range(self, range):
         return range
 
+class SumSquareDifferenceAlgorithm(Algorithm):
+    @property
+    def name(self):
+        return "Sum Square Difference"
+
+    @property
+    def complexity_time(self):
+        return "O(n^2)"
+
+    @property
+    def complexity_space(self):
+        return "O(1)"
+
+    def get_calculate(self):
+        data = self.data[:]
+        n = len(data)
+        sum_square_diff = 0
+        for i in range(n):
+            for j in range(i + 1, n):
+                sum_square_diff += (data[i][1] - data[j][1]) ** 2
+        return sum_square_diff
+
+    def get_calculate_range(self, range):
+        return range
+
 class ON2Factory:
     def get_algorithm(self, algorithm_name, data, *args):
         algorithms = {
             "bubble_sort": BubbleSortAlgorithm,
+            "sum_square_difference": SumSquareDifferenceAlgorithm
         }
         if algorithm_name in algorithms:
             if algorithm_name == "bubble_sort":
@@ -44,6 +70,8 @@ class ON2Factory:
         else:
             raise ValueError(f"Unknown algorithm: {algorithm_name}")
 
+    def get_time_complexity(self, n):
+        return n**2
 
 # 使用示例
 if __name__ == "__main__":

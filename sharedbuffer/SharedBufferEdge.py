@@ -1,5 +1,7 @@
 from dataclasses import dataclass
+from typing import List
 
+from models.ValueConstraint import ValueConstraint
 from sharedbuffer.NodeId import NodeId
 from util.DeweyNumber import DeweyNumber
 
@@ -8,12 +10,16 @@ from util.DeweyNumber import DeweyNumber
 class SharedBufferEdge:
     target: 'NodeId'
     dewey_number: 'DeweyNumber'
+    lazy_calculate_value_constrain: 'List[ValueConstraint]'
 
     def get_target(self):
         return self.target
 
     def get_dewey_number(self):
         return self.dewey_number
+
+    def get_lazy_calculate_value_constrain(self):
+        return self.lazy_calculate_value_constrain
 
     def __str__(self):
         return f"SharedBufferEdge{{target={self.target}, dewey_number={self.dewey_number}}}"

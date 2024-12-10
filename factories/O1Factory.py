@@ -107,3 +107,6 @@ class O1Factory:
             return algorithms[algorithm_name](data)
         else:
             raise ValueError(f"Unknown algorithm: {algorithm_name}")
+
+    def get_time_complexity(self, n):
+        return n

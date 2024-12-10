@@ -26,17 +26,14 @@ class ExpressionCalculate:
                 "Expression format is not valid. It should have the format 'left_value left_operator middle_expression right_operator right_value'")
 
         # 提取左侧值、左侧符号、中间表达式、右侧符号、右侧值
-        left_value = int(parts[0].strip())
+        left_value = float(parts[0].strip())
         left_operator = parts[1].strip()
         middle_expression = parts[2].strip()
         right_operator = parts[3].strip()
-        right_value = int(parts[4].strip())
+        right_value = float(parts[4].strip())
 
         # 计算中间表达式的值
         middle_value = self._evaluate_expression(middle_expression, values)
-
-        if isinstance(middle_value, tuple):
-            print("i need to know why")
 
         # 判断左侧和右侧表达式是否都满足条件
         is_left_satisfied = self._apply_operator(left_value, middle_value, left_operator)
@@ -46,31 +43,49 @@ class ExpressionCalculate:
         return is_left_satisfied and is_right_satisfied
 
     def _evaluate_expression(self, expression_part: str, values: Dict[str, Any]) -> float:
-        total_sum = 0
+        # 替换表达式中的变量为其具体数值
+        def replace_variables(match):
+            sub_expr = match.group(0).strip()  # 匹配到的子表达式
 
-        # 拆分通过 + 连接的子计算部分
-        sub_expressions = expression_part.split('+')
+            # 处理普通变量（单个字母或 A[i] 格式）
+            if re.match(r'^[A-Z]$', sub_expr) or re.match(r'^[A-Z]\[i\]$', sub_expr):
+                #base_var = sub_expr.split('[')[0] if '[' in sub_expr else sub_expr
+                var_value = values.get(sub_expr, 0)
 
-        for sub_expr in sub_expressions:
-            sub_expr = sub_expr.strip()  # 去除可能存在的空格
+                # 检查 var_value 类型
+                if isinstance(var_value, list) and len(var_value) > 0 and isinstance(var_value[0], list):
+                    return str(var_value[0][1])  # 将变量替换为其值
+                elif isinstance(var_value, list):
+                    return str(var_value[1])
+                else:
+                    raise ValueError(f"Invalid value for variable '{sub_expr}': {var_value}")
 
-            if re.match(r'^[A-Z]$', sub_expr) or re.match(r'^[A-Z]\[i\]$', sub_expr):  # 单个字母的普通变量
-                base_var = sub_expr
-                if re.match(r'^[A-Z]\[i\]$', sub_expr):  # A[i] 格式
-                    base_var = sub_expr.split('[')[0]  # 提取基础变量名，如 A
-                total_sum += values.get(base_var, 0)[0][1]
-            elif re.match(r'\w+\([A-Z]\)\[\d+\]', sub_expr):  # algorithm(K)[num] 格式
+            # 处理 algorithm(K)[num] 格式
+            elif re.match(r'\w+\([A-Z]\)\[\d+\]', sub_expr):
                 algorithm_name, var, num = re.match(r'(\w+)\(([A-Z])\)\[(\d+)\]', sub_expr).groups()
-                algorithm_result = self._apply_algorithm(algorithm_name, values[var], int(num))
-                total_sum += algorithm_result
-            elif re.match(r'\w+\([A-Z]\)', sub_expr):  # algorithm(K) 格式
-                algorithm_name, var = re.match(r'(\w+)\(([A-Z])\)', sub_expr).groups()
-                algorithm_result = self._apply_algorithm(algorithm_name, values[var])
-                total_sum += algorithm_result
-            else:
-                raise ValueError(f"Unrecognized sub-expression format: {sub_expr}")
+                return str(self._apply_algorithm(algorithm_name, values[var], float(num)))
 
-        return total_sum
+            # 处理 algorithm(K) 格式
+            elif re.match(r'\w+\([A-Z]\)', sub_expr):
+                algorithm_name, var = re.match(r'(\w+)\(([A-Z])\)', sub_expr).groups()
+                return str(self._apply_algorithm(algorithm_name, values[var]))
+
+            raise ValueError(f"Unrecognized sub-expression format: {sub_expr}")
+
+        # 使用正则表达式替换表达式中的变量和算法调用
+        expression_with_values = re.sub(r'[A-Z]\[i\]|\w+\([A-Z]\)\[\d+\]|\w+\([A-Z]\)|[A-Z]', replace_variables,
+                                        expression_part)
+
+        # 使用 eval 计算最终表达式值
+        try:
+            result = eval(expression_with_values)
+        except ZeroDivisionError:
+            raise ValueError("Division by zero encountered in expression.")
+        except Exception as e:
+            raise ValueError(f"Error evaluating expression: {expression_with_values}. Details: {e}")
+
+        return result
+
 
     def _apply_algorithm(self, func_name: str, values: List[float], *args) -> float:
         full_name = self.algorithm_factory.get_algorithm_sub_map().get(func_name)
@@ -89,10 +104,6 @@ class ExpressionCalculate:
             raise ValueError(f"Unknown function '{func_name}' in expression")
 
     def _apply_operator(self, left_value: float, right_value: float, operator: str) -> bool:
-        if isinstance(left_value, tuple):
-            print("i need to know why")
-        if isinstance(right_value, tuple):
-            print("i need to know why")
         if operator == '<':
             return left_value < right_value
         elif operator == '<=':

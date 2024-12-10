@@ -14,6 +14,7 @@ class ConstraintCollection:
         self._time_constrain = []
         self._count_constrain = []
         self._type_constrain = []
+        self._lazy_calculate_value_constrain = []
 
     def add_constraint(self, constraint: Constraint):
         if isinstance(constraint, ValueConstraint):
@@ -95,6 +96,13 @@ class ConstraintCollection:
     @property
     def type_constrain(self) -> List[Constraint]:
         return self._type_constrain
+
+    @property
+    def lazy_calculate_value_constrain(self) -> List[ValueConstraint]:
+        return self._lazy_calculate_value_constrain
+
+    def clear_lazy_calculate_value_constrain(self):
+        self._lazy_calculate_value_constrain.clear()
 
     def validate(self, event, context: 'ConditionContext'):
         # 验证类型是否满足

@@ -3,6 +3,7 @@ from typing import List, Optional
 import heapq
 
 from nfa.ComputationState import ComputationState
+from nfa.SelectStrategy import SelectStrategy
 from sharedbuffer.EventId import EventId
 from sharedbuffer.NodeId import NodeId
 from util.DeweyNumber import DeweyNumber

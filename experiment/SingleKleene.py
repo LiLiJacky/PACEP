@@ -14,7 +14,7 @@ from models.ValueConstraint import ValueConstraint
 from nfa.ComputationState import ComputationState
 from nfa.NFA import NFA, TimerService, EventWrapper
 from nfa.NFAState import NFAState
-from nfa.RegexToState import RegexToState
+from nfa.RegexToStateV100 import RegexToState
 from nfa.State import State
 from sharedbuffer.SharedBuffer import SharedBuffer
 from sharedbuffer.SharedBufferAccessor import SharedBufferAccessor
@@ -28,8 +28,9 @@ def test_algorithm_influence_latency():
     # 探究模式计算代价对计算延迟的影响,当处理延迟超过两倍生成速率时，认为处理已经无法满足实时处理需求
     regex = "A{4,}"
 
-    frequency = 0.1
+    frequency = 1
     window_time = 10
+    probability = 0.5
     # 设计不同的algorithm
     value_constraint_set = {
         "o(1)": {
@@ -39,7 +40,7 @@ def test_algorithm_influence_latency():
                 normal=list(range(0, 11)),
                 matched=[20],
                 frequency=frequency,
-                probability=0.1)
+                probability=probability)
         },
         "o(n)": {
             "value_constrain": [{'variables': ['A'], 'expression': '10 <= average(A) <= 20'}],
@@ -48,7 +49,7 @@ def test_algorithm_influence_latency():
                 normal=list(range(0, 11)),
                 matched=[12, 13, 15, 16],
                 frequency=frequency,
-                probability=0.1 / 4)
+                probability=probability / 4)
         },
         "o(n_log_n)": {
             "value_constrain": [{'variables': ['A'], 'expression': '13 <= merge_sort(A)[2] <= 15'}],
@@ -57,7 +58,7 @@ def test_algorithm_influence_latency():
                 normal=list(range(0, 11)),
                 matched=[12, 13, 15, 17],
                 frequency=frequency,
-                probability=0.1 / 4)
+                probability=probability / 4)
         },
         "o(n^2)": {
             "value_constrain": [{'variables': ['A'], 'expression': '13 <= bubble_sort(A)[2] <= 15'}],
@@ -66,7 +67,7 @@ def test_algorithm_influence_latency():
                 normal=list(range(0, 11)),
                 matched=[12, 13, 15, 17],
                 frequency=frequency,
-                probability=0.1 / 4)
+                probability=probability / 4)
         },
         "o(n^3)": {
             "value_constrain": [{'variables': ['A'], 'expression': '40 <= triplet_sum(A) <= 70'}],
@@ -75,7 +76,7 @@ def test_algorithm_influence_latency():
                 normal=list(range(0, 11)),
                 matched=[15, 16, 17, 18],
                 frequency=frequency,
-                probability=0.1 / 4)
+                probability=probability / 4)
         },
         "o(n_factorial)": {
             "value_constrain": [{'variables': ['A'], 'expression': '15 <= permutations(A) <= 20'}],
@@ -84,7 +85,7 @@ def test_algorithm_influence_latency():
                 normal=list(range(0, 11)),
                 matched=[20],
                 frequency=frequency,
-                probability=0.1)
+                probability=probability)
         },
         "o(2^n)": {
             "value_constrain": [{'variables': ['A'], 'expression': '1100 <= subset_sum(A) <= 1296'}],
@@ -93,7 +94,7 @@ def test_algorithm_influence_latency():
                 normal=list(range(0, 11)),
                 matched=[15, 16, 17, 18],
                 frequency=frequency,
-                probability=0.1 / 4)
+                probability=probability / 4)
         }
     }
 
@@ -117,8 +118,8 @@ def test_algorithm_influence_latency():
         # 连续匹配策略
         contiguity_strategy = {
             'STRICT': {},
-            'RELAXED': {},
-            'NONDETERMINISTICRELAXED': {"A"}
+            'RELAXED': {"A"},
+            'NONDETERMINISTICRELAXED': {}
         }
 
         constraint_collection = ConstraintCollection()
@@ -188,7 +189,8 @@ def test_algorithm_influence_latency():
                     latency = end_time - start_time
                     latency_results[al].append((len(nfa_state.partial_matches), latency))
 
-                    if latency > 20 * data_info_A.frequency or end_time - modify_begin_time > 300:
+                    # latency > 30000 * data_info_A.frequency
+                    if end_time - modify_begin_time > 3600:
                         print(latency_results[al])
                         break
 
@@ -204,7 +206,7 @@ def test_algorithm_influence_latency():
         x = [item[0] for item in latencies]
         y = [item[1] for item in latencies]
         y_avg = np.mean(y)
-        plt.plot(x, y, label=f"{al} (avg: {y_avg:.6f}s)")
+        plt.plot(x, y, label=f"{al}")
 
     plt.xlabel("Number of Partial Matches")
     plt.ylabel("Computation Latency (s)")

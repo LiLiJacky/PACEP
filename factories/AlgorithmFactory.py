@@ -16,7 +16,9 @@ ALGORITHM_SUB_MAP = {
     "triplet_sum": "triplet_product_sum",
     "permutations": "permutations",
     "combinations_square": "combinations_square_average_sum",
-    "subset_sum": "subset_sum"
+    "subset_sum": "subset_sum",
+    "sum_square_difference": "sum_square_difference",
+    "least_squares": "least_squares"
 }
 
 ALGORITHM_FACTORY_MAP = {
@@ -34,7 +36,9 @@ ALGORITHM_FACTORY_MAP = {
     "triplet_product_sum": "factories.ON3Factory.ON3Factory",
     "permutations": "factories.ONFactorialFactory.ONFactorialFactory",
     "combinations_square_average_sum": "factories.ONkFactory.ONkFactory",
-    "subset_sum": "factories.O2NFactory.O2NFactory"
+    "subset_sum": "factories.O2NFactory.O2NFactory",
+    "sum_square_difference": "factories.ON2Factory.ON2Factory",
+    "least_squares": "factories.ONFactory.ONFactory",
 }
 
 
@@ -97,6 +101,42 @@ class AlgorithmFactory:
     def get_algorithm_list(self):
         # 提取算法缩写列表
         return list(self.algorithm_sub_map.keys())
+
+    def get_algorithm_calculate_time_complexity(self, name, n):
+        """
+        根据算法全名调用其 get_time_complexity 方法，返回计算复杂度的具体值。
+        :param name: 算法全名（如 "sum_value"）
+        :param n: 输入数据规模（如 1000）
+        :return: 计算复杂度的具体值
+        """
+        # 获取算法全名
+        full_name = self.algorithm_sub_map.get(name)
+        if not full_name:
+            raise ValueError(f"Full name for algorithm '{name}' not found.")
+
+        # 获取工厂路径
+        factory_path = self.algorithm_factory_map.get(full_name)
+        if not factory_path:
+            raise ValueError(f"Factory for algorithm '{full_name}' not found.")
+
+        # 动态加载模块并获取工厂类
+        module_path, class_name = factory_path.rsplit('.', 1)
+        module = importlib.import_module(module_path)
+        factory_class = getattr(module, class_name)
+
+        # 初始化工厂实例并获取算法类
+        factory = factory_class()
+        algorithm = factory.get_algorithm(full_name, None)  # 此处无需传入数据实例
+
+        # 检查算法是否具有 get_time_complexity 方法
+        if not hasattr(algorithm, "get_time_complexity"):
+            if not hasattr(factory, "get_time_complexity"):
+                raise AttributeError(f"Algorithm '{full_name}' does not implement 'get_time_complexity' or 'get_calculate' method.")
+            else:
+                return factory.get_time_complexity(n)
+
+        # 调用 get_time_complexity 方法并返回计算复杂度
+        return algorithm.get_time_complexity(n)
 
 
 # 使用示例

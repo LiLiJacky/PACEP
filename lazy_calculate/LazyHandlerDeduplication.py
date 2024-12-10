@@ -7,7 +7,7 @@ from nfa.ComputationState import ComputationState
 from sharedbuffer.SharedBufferAccessor import SharedBufferAccessor
 
 
-class LazyHandler:
+class LazyHandlerDeduplication:
     def __init__(self):
         self.blocks = []  # 初始化存储所有的 DataBlock 实例
         self.final_results = []  # 存储最终计算结果

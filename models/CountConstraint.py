@@ -13,7 +13,7 @@ class CountConstraint(Constraint):
             self.expression = f"{min_count} <= size({variables[0]}) <= {max_count}"
 
     def validate(self, data, context) -> bool:
-        kleene_name = context.computation_state.current_state_name
+        kleene_name = self.variables[0] + "[i]"
         kleene_events = context.get_events_for_pattern(kleene_name)
         try:
             count = len(kleene_events)

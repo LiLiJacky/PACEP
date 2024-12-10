@@ -1,6 +1,8 @@
 import hashlib
 from typing import Collection, TypeVar, Generic, List
 
+from models.ValueConstraint import ValueConstraint
+from nfa.SelectStrategy import SelectStrategy
 from nfa.StateTransition import StateTransition
 from nfa.StateTransitionAction import StateTransitionAction
 
@@ -11,13 +13,15 @@ class StateType:
     Final = 'Final'
     Normal = 'Normal'
     Pending = 'Pending'
-    Stop = 'Stop'
+    Stop = 'Stop' # 丢弃这次更新的所有中间匹配结果
 
 class State(Generic[T]):
-    def __init__(self, name: str, state_type: StateType):
+    def __init__(self, name: str, state_type: StateType, select_strategy: SelectStrategy, *lazy_constrains: List[ValueConstraint]):
         self.name = name
         self.state_type = state_type
         self.state_transitions: List['StateTransition[T]'] = []
+        self.select_strategy = select_strategy
+        self.lazy_value_constraints = lazy_constrains if lazy_constrains else []
 
     def get_state_type(self) -> StateType:
         return self.state_type
@@ -33,6 +37,12 @@ class State(Generic[T]):
 
     def get_state_transitions(self) -> Collection['StateTransition[T]']:
         return self.state_transitions
+
+    def get_select_strategy(self) -> SelectStrategy:
+        return self.select_strategy
+
+    def get_lazy_constraints(self) -> List[ValueConstraint]:
+        return self.lazy_value_constraints
 
     def make_start(self):
         self.state_type = StateType.Start
@@ -54,6 +64,14 @@ class State(Generic[T]):
 
     def add_take_with_self(self, condition: 'Constarint[T]'):
         self.add_state_transition(StateTransitionAction.TAKE, self, condition)
+
+    def add_lazy_constraints(self, lazy_constraints: List[ValueConstraint]):
+        for lazy_constraint in lazy_constraints:
+            if lazy_constraint not in self.lazy_value_constraints:
+                self.lazy_value_constraints.append(lazy_constraint)
+
+    def clear_lazy_constraints(self):
+        self.lazy_value_constraints.clear()
 
     def __eq__(self, other):
         if isinstance(other, State):

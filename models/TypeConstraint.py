@@ -11,7 +11,10 @@ class TypeConstraint(Constraint):
 
     def validate(self, data, context) -> bool:
         try:
-            return data.event.variable_name in self.variables_name
+            isNot = False
+            if "_not_" in self.variables[0]:
+                isNot = True
+            return not data.event.variable_name in self.variables_name if isNot else data.event.variable_name in self.variables_name
         except Exception as e:
             print(f"Validation error: {e}")
             return False

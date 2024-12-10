@@ -28,12 +28,13 @@ from multiprocessing import Queue
 from simulated_data.SimulateDataByFile import DataSource
 
 
-def flash_crash_single_kleene(regex, min_window_time, max_window_time, source, rate):
+def nfa_buffer(regex, min_window_time, max_window_time, source, rate):
     constraints_dict = {
-        'value_constrain': [{'variables': ['B'], 'expression': '0 <= B - last(B) <= 100'},
+        'value_constrain': [
+             {'variables': ['B[i]'], 'expression': '0 <= B[i] - last(B) <= 100'},
                             {'variables': ['A', 'C'], 'expression': '0 <= C - 1.1 * A <= 100'}, ],
         'time_constrain': [
-            {'variables': ['A', 'B[i]', 'C'], 'min_time': min_window_time, 'max_time': max_window_time}
+            {'variables': ['A', 'B', 'C'], 'min_time': min_window_time, 'max_time': max_window_time}
         ],
         'type_constrain': [
             {'variables': ['A'], 'variables_name': ['MSFT']},
@@ -72,7 +73,6 @@ def flash_crash_single_kleene(regex, min_window_time, max_window_time, source, r
     regex_to_state = RegexToState(regex, constraint_collection, contiguity_strategy)
     regex_to_state.generate_states_and_transitions()
     valid_states = regex_to_state.states
-    regex_to_state.draw()
 
     # 假设 window_times 和 window_time 是已知的或从配置中获得的
     window_times = {}
@@ -92,7 +92,7 @@ def flash_crash_single_kleene(regex, min_window_time, max_window_time, source, r
 
     # Initialize and start data generation
     data_source = DataSource(csv_file=source, rate=rate)
-    processes = data_source.start_data_generation(data_queue)
+    processes = data_source.start_data_generation_stock_gm(data_queue)
 
     modify_begin_time = time.time()
     total_matched = 0
@@ -156,28 +156,22 @@ def optimizer_by_lazy_handle(regex, min_window_time, max_window_time, source, ra
     # 探究模式计算代价对计算延迟的影响,当处理延迟超过两倍生成速率时，认为处理已经无法满足实时处理需求
     # 注意约束衍生，当不允许任意子集创建后，有可能匹配不成功
     constraints_dict = {
-        'value_constrain': [
-            # {'variables': ['A'], 'expression': '0.1 <= least_squares(A) <= 100'},
-            # 约束衍生
-            {'variables': ['A', 'B'], 'expression': '-100 <= B - max(A) <= 0'},
-            {'variables': ['B', 'C'], 'expression': '0.5 <= C - B <= 100'},
-            # 约束衍生
-            {'variables': ['A', 'C'], 'expression': '0 <= C - min(A) <= 100'},
-        ],
+        'value_constrain': [#{'variables': ['B'], 'expression': '0 <= B - last(B) <= 100'},
+                            {'variables': ['A', 'C'], 'expression': '0 <= C - 1.1 * A <= 100'}, ],
         'time_constrain': [
-            {'variables': ['A[i]', 'B', 'C'], 'min_time': min_window_time, 'max_time': max_window_time}
+            {'variables': ['A', 'B[i]', 'C'], 'min_time': min_window_time, 'max_time': max_window_time}
         ],
         'type_constrain': [
-            {'variables': ['A'], 'variables_name': ['CLOSE']},
-            {'variables': ['B'], 'variables_name': ['LOW']},
-            {'variables': ['C'], 'variables_name': ['HIGH']},
+            {'variables': ['A'], 'variables_name': ['MSFT']},
+            {'variables': ['B'], 'variables_name': ['GOOG']},
+            {'variables': ['C'], 'variables_name': ['MSFT']},
         ]
     }
 
     # 连续匹配策略
     contiguity_strategy = {
         'STRICT': {},
-        'RELAXED': {"A", "B", "C"},
+        'RELAXED': {"A","B", "C"},
         'NONDETERMINISTICRELAXED': {}
     }
 
@@ -224,7 +218,7 @@ def optimizer_by_lazy_handle(regex, min_window_time, max_window_time, source, ra
 
     # Initialize and start data generation
     data_source = DataSource(csv_file=source, rate=rate)
-    processes = data_source.start_data_generation(data_queue)
+    processes = data_source.start_data_generation_stock_gm(data_queue)
 
     modify_begin_time = time.time()
     total_matched = 0
@@ -248,59 +242,37 @@ def optimizer_by_lazy_handle(regex, min_window_time, max_window_time, source, ra
 
                 if matches:
                     for match in matches:
-                        a_values = []
-                        for a_accessor in match['A[i]']:
-                            a_values.append([a_accessor.event.get_value(), a_accessor.event.get_timestamp()])
+                        b_values = []
+                        for b_accessor in match['B[i]']:
+                            b_values.append([b_accessor.event.get_value(), b_accessor.event.get_timestamp()])
 
-                        b_value = match['B'][0].event.get_value()
-                        c_value = match['C'][0].event.get_value()
+                        a_date = match['A'][0].event.timestamp
+                        c_date = match['C'][0].event.timestamp
 
-                        # 生成至少5个元素的组合
-                        for n in range(5, len(a_values) + 1):
-                            for combo in combinations(a_values, n):
+                        for n in range(10, len(b_values) + 1):
+                            for combo in combinations(b_values, n):
                                 data = np.array(combo)
-                                # Convert Unix timestamps to ordinal dates
-                                time_stamp = np.array([pd.to_datetime(ts, unit='s').toordinal() for ts in data[:, 1]])
-                                values = data[:, 0]
-                                n = len(time_stamp)
-                                sum_timestamp = np.sum(time_stamp)
-                                sum_value = np.sum(values)
-                                sum_tv = np.sum(values * time_stamp)
-                                sum_timestamp_squared = np.sum(time_stamp ** 2)
+                                # Force decimal representation for all elements
+                                formatted_data = np.array2string(data, formatter={'float_kind': lambda x: f"{x:.8f}"})
+                                # 检查时间戳是否非递减
+                                if np.all(np.diff(data[:, 0]) >= 0):
+                                    # 将时间戳转换为日期格式
+                                    date_list = pd.to_datetime(data[:, 1], unit='s').strftime('%Y-%m-%d').tolist()
 
-                                numerator = n * sum_tv - sum_value * sum_timestamp
-                                denominator = n * sum_timestamp_squared - sum_timestamp ** 2
-
-                                result = numerator / denominator if denominator != 0 else 0
-                                if result >= 0.1:
-                                    max_value_in_combo = max([item[0] for item in combo])  # 获取当前组合的最大值
-                                    min_value_in_combo = min([item[0] for item in combo])  # 获取当前组合的最大值
-                                    if max_value_in_combo <= c_value and min_value_in_combo >= b_value:
-                                        total_matched += 1
-                                        # 提取组合的起始和结束日期
-                                        begin_date = pd.to_datetime(min(data[:, 1]), unit='s').strftime('%Y-%m-%d')
-                                        end_date = pd.to_datetime(match['C'][0].event.get_timestamp()
-                                                                  , unit='s').strftime('%Y-%m-%d')
-
-                                        # 提取 flash_stage 和 crash_stage 的时间戳列表
-                                        flash_stage = [pd.to_datetime(ts, unit='s').strftime('%Y-%m-%d') for ts
-                                                       in data[:, 1]]
-                                        crash_stage = end_date
-
-                                        # 将结果添加到结果列表
-                                        result_list.append({
-                                            "begin_date": begin_date,
-                                            "end_date": end_date,
-                                            "flash_stage": ";".join(flash_stage),
-                                            "crash_stage": crash_stage
-                                        })
+                                    # 添加到结果列表
+                                    result_list.append({
+                                        "a_date": pd.to_datetime(a_date, unit='s').strftime('%Y-%m-%d'),
+                                        "c_date": pd.to_datetime(c_date, unit='s').strftime('%Y-%m-%d'),
+                                        "b_date": ";".join(date_list),
+                                    })
 
                 last_handle_time = time.time()
 
             time.sleep(1 / rate)  # To prevent the main loop from consuming too much CPU
     except Empty:
         df = pd.DataFrame(result_list)
-        df.to_csv(output + '/lazy_handle.csv', index=False)
+        df.to_csv(output + '/lazy_handle_ab+c.csv', index=False)
+        total_matched = len(result_list)
         print("total handle time:" + str(last_handle_time - modify_begin_time))
         print("total matches:" + str(total_matched))
     except KeyboardInterrupt:
@@ -525,7 +497,7 @@ def optimizer_by_lazy_handle_and_calculate_plan_and_prefix_optimizer(regex, min_
 
     # Initialize and start data generation
     data_source = DataSource(csv_file=source, rate=rate)
-    processes = data_source.start_data_generation(data_queue)
+    processes = data_source.start_data_generation_stock_gm(data_queue)
 
     modify_begin_time = time.time()
     total_matched = 0
@@ -572,9 +544,9 @@ def optimizer_by_lazy_handle_and_calculate_plan_and_prefix_optimizer(regex, min_
                                 min_a = min(min_a, a[0])
                             else:
                                 break
-                        if len(a_values) < 5:
+                        if len(a_values) < 10:
                             break
-                        b_value = match['B'][0].event.get_value()
+                        b_value = match['A'][0].event.get_value()
                         c_value = match['C'][0].event.get_value()
 
                         # 衍生约束
@@ -637,20 +609,20 @@ def optimizer_by_lazy_handle_and_calculate_plan_and_prefix_optimizer(regex, min_
 
 
 if __name__ == "__main__":
-    regex = "A B{5,} C"
+    regex = "A B{10,} C"
 
-    max_window_time = 1864000
+    max_window_time = 2592000
     min_window_time = 0
 
-    data_source = '../../data/nasdaq/GOOG_MSFT.csv'
+    data_source = '../../data/nasdaq/GOOG_MSFT_example.csv'
     output = '../../output/experiment/nasdaq'
 
     rate = 400000
 
-    print("With NFA_b:")
-    flash_crash_single_kleene(regex, min_window_time, max_window_time, data_source, rate)
-    # print("With lazy handle:")
-    # optimizer_by_lazy_handle(regex, min_window_time, max_window_time, data_source, rate, output)
+    # print("With NFA_b:")
+    # nfa_buffer(regex, min_window_time, max_window_time, data_source, rate)
+    print("With lazy handle:")
+    optimizer_by_lazy_handle(regex, min_window_time, max_window_time, data_source, rate, output)
     # print("With calculate plan:")
     # optimizer_by_lazy_handle_and_calculate_plan(regex, min_window_time, max_window_time, data_source, rate)
 

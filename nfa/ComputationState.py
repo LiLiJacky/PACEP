@@ -1,6 +1,7 @@
 from dataclasses import dataclass
-from typing import Optional, Tuple
+from typing import Optional, Tuple, List
 
+from models.ValueConstraint import ValueConstraint
 from sharedbuffer import NodeId, EventId
 from util.DeweyNumber import DeweyNumber
 
@@ -13,6 +14,7 @@ class ComputationState:
     previous_timestamp: int
     previous_buffer_entry: Optional['NodeId'] = None
     start_event_id: Optional['EventId'] = None
+    lazy_constraints: List['ValueConstraint'] = None
 
     def get_start_event_id(self) -> Optional['EventId']:
         return self.start_event_id
@@ -32,15 +34,24 @@ class ComputationState:
     def get_version(self) -> 'DeweyNumber':
         return self.version
 
+    def get_lazy_constraints(self) -> List['ValueConstraint']:
+        return self.lazy_constraints
+
+    def add_lazy_constraints(self, lazy_constraints: List[ValueConstraint]):
+        for lazy_constraint in lazy_constraints:
+            if lazy_constraint not in self.lazy_constraints:
+                self.lazy_constraints.extend(lazy_constraints)
+
+
     def __eq__(self, other: object) -> bool:
         if isinstance(other, ComputationState):
             return (
-                    self.current_state_name == other.current_state_name
-                    and self.version == other.version
-                    and self.start_timestamp == other.start_timestamp
-                    and self.previous_timestamp == other.previous_timestamp
-                    and self.start_event_id == other.start_event_id
-                    and self.previous_buffer_entry == other.previous_buffer_entry
+                self.current_state_name == other.current_state_name
+                and self.version == other.version
+                and self.start_timestamp == other.start_timestamp
+                and self.previous_timestamp == other.previous_timestamp
+                and self.start_event_id == other.start_event_id
+                and self.previous_buffer_entry == other.previous_buffer_entry
             )
         return False
 
@@ -51,7 +62,7 @@ class ComputationState:
             self.start_timestamp,
             self.previous_timestamp,
             self.start_event_id,
-            self.previous_buffer_entry
+            self.previous_buffer_entry,
         ))
 
     def __str__(self) -> str:
@@ -62,24 +73,30 @@ class ComputationState:
             f"startTimestamp={self.start_timestamp}, "
             f"previousTimestamp={self.previous_timestamp}, "
             f"previousBufferEntry={self.previous_buffer_entry}, "
-            f"startEventID={self.start_event_id}"
+            f"startEventID={self.start_event_id}, "
             f"}}"
         )
 
     @staticmethod
-    def create_start_state(state: str, version: Optional['DeweyNumber'] = None) -> 'ComputationState':
+    def create_start_state(
+        state: str,
+        version: Optional['DeweyNumber'] = None,
+    ) -> 'ComputationState':
         if version is None:
             version = DeweyNumber(1)
-        return ComputationState.create_state(state, None, version, -1, -1, None)
+        return ComputationState.create_state(
+            state, None, version, -1, -1, None
+        )
 
     @staticmethod
     def create_state(
-            current_state: str,
-            previous_entry: Optional['NodeId'],
-            version: 'DeweyNumber',
-            start_timestamp: int,
-            previous_timestamp: int,
-            start_event_id: Optional['EventId']
+        current_state: str,
+        previous_entry: Optional['NodeId'],
+        version: 'DeweyNumber',
+        start_timestamp: int,
+        previous_timestamp: int,
+        start_event_id: Optional['EventId'],
+        lazy_constraints: Optional[List[ValueConstraint]] = None,
     ) -> 'ComputationState':
         return ComputationState(
             current_state_name=current_state,
@@ -87,7 +104,8 @@ class ComputationState:
             start_timestamp=start_timestamp,
             previous_timestamp=previous_timestamp,
             previous_buffer_entry=previous_entry,
-            start_event_id=start_event_id
+            start_event_id=start_event_id,
+            lazy_constraints=lazy_constraints if lazy_constraints is not None else [],
         )
 
     def _compare(self, other: 'ComputationState') -> Tuple[bool, Optional[bool]]:
