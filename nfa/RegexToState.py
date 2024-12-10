@@ -139,7 +139,7 @@ class RegexToState:
         for time_constraint in self.constraints.time_constrain:
             last_var = time_constraint.variables[-1]  # 使用最后一个变量
             max_time = time_constraint.max_time
-            first_var = time_constraint.variables[0]  # 使用最后一个变量
+            first_var = time_constraint.variables[0]  # 使用第一个变量
 
             for state in self.states:
                 for transition in state.get_state_transitions():
@@ -178,6 +178,16 @@ class RegexToState:
                         StateTransitionAction.TAKE]:
                         transition.add_condition(type_constraint)
 
+                    # 处理识别策略 RELAXED
+                    if base_source_name == base_last_var and transition.get_action() in [
+                        StateTransitionAction.IGNORE] :
+                        if base_source_name in self.contiguity_strategy['RELAXED']:
+                            new_name = []
+                            for name in type_constraint.variables:
+                                new_name.append("_not_" + name)
+                            not_type_constraint = TypeConstraint(new_name, type_constraint.variables_name)
+                            transition.add_condition(not_type_constraint)
+
         # 处理 count_constraints
         for count_constraint in self.constraints.count_constrain:
             last_name = count_constraint.variables[0]
@@ -191,6 +201,41 @@ class RegexToState:
                         new_times_constraint = CountConstraint([last_name], min_count=count_constraint.min_count,
                                                                max_count=count_constraint.max_count)
                         transition.add_condition(new_times_constraint)
+
+    def add_lazy_handle(self):
+        for state in self.states:
+            state_name = state.name
+
+            # 获取ignore transation
+            ignore_transition = [s for s in state.state_transitions if s.action == StateTransitionAction.IGNORE][0] if (
+                any(s.action == StateTransitionAction.IGNORE for s in state.state_transitions)) else None
+            if ignore_transition is None:
+                continue
+
+            # 如果当前事件也是Kleene事件,下一事件如果是Kleene事件不允许跳过当前Kleene事件
+            if "[i]" in state_name:
+                # 下一事件为非Kleene事件
+                for edge in state.get_state_transitions():
+                    if edge.action == StateTransitionAction.PROCEED and edge.target_state.name != "Final" and "[i]" not in edge.target_state.name :
+                        new_name = []
+                        for type in state.state_transitions[2].condition.type_constrain[0].variables:
+                            new_name.append("_not_" + type)
+                        not_type_constraint = TypeConstraint(new_name,
+                                                             state.state_transitions[2].condition.type_constrain[
+                                                                 0].variables_name)
+                        edge.target_state.state_transitions[1].add_condition(not_type_constraint)
+                continue
+
+            for edge in state.get_state_transitions():
+                # 查询下一状态为Kleene事件的事件类型
+                if edge.action == StateTransitionAction.TAKE and "[i]" in edge.target_state.name:
+                    kleene_take = [s for s in edge.target_state.state_transitions if s.action == StateTransitionAction.TAKE][0]
+                    new_name = []
+                    for type in kleene_take.condition.type_constrain[0].variables:
+                        new_name.append("_not_" + type)
+                    not_type_constraint = TypeConstraint(new_name, kleene_take.condition.type_constrain[0].variables_name)
+                    ignore_transition.add_condition(not_type_constraint)
+
 
     def draw(self):
         current_dir = os.path.dirname(os.path.abspath(__file__))

@@ -1,0 +1,13 @@
+name: PACEP
+channels:
+  - https://repo.anaconda.com/pkgs/main
+  - conda-forge
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+  - defaults
+dependencies:
+  - python=3.11
+  - graphviz
+  - pydot
+  - cachetools
+prefix: /Users/rillusory/miniconda3/envs/PACEP
