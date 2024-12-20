@@ -10,7 +10,7 @@ class ExpressionCalculate:
         self.expression = expression
         self.algorithm_factory = AlgorithmFactory()
 
-    def calculate(self, values: Dict[str, Any]) -> bool:
+    def calculate(self, values: Dict[str, Any] = None, state_algorithm_results = None) -> bool:
         # 找到比较操作符的位置
         operators = re.findall(r'(<=|>=|<|>)', self.expression)
 
@@ -32,8 +32,12 @@ class ExpressionCalculate:
         right_operator = parts[3].strip()
         right_value = float(parts[4].strip())
 
-        # 计算中间表达式的值
-        middle_value = self._evaluate_expression(middle_expression, values)
+        if state_algorithm_results is None:
+            # 计算中间表达式的值
+            middle_value = self._evaluate_expression(middle_expression, values)
+        else:
+            # 计算中间表达式的值
+            middle_value = self._compose_expression(middle_expression, state_algorithm_results)
 
         # 判断左侧和右侧表达式是否都满足条件
         is_left_satisfied = self._apply_operator(left_value, middle_value, left_operator)
@@ -41,6 +45,32 @@ class ExpressionCalculate:
 
         # 同时满足左侧和右侧条件才返回 True，否则返回 False
         return is_left_satisfied and is_right_satisfied
+
+    def _compose_expression(self, expression: str, state_algorithm_results) -> float:
+        """
+                根据状态变量的计算结果，动态计算表达式的值
+                :param expression: 表达式字符串
+                :param state_algorithm_results: dict，存储各状态变量及其算法计算值
+                :return: 表达式计算的结果
+                """
+        # 初始化新的表达式
+        new_expression = expression
+
+        # 替换表达式中的变量名为实际值
+        for state, results in state_algorithm_results.items():
+            for algorithm, value in results.items():
+                new_expression = re.sub(
+                    rf'{algorithm}\s*\(\s*{state}\s*\)',  # 匹配类似于 "average(B)"
+                    str(value),  # 替换为对应的值
+                    new_expression  # 持续更新 new_expression
+                )
+
+        # 动态计算表达式值
+        try:
+            # 使用 `eval` 动态计算替换后的表达式，限制全局变量访问
+            return eval(new_expression, {"__builtins__": None}, {})
+        except Exception as e:
+            raise ValueError(f"Error evaluating expression: {new_expression} -> {e}")
 
     def _evaluate_expression(self, expression_part: str, values: Dict[str, Any]) -> float:
         # 替换表达式中的变量为其具体数值

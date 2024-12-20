@@ -9,6 +9,7 @@ from models.ConstraintCollection import ConstraintCollection
 from models.CountConstraint import CountConstraint
 from models.TimeConstarint import TimeConstraint
 from models.TypeConstraint import TypeConstraint
+from models.ValueConstraint import ValueConstraint
 from nfa.SelectStrategy import SelectStrategy
 from nfa.State import State, StateType
 from nfa.StateTransition import StateTransition
@@ -167,6 +168,7 @@ class RegexToState:
             for state in self.states:
                 for transition in state.get_state_transitions():
                     source_name = transition.get_source_state().get_name()
+                    base_source_name = source_name.split(':')[0]
 
                     # 如果当前边无关，跳过
                     if base_last_var not in source_name or transition.get_action() == StateTransitionAction.IGNORE:
@@ -178,17 +180,44 @@ class RegexToState:
                         continue
 
                     # 如果是 K[i] > last(K) 模式
-                    if '[i]' in value_constraint.expression and '(' in value_constraint.expression and transition.get_action() == StateTransitionAction.TAKE:
-                        # 有算法第一个状态不加限制, B[i] > last(B)格式
-                        index = self.states.index(state)
-                        if index == 0 or base_source_name not in self.states[index - 1].get_name():
-                            continue
+                    if '[i]' in value_constraint.expression and '(' in value_constraint.expression:
+                        if not self.lazy_model and transition.get_action() == StateTransitionAction.TAKE:
+                            # 有算法第一个状态不加限制, B[i] > last(B)格式
+                            index = self.states.index(state)
+                            if index == 0 or base_source_name not in self.states[index - 1].get_name():
+                                continue
+                            transition.add_condition(value_constraint)
                         # 将其变为 algorithm的形式，添加在proceed边上
-                        if self.lazy_model:
-                            #TODO: Implement lazy model handling logic here
-                            continue
-                        transition.add_condition(value_constraint)
+                        elif self.lazy_model and transition.get_action() == StateTransitionAction.PROCEED:
+                            # 将其转变为算法
+                            expression = value_constraint.expression.strip()
+                            new_expression = ""
 
+                            # 判断 non_decreasing 格式: 0 <= B[i] - last(B) <= xxx
+                            if expression.startswith("0 <=") and "<=" in expression and "B[i] - last(B)" in expression:
+                                 new_expression = "0 <= non_decreasing(B) <= 10"
+
+                            # 判断 increasing 格式: 0 < B[i] - last(B) < xxx
+                            elif expression.startswith("0 <") and "<" in expression and "B[i] - last(B)" in expression:
+                                new_expression = "0 < increasing(B) <= 10"
+
+                            # 判断 non_increasing 格式: -xxx <= B[i] - last(B) <= 0
+                            elif expression.startswith(
+                                    "-") and "<=" in expression and "B[i] - last(B)" in expression and " <= 0" in expression:
+                                new_expression = "0 <= non_increasing(B) <= 10"
+
+                            # 判断 decreasing 格式: -xxx < B[i] - last(B) < 0
+                            elif expression.startswith(
+                                    "-") and "<" in expression and "B[i] - last(B)" in expression and " < 0" in expression:
+                                new_expression = "0 <= decreasing(B) <= 10"
+
+                            # 默认情况：未匹配任何格式
+                            else:
+                                new_expression = "unknown"
+
+                            new_value_constraint = ValueConstraint([base_source_name], new_expression)
+                            transition.add_condition(new_value_constraint)
+                        continue
 
                     # 如果是Kleene事件，且包含多个变量，只需要处理infinity_kleene proceed逻辑
                     if (variable_nums != 1 or '[i]' not in value_constraint.expression) and transition.get_action() == StateTransitionAction.PROCEED:

@@ -1,15 +1,18 @@
 import datetime
 import time
+from collections import defaultdict
 from typing import List, Dict, Optional, Collection, Tuple
 from dataclasses import dataclass
 
 from aftermatch.NoSkipStrategy import NoSkipStrategy
 from interfaces.Constraint import Constraint
-from lazy_calculate.DIRECT import DIRECT
+from lazy_calculate.IncreamentCalculate import IncrementTableCalculate
+from lazy_calculate.TableCalculate import TableCalculate
 from models.ValueConstraint import ValueConstraint
 from nfa.ComputationState import ComputationState
 from nfa.NFAState import NFAState
 from nfa.SelectStrategy import SelectStrategy
+from shared_calculate.BloomFilterManager import BloomFilterManager
 from sharedbuffer.SharedBufferAccessor import SharedBufferAccessor
 from nfa.State import State
 from sharedbuffer.NodeId import NodeId
@@ -115,6 +118,8 @@ class NFA:
         self.window_times = window_times
         self.lazy_model = lazy_model
         self.lazy_calculate_model = lazy_calculate_model
+        # capacity = min(2**(window_time * 3), 2**20)
+        # self.bloom_filter_manager = BloomFilterManager(max(capacity, 8192), 0.001, window_time * 30)
 
     def load_states(self, valid_states: Collection[State]) -> Dict[str, State]:
         return {state.get_name(): state for state in valid_states}
@@ -299,13 +304,36 @@ class NFA:
         if len(result) != 0 and self.lazy_model:
             final_result = []
             if self.lazy_calculate_model == 'DIRECT':
-                direct_calculate = DIRECT()
+                final_result = []
                 for r in result:
-                    final_results = direct_calculate.evaluate_combinations(r[0], r[1])
+                    final_results = TestABCEx.valuate(r)
                     if final_results:
                         final_result.extend(final_results)
-            elif self.lazy_calculate_model == 'MAXINTERVAL':
-                pass
+            elif self.lazy_calculate_model == 'TABLECALCULATE':
+                table_calculate = TableCalculate(event_threshold=self.window_time/2)
+                for r in result:
+                    #final_results = table_calculate.evaluate_combinations(r[0], r[1], self.bloom_filter_manager)
+                    final_results = table_calculate.evaluate_combinations(r[0], r[1])
+                    if final_results:
+                        final_result.extend(final_results)
+            elif self.lazy_calculate_model == 'INCREMENTCALCULATE':
+                increment_calculate = IncrementTableCalculate()
+
+                # Step 1: 按 latency_constrain 的种类对 result[1] 分组
+                latency_group_map = defaultdict(list)
+                for r in result:
+                    latency_group_map[tuple(r[1])].append(r)  # 使用 r[1] 的 tuple 形式作为分组键
+
+                # Step 2: 遍历分组，分别调用 increment_calculate.evaluate_combinations
+                for latency_constrain, grouped_results in latency_group_map.items():
+                    # 提取 basic_results 和 constraints
+                    basic_results = [r[0] for r in grouped_results]
+                    constraints = grouped_results[0][1]  # 所有分组的 constraints 应该相同
+
+                    # 调用 evaluate_combinations
+                    finale_results = increment_calculate.evaluate_incrementally(basic_results, constraints)
+                    if finale_results:
+                        final_result.extend(finale_results)
             elif self.lazy_calculate_model == 'GRAPH':
                 lazy_handler = LazyHandler()
                 lazy_handler.create_calculate_graph()

@@ -1,4 +1,5 @@
-import importlib
+import importlib, re
+from math import comb
 
 # 定义算法缩写到系统中全名的映射
 ALGORITHM_SUB_MAP = {
@@ -18,7 +19,11 @@ ALGORITHM_SUB_MAP = {
     "combinations_square": "combinations_square_average_sum",
     "subset_sum": "subset_sum",
     "sum_square_difference": "sum_square_difference",
-    "least_squares": "least_squares"
+    "least_squares": "least_squares",
+    "increasing": "increasing",
+    "decreasing": "decreasing",
+    "non_increasing": "non_increasing",
+    "non_decreasing": "non_decreasing"
 }
 
 ALGORITHM_FACTORY_MAP = {
@@ -39,6 +44,10 @@ ALGORITHM_FACTORY_MAP = {
     "subset_sum": "factories.O2NFactory.O2NFactory",
     "sum_square_difference": "factories.ON2Factory.ON2Factory",
     "least_squares": "factories.ONFactory.ONFactory",
+    "increasing": "factories.ONFactory.ONFactory",
+    "decreasing": "factories.ONFactory.ONFactory",
+    "non_increasing": "factories.ONFactory.ONFactory",
+    "non_decreasing": "factories.ONFactory.ONFactory"
 }
 
 
@@ -138,6 +147,75 @@ class AlgorithmFactory:
         # 调用 get_time_complexity 方法并返回计算复杂度
         return algorithm.get_time_complexity(n)
 
+    def calculate_combination_cost(self, algorithm_name, n):
+        """
+        计算从 C(n, 1) 到 C(n, n) 的总复杂度
+        """
+        total_cost = 0
+        for k in range(1, n + 1):
+            combination_count = comb(n, k)
+            complexity = self.get_algorithm_calculate_time_complexity(algorithm_name, k)
+            total_cost += combination_count * complexity
+        return total_cost
+
+    def calculate_constrain_cost(self, latency_constrain: 'ValueConstraint', data_counts):
+        """
+        计算单个延迟约束的代价，支持多个匹配项
+        """
+        total_cost = 0
+        for variable in latency_constrain.variables:
+            matches = re.findall(rf'(\w+)\({variable}\)', latency_constrain.expression)
+            if matches:
+                for match in matches:
+                    algorithm_name = match
+                    n = data_counts.get(variable, 0)
+                    total_cost += self.calculate_combination_cost(algorithm_name, n)
+            else:
+                total_cost += 1
+
+        # 计算变量组合总数（组合乘积的代价）
+        if len(latency_constrain.variables) > 1:
+            variable_combinations = 1
+            for variable in latency_constrain.variables:
+                variable_combinations *= sum(
+                    comb(data_counts[variable], k) for k in range(1, data_counts[variable] + 1))
+
+            total_cost += variable_combinations  # 加入变量组合的乘积代价
+
+        return total_cost
+
+    def get_algorithm_solution(self, algorithm_name, combination_values, index=None):
+        """
+        获取算法计算的结果，如果算法名称无效或无法找到对应算法，则抛出异常。
+        :param algorithm_name: 算法名称
+        :param combination_values: 组合值，传递给算法进行计算
+        :param index: 算法所需的索引（可选）
+        :return: 算法计算的结果
+        """
+        # 获取完整算法名
+        full_algorithm_name = self.algorithm_sub_map.get(algorithm_name)
+        if not full_algorithm_name:
+            raise ValueError(f"Algorithm '{algorithm_name}' not found in algorithm_sub_map")
+
+        # 调用算法工厂计算
+        algorithm = self.get_algorithm(full_algorithm_name, combination_values)
+        return algorithm.get_calculate(index) if index else algorithm.get_calculate()
+
+    def get_algorithm_name(self, var, expression):
+        """
+        获取表达式中的算法名称（变量部分）和算法名，以及可能的索引（如 algorithm(A)[idx]）。
+
+        :param var: 变量，例如 'A'
+        :param expression: 包含算法表达式的字符串，例如 '10<=average(B)<=1000' 或 'algorithm(A)[idx]'
+        :return: 算法名称列表
+        """
+        # 正则匹配 "algorithm(A)" 或 "algorithm(A)[idx]" 中的算法名称和索引
+        pattern = re.compile(r'(\w+)\(' + re.escape(var) + r'\)(?:\[(\w+)\])?')
+
+        # 查找匹配的部分
+        matches = re.findall(pattern, expression)
+
+        return matches
 
 # 使用示例
 if __name__ == "__main__":

@@ -102,7 +102,7 @@ class LeastSquaresAlgorithm(Algorithm):
         data = np.array(self.data)
         # Convert Unix timestamps to ordinal dates
         time_stamp = np.array([pd.to_datetime(ts, unit='s').toordinal() for ts in data[:, 0]])
-        values = data[:, 1]
+        values = data[:, 1].astype(float)
         n = len(time_stamp)
         sum_timestamp = np.sum(time_stamp)
         sum_value = np.sum(values)
@@ -117,6 +117,97 @@ class LeastSquaresAlgorithm(Algorithm):
     def get_calculate_range(self, range):
         return range
 
+class IncreasingAlgorithm(Algorithm):
+    @property
+    def name(self):
+        return "Increasing"
+
+    @property
+    def complexity_time(self):
+        return "O(n)"
+
+    @property
+    def complexity_space(self):
+        return "O(1)"
+
+    def get_calculate(self):
+        data = np.array(self.data)
+        
+        values = data[:, 1].astype(float)  # 获取 value 列
+        return 1 if np.all(np.diff(values) > 0) else -1  # 检查是否递增
+
+    def get_calculate_range(self, range):
+        return range
+
+class DecreasingAlgorithm(Algorithm):
+    @property
+    def name(self):
+        return "Decreasing"
+
+    @property
+    def complexity_time(self):
+        return "O(n)"
+
+    @property
+    def complexity_space(self):
+        return "O(1)"
+
+    def get_calculate(self):
+        data = np.array(self.data)
+        
+        values = data[:, 1].astype(float)  # 获取 value 列
+        return 1 if np.all(np.diff(values) < 0) else -1  # 检查是否递减
+
+    def get_calculate_range(self, range):
+        return range
+
+
+class NonIncreasingAlgorithm(Algorithm):
+    @property
+    def name(self):
+        return "Non-Increasing"
+
+    @property
+    def complexity_time(self):
+        return "O(n)"
+
+    @property
+    def complexity_space(self):
+        return "O(1)"
+
+    def get_calculate(self):
+        data = np.array(self.data)
+        
+        values = data[:, 1].astype(float)  # 获取 value 列
+        return 1 if  np.all(np.diff(values) <= 0) else -1  # 检查是否非递增
+
+    def get_calculate_range(self, range):
+        return range
+
+
+class NonDecreasingAlgorithm(Algorithm):
+    @property
+    def name(self):
+        return "Non-Decreasing"
+
+    @property
+    def complexity_time(self):
+        return "O(n)"
+
+    @property
+    def complexity_space(self):
+        return "O(1)"
+
+    def get_calculate(self):
+        data = np.array(self.data)
+        
+        values = data[:, 1].astype(float)  # 获取 value 列
+        return 1 if np.all(np.diff(values) >= 0) else -1 # 检查是否非递减
+
+    def get_calculate_range(self, range):
+        return range
+
+
 class ONFactory:
     def get_algorithm(self, algorithm_name, data, *args):
         algorithms = {
@@ -125,6 +216,10 @@ class ONFactory:
             "min_value": MinValueAlgorithm,
             "max_value": MaxValueAlgorithm,
             "least_squares": LeastSquaresAlgorithm,
+            "increasing": IncreasingAlgorithm,
+            "decreasing": DecreasingAlgorithm,
+            "non_increasing": NonIncreasingAlgorithm,
+            "non_decreasing": NonDecreasingAlgorithm,
         }
         if algorithm_name in algorithms:
             return algorithms[algorithm_name](data)
