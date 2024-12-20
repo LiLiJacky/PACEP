@@ -9,6 +9,7 @@ from models.ConstraintCollection import ConstraintCollection
 from models.CountConstraint import CountConstraint
 from models.TimeConstarint import TimeConstraint
 from models.TypeConstraint import TypeConstraint
+from models.ValueConstraint import ValueConstraint
 from nfa.SelectStrategy import SelectStrategy
 from nfa.State import State, StateType
 from nfa.StateTransition import StateTransition
@@ -17,7 +18,7 @@ from util.NFADrawer import StateDrawer
 
 
 class RegexToState:
-    def __init__(self, regex: str, constraints: ConstraintCollection, contiguity_strategy, lazy_model):
+    def __init__(self, regex: str, constraints: ConstraintCollection, contiguity_strategy, lazy_model, lazy_calculate_model = None):
         self.regex = regex
         self.constraints = constraints
         self.states = []
@@ -26,6 +27,8 @@ class RegexToState:
         self.contiguity_strategy = contiguity_strategy
         self.kleene_state = []
         self.lazy_model = lazy_model
+        self.lazy_calculate_model = lazy_calculate_model
+        self.lazy_calculate_model_list = ["TABLECALCULATE", "INCREMENTCALCULATE", "MIXTURE"]
 
     def generate_states_and_transitions(self):
         # Parse regex and generate states and transitions
@@ -106,6 +109,7 @@ class RegexToState:
                 self._add_transition(current_state, StateTransitionAction.IGNORE, current_state)
             # Kleene
             if is_infinity_kleene:
+                current_state.min_times = min_repeat
                 # 添加自转移take边
                 self._add_transition(current_state, StateTransitionAction.TAKE, current_state)
 
@@ -158,7 +162,7 @@ class RegexToState:
         transition = StateTransition(source_state, action, target_state, ConstraintCollection())
         source_state.get_state_transitions().append(transition)
 
-    def _apply_constraints(self):
+    def _apply_constraints(self, lazy_calculate_model = None):
         # 处理 value_constraints
         for value_constraint in self.constraints.value_constrain:
             last_var = value_constraint.variables[-1]
@@ -167,6 +171,7 @@ class RegexToState:
             for state in self.states:
                 for transition in state.get_state_transitions():
                     source_name = transition.get_source_state().get_name()
+                    base_source_name = source_name.split(':')[0]
 
                     # 如果当前边无关，跳过
                     if base_last_var not in source_name or transition.get_action() == StateTransitionAction.IGNORE:
@@ -178,17 +183,59 @@ class RegexToState:
                         continue
 
                     # 如果是 K[i] > last(K) 模式
-                    if '[i]' in value_constraint.expression and '(' in value_constraint.expression and transition.get_action() == StateTransitionAction.TAKE:
-                        # 有算法第一个状态不加限制, B[i] > last(B)格式
-                        index = self.states.index(state)
-                        if index == 0 or base_source_name not in self.states[index - 1].get_name():
-                            continue
+                    if '[i]' in value_constraint.expression and '(' in value_constraint.expression:
+                        if not self.lazy_model and transition.get_action() == StateTransitionAction.TAKE:
+                            # 有算法第一个状态不加限制, B[i] > last(B)格式
+                            index = self.states.index(state)
+                            if index == 0 or base_source_name not in self.states[index - 1].get_name():
+                                continue
+                            transition.add_condition(value_constraint)
                         # 将其变为 algorithm的形式，添加在proceed边上
-                        if self.lazy_model:
-                            #TODO: Implement lazy model handling logic here
-                            continue
-                        transition.add_condition(value_constraint)
+                        elif self.lazy_model and transition.get_action() == StateTransitionAction.PROCEED:
+                            # 将其转变为算法
+                            expression = value_constraint.expression.strip()
+                            new_expression = ""
 
+                            # 正则表达式匹配数字并提取左右边界值
+                            match = re.search(r'([+-]?\d*\.?\d+)\s*(<=|<)\s*.*\s*(<=|<)\s*([+-]?\d*\.?\d+)', expression)
+
+                            max_value = 10000  # 默认最大值
+                            min_value = -10000  # 默认最小值
+
+                            if match:
+                                min_value = float(match.group(1))  # 提取最小值，转换为浮动点数
+                                max_value = float(match.group(4))  # 提取最大值，转换为浮动点数
+
+                            alg = ""
+                            if self.lazy_calculate_model in self.lazy_calculate_model_list:
+                                alg = "_dp"
+                            # 判断 non_decreasing 格式: 0 <= base_source_name[i] - last(base_source_name) <= xxx
+                            if expression.startswith(
+                                    "0 <=") and "<=" in expression and f"{base_source_name}[i] - last({base_source_name})" in expression:
+                                new_expression = f"{min_value} <= non_decreasing{alg}({base_source_name}) <= {max_value}"
+
+                            # 判断 increasing 格式: 0 < base_source_name[i] - last(base_source_name) < xxx
+                            elif expression.startswith(
+                                    "0 <") and "<" in expression and f"{base_source_name}[i] - last({base_source_name})" in expression:
+                                new_expression = f"{min_value} < increasing{alg}({base_source_name}) <= {max_value}"
+
+                            # 判断 non_increasing 格式: -xxx <= base_source_name[i] - last(base_source_name) <= 0
+                            elif expression.startswith(
+                                    "-") and "<=" in expression and f"{base_source_name}[i] - last({base_source_name})" in expression and " <= 0" in expression:
+                                new_expression = f"{min_value} <= non_increasing{alg}({base_source_name}) <= {max_value}"
+
+                            # 判断 decreasing 格式: -xxx < base_source_name[i] - last(base_source_name) < 0
+                            elif expression.startswith(
+                                    "-") and "<" in expression and f"{base_source_name}[i] - last({base_source_name})" in expression and " < 0" in expression:
+                                new_expression = f"{min_value} <= decreasing{alg}({base_source_name}) < {max_value}"
+
+                            # 默认情况：未匹配任何格式
+                            else:
+                                new_expression = "unknown"
+
+                            new_value_constraint = ValueConstraint([base_source_name], new_expression)
+                            transition.add_condition(new_value_constraint)
+                        continue
 
                     # 如果是Kleene事件，且包含多个变量，只需要处理infinity_kleene proceed逻辑
                     if (variable_nums != 1 or '[i]' not in value_constraint.expression) and transition.get_action() == StateTransitionAction.PROCEED:
@@ -291,6 +338,7 @@ class RegexToState:
                         if '(' in constraint.expression:
                             edge.condition.value_constrain.remove(constraint)
                             edge.condition.lazy_calculate_value_constrain.append(constraint)
+                            edge.condition.basic_lazy_calculate_value_constrain.append(constraint)
                             has_kleene_algorithm = True
                     if has_kleene_algorithm:
                         continue

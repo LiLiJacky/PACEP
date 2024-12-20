@@ -13,6 +13,11 @@ from simulated_data.SimulateData2 import DataSource
 from util.NFADrawer import NFADrawer, png_output_path
 
 if __name__ == "__main__":
+    # 获取当前工作目录
+    current_directory = os.getcwd()
+
+    print(f"当前工作目录是: {current_directory}")
+    print(os.path)
     # Initialize the pattern generator
     generator = RegexPatternGenerator()
 

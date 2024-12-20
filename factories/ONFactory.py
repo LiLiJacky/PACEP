@@ -102,7 +102,7 @@ class LeastSquaresAlgorithm(Algorithm):
         data = np.array(self.data)
         # Convert Unix timestamps to ordinal dates
         time_stamp = np.array([pd.to_datetime(ts, unit='s').toordinal() for ts in data[:, 0]])
-        values = data[:, 1]
+        values = data[:, 1].astype(float)
         n = len(time_stamp)
         sum_timestamp = np.sum(time_stamp)
         sum_value = np.sum(values)
@@ -117,6 +117,144 @@ class LeastSquaresAlgorithm(Algorithm):
     def get_calculate_range(self, range):
         return range
 
+class IncreasingAlgorithm(Algorithm):
+    @property
+    def name(self):
+        return "Increasing"
+
+    @property
+    def complexity_time(self):
+        return "O(n)"
+
+    @property
+    def complexity_space(self):
+        return "O(1)"
+
+    def get_calculate(self):
+        data = np.array(self.data)
+        if len(data) <= 1:
+            return -1
+
+        values = data[:, 1].astype(float)  # 获取 value 列
+        return 1 if np.all(np.diff(values) > 0) else -1  # 检查是否递增
+
+    def get_calculate_range(self, range):
+        return range
+
+class DecreasingAlgorithm(Algorithm):
+    @property
+    def name(self):
+        return "Decreasing"
+
+    @property
+    def complexity_time(self):
+        return "O(n)"
+
+    @property
+    def complexity_space(self):
+        return "O(1)"
+
+    def get_calculate(self):
+        data = np.array(self.data)
+        if len(data) <= 1:
+            return -1
+
+        values = data[:, 1].astype(float)  # 获取 value 列
+        return 1 if np.all(np.diff(values) < 0) else -1  # 检查是否递减
+
+    def get_calculate_range(self, range):
+        return range
+
+
+class NonIncreasingAlgorithm(Algorithm):
+    @property
+    def name(self):
+        return "Non-Increasing"
+
+    @property
+    def complexity_time(self):
+        return "O(n)"
+
+    @property
+    def complexity_space(self):
+        return "O(1)"
+
+    def get_calculate(self):
+        data = np.array(self.data)
+        if len(data) <= 1:
+            return -1
+
+        values = data[:, 1].astype(float)  # 获取 value 列
+        return 1 if  np.all(np.diff(values) <= 0) else -1  # 检查是否非递增
+
+    def get_calculate_range(self, range):
+        return range
+
+
+class NonDecreasingAlgorithm(Algorithm):
+    @property
+    def name(self):
+        return "Non-Decreasing"
+
+    @property
+    def complexity_time(self):
+        return "O(n)"
+
+    @property
+    def complexity_space(self):
+        return "O(1)"
+
+    def get_calculate(self):
+        data = np.array(self.data)
+
+        if len(data) <= 1:
+            return -1
+
+        values = data[:, 1].astype(float)  # 获取 value 列
+        return 1 if np.all(np.diff(values) >= 0) else -1 # 检查是否非递减
+
+    def get_calculate_range(self, range):
+        return range
+
+
+class StandardDeviationAlgorithm(Algorithm):
+    @property
+    def name(self):
+        return "Standard-Deviation"
+
+    @property
+    def complexity_time(self):
+        return "O(n)"
+
+    @property
+    def complexity_space(self):
+        return "O(1)"
+
+    def get_calculate(self):
+        data = np.array(self.data)
+        if len(data) == 1:
+            return -1000
+
+        # 计算标准差
+        std_deviation = np.std(data, ddof=1)  # ddof = 1 表示样本标准差
+
+        # 计算均值
+        mean_value = np.mean(data)
+
+        # 计算标准差占比
+        if mean_value != 0:  # 避免除以 0
+            std_ratio = (std_deviation / mean_value) * 100
+        else:
+            std_ratio = 0  # 如果均值为 0，定义占比为 0
+
+        return std_ratio  # 返回波动占比
+
+    def get_calculate_range(self, range):
+        return range
+
+    def get_time_complexity(self, n):
+        return  2 * n  + 1
+
 class ONFactory:
     def get_algorithm(self, algorithm_name, data, *args):
         algorithms = {
@@ -125,6 +263,11 @@ class ONFactory:
             "min_value": MinValueAlgorithm,
             "max_value": MaxValueAlgorithm,
             "least_squares": LeastSquaresAlgorithm,
+            "increasing": IncreasingAlgorithm,
+            "decreasing": DecreasingAlgorithm,
+            "non_increasing": NonIncreasingAlgorithm,
+            "non_decreasing": NonDecreasingAlgorithm,
+            "standard_deviation": StandardDeviationAlgorithm
         }
         if algorithm_name in algorithms:
             return algorithms[algorithm_name](data)

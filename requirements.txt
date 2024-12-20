@@ -3,3 +3,4 @@ graphviz~=2.50.0
 numpy~=2.0.1
 scipy~=1.14.0
 cachetools~=5.4.0
+pybloom_live

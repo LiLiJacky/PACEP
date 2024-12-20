@@ -29,7 +29,7 @@ from simulated_data.SimulateDataByFile import DataSource
 
 def flash_crash_single_kleene(regex, min_window_time, max_window_time, source, rate):
     constraints_dict = {
-        'value_constrain': [{'variables': ['A'], 'expression': '0.1 <= least_squares(A) <= 100'},
+        'value_constrain': [{'variables': ['A'], 'expression': '0.1 <= sum_square_difference(A) <= 100'},
                             {'variables': ['A', 'B'], 'expression': '-100 <= B - min(A) <= 0'},
                             {'variables': ['B', 'C'], 'expression': '0.5 <= C - B <= 100'},
                             {'variables': ['A', 'C'], 'expression': '0 <= C - max(A) <= 100'},],

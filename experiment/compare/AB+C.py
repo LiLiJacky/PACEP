@@ -197,7 +197,7 @@ def postponing(regex, min_window_time, max_window_time, data_source, rate):
     # 假设 window_times 和 window_time 是已知的或从配置中获得的
     window_times = {}
 
-    nfa = NFA(valid_states, window_times, max_window_time, handle_timeout=True, lazy_model=True)
+    nfa = NFA(valid_states, window_times, max_window_time, handle_timeout=True, lazy_model=True, selection_strategy = contiguity_strategy)
 
     # 初始化 SharedBuffer 和 NFA
     config = SharedBufferCacheConfig.from_config('../../config.ini')

@@ -10,7 +10,7 @@ class ValueConstraint(Constraint):
         self.expression = expression
         self.expression_calculate = ExpressionCalculate(expression)
 
-    def validate(self, data, context = None) -> bool:
+    def validate(self, data = None, context = None, state_algorithm_results = None) -> bool:
         try:
             values = {}
             if context is not None:
@@ -33,32 +33,35 @@ class ValueConstraint(Constraint):
                 else:
                     values = {}
                     index = 0
-                    for vara in self.variables:
-                        var = vara.split('[')[0]
+                    for var in self.variables:
                         index += 1
-                        if re.search(rf'\w+\({var}\)', self.expression) or re.search(rf'\w+\({var}\)\[\d+\]',
+                        if "[i]" in var and var in self.expression: # B[i]
+                            values[var] = [data.event.timestamp, data.event.value]
+                        elif re.search(rf'\w+\({var}\)', self.expression) or re.search(rf'\w+\({var}\)\[\d+\]',
                                                                                            self.expression):  # algorithm(K) 或 algorithm(K)[num] 格式
-                            var_name = f"{var}[i]"
-                            values_event_list = context.get_events_for_pattern(var_name)
+                            values_event_list = context.get_events_for_pattern(var)
                             values_list = []
                             for e in values_event_list:
                                 values_list.append([e.event.timestamp, e.event.value])
                             values[var] = values_list
                         elif re.search(rf'\b{var}\b', self.expression):  # 普通变量
-                            if index != len(self.variables):
+                            if index != len(self.variables): # 不知道有什么作用
                                 values[var] = [context.get_events_for_pattern(var)[0].event.timestamp, context.get_events_for_pattern(var)[0].event.value]
                         else:
                             raise ValueError(f"Unrecognized variable format: {var}")
 
                     last_var = self.variables[-1].split('[')[0]
-                    if re.search(rf'\w+\({last_var}\)', self.expression) or re.search(rf'\w+\({last_var}\)\[\d+\]',
+                    if "[i]" not in self.expression:
+                        if re.search(rf'\w+\({last_var}\)', self.expression) or re.search(rf'\w+\({last_var}\)\[\d+\]',
                                                                                            self.expression):
-                        values[last_var].append([data.event.timestamp, data.event.value])
-                    else:
-                        values[last_var] = [data.event.timestamp, data.event.value]
+                            values[last_var].append([data.event.timestamp, data.event.value])
+                        else:
+                            values[last_var] = [data.event.timestamp, data.event.value]
 
                 if len(values) == 0:
                     return False
+            elif state_algorithm_results is not None:
+                return self.expression_calculate.calculate(state_algorithm_results=state_algorithm_results)
             else:
                 values = data
 

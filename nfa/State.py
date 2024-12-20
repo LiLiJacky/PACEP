@@ -16,12 +16,13 @@ class StateType:
     Stop = 'Stop' # 丢弃这次更新的所有中间匹配结果
 
 class State(Generic[T]):
-    def __init__(self, name: str, state_type: StateType, select_strategy: SelectStrategy, *lazy_constrains: List[ValueConstraint]):
+    def __init__(self, name: str, state_type: StateType, select_strategy: SelectStrategy, *lazy_constrains: List[ValueConstraint], min_times = 0):
         self.name = name
         self.state_type = state_type
         self.state_transitions: List['StateTransition[T]'] = []
         self.select_strategy = select_strategy
         self.lazy_value_constraints = lazy_constrains if lazy_constrains else []
+        self.min_times = min_times
 
     def get_state_type(self) -> StateType:
         return self.state_type

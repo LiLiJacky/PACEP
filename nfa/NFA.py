@@ -1,15 +1,19 @@
 import datetime
 import time
+from collections import defaultdict
 from typing import List, Dict, Optional, Collection, Tuple
 from dataclasses import dataclass
 
 from aftermatch.NoSkipStrategy import NoSkipStrategy
 from interfaces.Constraint import Constraint
-from lazy_calculate.DIRECT import DIRECT
+from lazy_calculate.IncreamentCalculate import IncrementTableCalculate
+from lazy_calculate.TableCalculate import TableCalculate
+from lazy_calculate.TableTool import TableTool
 from models.ValueConstraint import ValueConstraint
 from nfa.ComputationState import ComputationState
 from nfa.NFAState import NFAState
 from nfa.SelectStrategy import SelectStrategy
+from shared_calculate.BloomFilterManager import BloomFilterManager
 from sharedbuffer.SharedBufferAccessor import SharedBufferAccessor
 from nfa.State import State
 from sharedbuffer.NodeId import NodeId
@@ -108,13 +112,26 @@ class OutgoingEdges:
 
 
 class NFA:
-    def __init__(self, valid_states: Collection[State], window_times: Dict[str, int], window_time: int, handle_timeout: bool, lazy_model = False, lazy_calculate_model = None):
+    def __init__(self, valid_states: Collection[State], window_times: Dict[str, int], window_time: int, handle_timeout: bool, lazy_model = False, lazy_calculate_model = None,
+                 selection_strategy = None):
         self.window_time = window_time
         self.handle_timeout = handle_timeout
         self.states = self.load_states(valid_states)
         self.window_times = window_times
         self.lazy_model = lazy_model
         self.lazy_calculate_model = lazy_calculate_model
+        self.selection_strategy = [] if selection_strategy is None else selection_strategy
+
+        # capacity = min(2**(window_time * 3), 2**20)
+        # self.bloom_filter_manager = BloomFilterManager(max(capacity, 8192), 0.001, window_time * 30)
+
+        # 初始化 min_times
+        min_times = {}
+        for state in valid_states:
+            for t in state.state_transitions:
+                if t.get_action() == StateTransitionAction.PROCEED:
+                    min_times[state.name] = state.min_times
+        self.min_times = min_times
 
     def load_states(self, valid_states: Collection[State]) -> Dict[str, State]:
         return {state.get_name(): state for state in valid_states}
@@ -265,6 +282,9 @@ class NFA:
                 matched_result_ex = shared_buffer_accessor.extract_patterns(earliest_match.get_previous_buffer_entry(),
                                                                          earliest_match.get_version())
 
+                if self.lazy_model:
+                    matched_result_ex[1].extend(earliest_match.lazy_constraints)
+
                 matched_result = matched_result_ex[0]
 
                 # 获取第一个事件
@@ -295,17 +315,64 @@ class NFA:
             if pm.get_start_event_id() is None or pm in partial_matches
         ]
 
+        table_tool = TableTool()
+
+        mix_limit = 5
+
         # lazy model情况下，当前计算结果需要展开为最终结果
         if len(result) != 0 and self.lazy_model:
             final_result = []
             if self.lazy_calculate_model == 'DIRECT':
-                direct_calculate = DIRECT()
+                final_result = []
                 for r in result:
-                    final_results = direct_calculate.evaluate_combinations(r[0], r[1])
+                    final_results = TestABCEx.valuate(r)
                     if final_results:
                         final_result.extend(final_results)
-            elif self.lazy_calculate_model == 'MAXINTERVAL':
-                pass
+            elif self.lazy_calculate_model == 'TABLECALCULATE' or (self.lazy_calculate_model == 'MIXTURE' and len(result) <= mix_limit):
+            # elif self.lazy_calculate_model == 'TABLECALCULATE':
+                table_calculate = TableCalculate(event_threshold=self.window_time/2, selection_strategy = self.selection_strategy, min_times = self.min_times)
+                for r in result:
+                    #final_results = table_calculate.evaluate_combinations(r[0], r[1], self.bloom_filter_manager)
+                    final_results = table_calculate.evaluate_combinations(r[0], r[1])
+                    if final_results:
+                        final_result.extend(final_results)
+            elif self.lazy_calculate_model == 'INCREMENTCALCULATE' or (self.lazy_calculate_model == 'MIXTURE' and len(result) > mix_limit):
+                # print("result_time")
+                # begin_time = result[0][0]['A'][0].event.timestamp
+                # a = datetime.datetime.utcfromtimestamp(begin_time)
+                # end_time = result[0][0]['C'][0].event.timestamp
+                # b = datetime.datetime.utcfromtimestamp(end_time)
+                # print(a)
+                # print(b)
+
+                increment_calculate = IncrementTableCalculate(selection_strategy = self.selection_strategy, min_times = self.min_times)
+
+                # Step 1: 按 latency_constrain 的种类对 result[1] 分组
+                lazy_constrains_map_keys = []
+                latency_group_map = {}
+                result_group_map = {}
+                for r in result:
+                    lazy_constrains = r[1]
+                    lazy_constrains_key = table_tool.ensure_hashable(lazy_constrains)
+                    if lazy_constrains_key in lazy_constrains_map_keys:
+                        result_group = result_group_map[lazy_constrains_key]
+                        result_group.append(r)
+                        result_group_map[lazy_constrains_key] = result_group
+                    else:
+                        latency_group_map[lazy_constrains_key] = lazy_constrains
+                        result_group_map[lazy_constrains_key] = [r]
+                        lazy_constrains_map_keys.append(lazy_constrains_key)
+
+                # Step 2: 遍历分组，分别调用 increment_calculate.evaluate_combinations
+                for latency_constrain_key in lazy_constrains_map_keys:
+                    # 提取 basic_results 和 constraints
+                    basic_results = [r[0] for r in result_group_map[latency_constrain_key]]
+                    constraints = latency_group_map[latency_constrain_key]  # 所有分组的 constraints 应该相同
+
+                    # 调用 evaluate_combinations
+                    finale_results = increment_calculate.evaluate_incrementally(basic_results, constraints)
+                    if finale_results:
+                        final_result.extend(finale_results)
             elif self.lazy_calculate_model == 'GRAPH':
                 lazy_handler = LazyHandler()
                 lazy_handler.create_calculate_graph()
@@ -357,7 +424,10 @@ class NFA:
                     lazy_constraints = []
                     if self.lazy_model:
                         lazy_constraints = edge.get_condition().lazy_calculate_value_constrain
-                        lazy_constraints.extend(computation_state.get_lazy_constraints())
+
+                        for constrain in computation_state.get_lazy_constraints():
+                            if constrain not in lazy_constraints:
+                                lazy_constraints.append(constrain)
                     self.add_computation_state(shared_buffer_accessor, resulting_computation_states,
                                                edge.get_target_state(),
                                                computation_state.get_previous_buffer_entry(),
@@ -400,9 +470,14 @@ class NFA:
 
                 final_state = self.find_final_state_after_proceed(context, next_state, event_wrapper.get_event())
                 if final_state:
-                    self.add_computation_state(shared_buffer_accessor, resulting_computation_states, final_state,
+                    if self.lazy_model:
+                        self.add_computation_state(shared_buffer_accessor, resulting_computation_states, final_state,
                                                new_entry, next_version, start_timestamp, previous_timestamp,
-                                               start_event_id)
+                                               start_event_id, final_state.lazy_value_constraints)
+                    else:
+                        self.add_computation_state(shared_buffer_accessor, resulting_computation_states, final_state,
+                                                   new_entry, next_version, start_timestamp, previous_timestamp,
+                                                   start_event_id)
 
         if self.is_start_state(computation_state):
             total_branches = self.calculate_increasing_self_state(outgoing_edges.total_ignore_branches,
@@ -439,7 +514,11 @@ class NFA:
                                                                                             transition.get_condition(),
                                                                                             event):
                         if transition.get_target_state().is_final():
-                            return transition.get_target_state()
+                            # 处理 final 的lazy proceed
+                            target_state = transition.get_target_state()
+                            if self.lazy_model:
+                                target_state.add_lazy_constraints(transition.condition.lazy_calculate_value_constrain)
+                            return target_state
                         else:
                             states_to_check.append(transition.get_target_state())
         except Exception as e:
@@ -471,7 +550,7 @@ class NFA:
                     if self.check_filter_condition(context, state_transition.get_condition(), event):
                         if state_transition.get_action() == StateTransitionAction.PROCEED:
                             target_state = state_transition.get_target_state()
-                            # lazy model下，需要将延迟处理的 value_constrain 传递给下一个状态
+                            #lazy model下，需要将延迟处理的 value_constrain 传递给下一个状态
                             if self.lazy_model:
                                 lazy_value_constrains = state_transition.get_condition().lazy_calculate_value_constrain
                                 if lazy_value_constrains:
@@ -482,6 +561,7 @@ class NFA:
                             # 将该状态下被延迟的lazy_constrain 添加到具体的边转移中
                             if self.lazy_model:
                                 if current_state.lazy_value_constraints:
+                                    #computation_state.add_lazy_constraints(current_state.lazy_value_constraints)
                                     state_transition.condition.lazy_calculate_value_constrain.extend(current_state.lazy_value_constraints)
                             if state_transition.get_action() == StateTransitionAction.TAKE:
                                 # 如果转移状态对象是 kleene_dead, 则不需要判断其他边

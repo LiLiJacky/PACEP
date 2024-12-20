@@ -1,3 +1,4 @@
+import copy
 from typing import List, Optional, Union
 
 from interfaces.Constraint import Constraint
@@ -15,6 +16,7 @@ class ConstraintCollection:
         self._count_constrain = []
         self._type_constrain = []
         self._lazy_calculate_value_constrain = []
+        self._basic_lazy_calculate_value_constrain = []
 
     def add_constraint(self, constraint: Constraint):
         if isinstance(constraint, ValueConstraint):
@@ -101,8 +103,12 @@ class ConstraintCollection:
     def lazy_calculate_value_constrain(self) -> List[ValueConstraint]:
         return self._lazy_calculate_value_constrain
 
+    @property
+    def basic_lazy_calculate_value_constrain(self) -> List[ValueConstraint]:
+        return self._basic_lazy_calculate_value_constrain
+
     def clear_lazy_calculate_value_constrain(self):
-        self._lazy_calculate_value_constrain.clear()
+        self._lazy_calculate_value_constrain = copy.copy(self._basic_lazy_calculate_value_constrain)
 
     def validate(self, event, context: 'ConditionContext'):
         # 验证类型是否满足

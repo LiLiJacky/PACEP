@@ -46,4 +46,4 @@ build
 *.swp
 output/
 test/
-experiment/compare/core_experiment/
+../core_experiment/
