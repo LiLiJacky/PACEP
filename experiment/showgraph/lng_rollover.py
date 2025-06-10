@@ -1,5 +1,4 @@
 import copy
-import os
 import time
 from datetime import datetime, timedelta
 from itertools import combinations
@@ -7,13 +6,12 @@ from queue import Empty
 
 import numpy as np
 import pandas as pd
-import psutil
 from matplotlib import pyplot as plt
 from matplotlib.cm import get_cmap
 
 from aftermatch.NoSkipStrategy import NoSkipStrategy
 from configuration.SharedBufferCacheConfig import SharedBufferCacheConfig
-from generator.DataGenerator import generate_data_with_pandas_sorted, generate_lng_data_with_pandas_sorted
+from generator.DataGenerator import generate_data_with_pandas_sorted
 from lazy_calculate.TableTool import TableTool
 from models.ConstraintCollection import ConstraintCollection
 from models.DataInfo import DataInfo
@@ -33,10 +31,7 @@ from sharedbuffer.NodeId import NodeId
 from multiprocessing import Queue
 from simulated_data.SimulateDataByFile import DataSource
 
-def get_memory_usage():
-    process = psutil.Process(os.getpid())
-    memory_info = process.memory_info()
-    return memory_info.rss / (1024 * 1024)  # 返回内存占用，单位为 MB
+
 
 def nfa(valid_states, window_times, max_window_time, data_source, rate, selection_strategy):
     nfa = NFA(valid_states, window_times, max_window_time, handle_timeout=True, selection_strategy = selection_strategy)
@@ -61,9 +56,10 @@ def nfa(valid_states, window_times, max_window_time, data_source, rate, selectio
     last_handle_time = modify_begin_time
     table_tool = TableTool()
 
+    event_index = 0
+    csv_file = "./change.csv"
+
     record = []
-    memory_usage_total = 0
-    events_nums = 0
 
     # 模拟数据流处理
     try:
@@ -79,6 +75,14 @@ def nfa(valid_states, window_times, max_window_time, data_source, rate, selectio
                 # 处理事件并更新 NFA 状态
                 matches = nfa.process(accessor, nfa_state, event_wrapper, data_item.timestamp, NoSkipStrategy.INSTANCE,
                                       TimerService())
+
+                event_index += 1
+                partitial_matches_nums = len(nfa_state.get_partial_matches())
+
+                now_patitial_matches = pd.DataFrame([[event_index, partitial_matches_nums, "NFA"]],
+                                                    columns=["event_index", "nums", "models"])
+                now_patitial_matches.to_csv(csv_file, mode='a', header=False, index=False)
+                print(now_patitial_matches.to_string(index=False))
 
                 if matches:
                     for match in matches:
@@ -99,16 +103,17 @@ def nfa(valid_states, window_times, max_window_time, data_source, rate, selectio
 
                 last_handle_time = time.time()
 
-            memory_usage_total += get_memory_usage()
-            events_nums += 1
             time.sleep(1 / rate)  # To prevent the main loop from consuming too much CPU
     except Empty:
-        # print("Total handle time:" + str(last_handle_time - modify_begin_time))
-        # print("Total matches:" + str(len(total_matched)))
-        #
-        # print(record)
 
-        return last_handle_time - modify_begin_time, len(total_matched), memory_usage_total / events_nums
+        #print("Result counts:", result_counts)
+        print("Total handle time:" + str(last_handle_time - modify_begin_time))
+        print("Total matches:" + str(len(total_matched)))
+
+        print(record)
+
+
+        return last_handle_time - modify_begin_time, len(total_matched)
 
     except KeyboardInterrupt:
         for process in processes:
@@ -141,9 +146,8 @@ def postponing(valid_states, window_times, max_window_time, data_source, rate, l
     last_handle_time = modify_begin_time
     result_list = []
     record = []
-
-    memory_usage_total = 0
-    events_nums = 0
+    event_index = 0
+    csv_file = "./change.csv"
 
     # 模拟数据流处理
     try:
@@ -159,6 +163,13 @@ def postponing(valid_states, window_times, max_window_time, data_source, rate, l
                 # 处理事件并更新 NFA 状态
                 matches = nfa.process(accessor, nfa_state, event_wrapper, data_item.timestamp, NoSkipStrategy.INSTANCE,
                                       TimerService())
+
+                event_index += 1
+                partitial_matches_nums = len(nfa_state.get_partial_matches())
+
+                now_patitial_matches = pd.DataFrame([[event_index, partitial_matches_nums, "PACEP"]], columns=["event_index", "nums", "models"])
+                now_patitial_matches.to_csv(csv_file, mode='a', header=False, index=False)
+                print(now_patitial_matches.to_string(index=False))
 
                 if matches:
                     for match in matches:
@@ -179,16 +190,14 @@ def postponing(valid_states, window_times, max_window_time, data_source, rate, l
 
                 last_handle_time = time.time()
 
-            memory_usage_total += get_memory_usage()
-            events_nums += 1
             time.sleep(1 / rate)  # To prevent the main loop from consuming too much CPU
     except Empty:
-        # print("Total handle time:" + str(last_handle_time - modify_begin_time))
-        # print("Total matches:" + str(len(total_matched)))
-        #
-        # print(record)
+        print("Total handle time:" + str(last_handle_time - modify_begin_time))
+        print("Total matches:" + str(len(total_matched)))
 
-        return last_handle_time - modify_begin_time, len(total_matched), memory_usage_total / events_nums
+        print(record)
+
+        return last_handle_time - modify_begin_time, len(total_matched)
 
     except KeyboardInterrupt:
         for process in processes:
@@ -270,79 +279,70 @@ if __name__ == "__main__":
     for i in range(1):  # 10轮实验
         begin_time = time.time()
         run_results = []
-        for a in np.arange(0.1, 0.5, 0.1):
-            print(time.time())
-            b = a  # b 是 a 的补数
-            c = 1 - b - a
-            event_dict = {"a": a, "b": b, "c":c}
-            output_name = f"minimal_test_{a:.1f}_{b:.1f}_{c:.1f}"
+        output_name = f"lng_rollover_pacep_all_method_test"
 
-            # 调用生成数据的方法
-            generate_lng_data_with_pandas_sorted(event_dict, 1000, output_name, start_time, time_interval_seconds=1)
+        # 调用生成数据的方法
+        # generate_data_with_pandas_sorted(event_dict, 1000, output_name, start_time, time_interval_seconds=1)
 
-            #max_window_times = [4, 6, 8, 10, 12, 14, 16, 18]
-            max_window_times = [4, 6, 8, 10]
-            min_window_time = 0
+        max_window_times = [18]
+        min_window_time = 0
 
-            data_source = '../../data/minimal_test/' + output_name + '.csv'
+        data_source = '../../data/minimal_test/' + output_name + '.csv'
 
-            for max_window_time in max_window_times:
-                # 连续匹配策略
-                contiguity_strategys = {
-                    "STAM": {
-                        'STRICT': set(),
-                        'RELAXED': set(),
-                        'NONDETERMINISTICRELAXED': {'A', 'B', 'C'}
-                    }
+        for max_window_time in max_window_times:
+            # 连续匹配策略
+            contiguity_strategys = {
+                "STAM": {
+                    'STRICT': set(),
+                    'RELAXED': set(),
+                    'NONDETERMINISTICRELAXED': {'A', 'B', 'C'}
+                }
+            }
+
+            out_limit = False
+            for event_selection_strategy, contiguity_strategy in contiguity_strategys.items():
+                # # NFA 测试
+                nfa_handle_time, nfa_matches = test(regex, min_window_time, max_window_time + 1, data_source, rate,
+                                                    False, "", contiguity_strategy.copy())
+
+                # Lazy 测试
+                lazy_handle_time, lazy_matches = test(regex, min_window_time, max_window_time + 1, data_source, rate,
+                                                      True, "TABLECALCULATE", contiguity_strategy.copy())
+
+                # Lazy 优化测试
+                # lazy_increment_handle_time, lazy_increment_matches = test(regex, min_window_time, max_window_time + 1, data_source, rate,
+                #                                       True, "INCREMENTCALCULATE", contiguity_strategy.copy())
+
+                # NFA 结果
+                # nfa_result = {
+                #     "window_time": max_window_time,
+                #     "selection_strategy": event_selection_strategy,
+                #     "engine": "nfa",
+                #     "handle_time": nfa_handle_time,
+                #     "matches": nfa_matches
+                # }
+
+                # Lazy 结果
+                lazy_result = {
+                    "window_time": max_window_time,
+                    "selection_strategy": event_selection_strategy,
+                    "engine": "pacep",
+                    "handle_time": lazy_handle_time,
+                    "matches": lazy_matches
                 }
 
-                out_limit = False
-                for event_selection_strategy, contiguity_strategy in contiguity_strategys.items():
-                    nfa_begin_time = time.time()
-                    # NFA 测试
-                    nfa_handle_time, nfa_matches, nfa_memory = test(regex, min_window_time, max_window_time, data_source, rate,
-                                                        False, "", contiguity_strategy)
+                # # lazy increment 结果
+                # lazy_increment_result = {
+                #     "window_time": max_window_time,
+                #     "selection_strategy": event_selection_strategy,
+                #     "engine": "nfa",
+                #     "handle_time": lazy_increment_handle_time,
+                #     "matches": lazy_increment_matches
+                # }
 
-                    if time.time() - nfa_begin_time > 600:
-                        out_limit = True
-
-                    # Lazy 测试
-                    lazy_handle_time, lazy_matches, lazy_memory = test(regex, min_window_time, max_window_time, data_source, rate,
-                                                          True, "TABLECALCULATE", contiguity_strategy)
-
-                    # NFA 结果
-                    nfa_result = {
-                        "a": a,
-                        "b": b,
-                        "c": c,
-                        "window_time": max_window_time,
-                        "selection_strategy": event_selection_strategy,
-                        "engine": "nfa",
-                        "handle_time": nfa_handle_time,
-                        "matches": nfa_matches,
-                        "memory_usage": nfa_memory
-                    }
-
-                    # Lazy 结果
-                    lazy_result = {
-                        "a": a,
-                        "b": b,
-                        "c": c,
-                        "window_time": max_window_time,
-                        "selection_strategy": event_selection_strategy,
-                        "engine": "pacep",
-                        "handle_time": lazy_handle_time,
-                        "matches": lazy_matches,
-                        "memory_usage": lazy_memory
-                    }
-
-                    run_results.append(nfa_result)
-                    run_results.append(lazy_result)
-                    if out_limit:
-                        break
-
-                if out_limit:
-                    break
+                # run_results.append(nfa_result)
+                run_results.append(lazy_result)
+                # run_results.append(lazy_increment_result)
 
         experiment_results.append(run_results)
 
@@ -354,13 +354,11 @@ if __name__ == "__main__":
         {
             "a": result.get("a", None),
             "b": result.get("b", None),
-            "c": result.get("c", None),
             "window_time": result["window_time"],
             "selection_strategy": result["selection_strategy"],
             "engine": result["engine"],
             "handle_time": result["handle_time"],
-            "matches": result["matches"],
-            "memory_usage": result["memory_usage"]
+            "matches": result["matches"]
         }
         for run in experiment_results
         for result in run
@@ -370,94 +368,5 @@ if __name__ == "__main__":
     results_df = pd.DataFrame(flat_results)
 
     # 保存为 CSV 文件
-    output_path = "../../output/lng_rollover_event_frequency_result.csv"
-    results_df.to_csv(output_path, index=False)
-
-    # 按窗口时间和频率分组计算平均值
-    grouped_results = results_df.groupby(['window_time', 'a', 'engine']).agg(
-        avg_handle_time=('handle_time', 'mean'),
-        avg_memory_usage=('memory_usage', 'mean')
-    ).reset_index()
-
-    # 定义颜色映射（使用推荐的方式）
-    frequencies = sorted(grouped_results['a'].unique())
-    cmap = plt.colormaps['tab10']  # 使用新的推荐方式获取颜色映射
-    color_map = {freq: cmap(i / len(frequencies)) for i, freq in enumerate(frequencies)}
-
-    # 绘图
-    plt.figure(figsize=(12, 8))
-
-    # 绘制每个频率的曲线
-    window_times = sorted(grouped_results['window_time'].unique())
-
-    for freq in frequencies:
-        nfa_data = grouped_results[(grouped_results['a'] == freq) & (grouped_results['engine'] == 'nfa')]
-        pacep_data = grouped_results[(grouped_results['a'] == freq) & (grouped_results['engine'] == 'pacep')]
-
-        color = color_map[freq]
-
-        if not nfa_data.empty:
-            plt.plot(
-                nfa_data['window_time'],
-                np.log10(nfa_data['avg_handle_time']),
-                linestyle='--', marker='o', color=color, label=f'NFA (freqA={freq:.1f})'
-            )
-        if not pacep_data.empty:
-            plt.plot(
-                pacep_data['window_time'],
-                np.log10(pacep_data['avg_handle_time']),
-                linestyle='-', marker='o', color=color, label=f'PACEP (freqA={freq:.1f})'
-            )
-
-    # 设置图表信息
-    plt.xlabel('Window Time')
-    plt.ylabel('Log10 of Average Handle Time (seconds)')
-    plt.title('Average Handle Time vs Window Time (per Frequency)')
-    plt.legend()
-    plt.grid(True)
-
-    # 显示图表
-    plt.show()
-
-    # 保存图片
-    output_image_path = "../../output/a+b+c_average_handle_time.png"
-    plt.savefig(output_image_path)
-
-    # 绘图
-    plt.figure(figsize=(12, 8))
-
-    # 绘制每个频率的曲线
-    window_times = sorted(grouped_results['window_time'].unique())
-
-    for freq in frequencies:
-        nfa_data = grouped_results[(grouped_results['a'] == freq) & (grouped_results['engine'] == 'nfa')]
-        pacep_data = grouped_results[(grouped_results['a'] == freq) & (grouped_results['engine'] == 'pacep')]
-
-        color = color_map[freq]
-
-        if not nfa_data.empty:
-            plt.plot(
-                nfa_data['window_time'],
-                np.log10(nfa_data['avg_memory_usage']),
-                linestyle='--', marker='o', color=color, label=f'NFA (freqA={freq:.1f})'
-            )
-        if not pacep_data.empty:
-            plt.plot(
-                pacep_data['window_time'],
-                np.log10(pacep_data['avg_memory_usage']),
-                linestyle='-', marker='o', color=color, label=f'PACEP (freqA={freq:.1f})'
-            )
-
-    # 设置图表信息
-    plt.xlabel('Window Time')
-    plt.ylabel('Log10 of Average Memory Usage (MB)')
-    plt.title('Average Memory Usage vs Window Time (per Frequency)')
-    plt.legend()
-    plt.grid(True)
-
-    # 显示图表
-    plt.show()
-
-    # 保存图片
-    output_image_path = "../../output/a+b+c_memory_usage.png"
-    plt.savefig(output_image_path)
+    output_path = "../../output/lng_rollover_example.csv"
+    # results_df.to_csv(output_path, index=False)

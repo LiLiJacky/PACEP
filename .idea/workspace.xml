@@ -4,81 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="09d9fc46-1900-4950-8fab-5adb2c360a59" name="Changes" comment="&quot;finished increment calculate&quot;">
-      <change afterPath="$PROJECT_DIR$/data/compare/flash_crash_log.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/compare/flash_crash_test.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/compare/goog_msft.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/compare/goog_msft_other.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/compare/goog_msft_small.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/compare/goog_msft_test.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/compare/goog_msft_test2.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/compare/hadoop_data.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/compare/hadoop_log_data.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/compare/hadoop_log_data_other.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/compare/hadoop_log_data_small.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/compare/lng_rollover.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/compare/lng_rollover_test.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/compare/lng_rollover_test2.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/generator/hadoop.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/generator/stock.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/minimal_test/ab+c_0.2_0.8.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/minimal_test/ab+c_0.4_0.6.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/minimal_test/ab+c_0.6_0.4.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/minimal_test/ab+c_0.8_0.2.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/minimal_test/flash_crash_detection_pacep_all_method_test.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/minimal_test/hadoop_detection_pacep_all_method_test.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/minimal_test/lng_rollover_example.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/minimal_test/lng_rollover_pacep_all_method_test.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/minimal_test/minimal_test.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/minimal_test/minimal_test_0.1_0.1_0.7.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/minimal_test/minimal_test_0.1_0.1_0.8.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/minimal_test/minimal_test_0.2_0.2_0.6.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/minimal_test/minimal_test_0.2_0.4_0.4.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/minimal_test/minimal_test_0.3_0.3_0.4.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/minimal_test/minimal_test_0.4_0.3_0.3.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/minimal_test/stock_detection_pacep_all_method_test.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/minimal_test/test" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/simulate_data/lng_simulation_data.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data_preprocess/flash_crash.ipynb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data_preprocess/stock_increase.ipynb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/experiment/effective/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/experiment/effective/a+b+.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/experiment/effective/a+b+c.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/experiment/effective/a+bc.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/experiment/effective/ab+c.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/experiment/effective/experiment.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/experiment/effective/experiment_matches.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/experiment/effective/experiment_simulation.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/experiment/effective/flash_crash_detection.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/experiment/effective/hadoop_detection.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/experiment/effective/lng_rollover.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/experiment/effective/lng_rollover_simulation.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/experiment/effective/minimal_cover_test.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/experiment/effective/stock_detection.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lazy_calculate/TimeIndex.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pacep.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/shared_calculate/SimpleBloomFilterManager.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/util/ExperimentDrawerV2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="09d9fc46-1900-4950-8fab-5adb2c360a59" name="Changes" comment="&quot;finished!&quot;">
+      <change afterPath="$PROJECT_DIR$/data/minimal_test/minimal_test_0.4_0.4_0.2.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/effective/LNG_rollover.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/effective/hadoop.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/showgraph/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/showgraph/change.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/showgraph/dash_real_time.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/showgraph/lng_rollover.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment/showgraph/real_time.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/algorithm/ExpressionCalculate.py" beforeDir="false" afterPath="$PROJECT_DIR$/algorithm/ExpressionCalculate.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiment/compare/AB+C.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiment/compare/AB+C.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiment/compare/postponing/AB+C.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiment/compare/postponing/AB+C.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiment/nasdaq/FlashCrashSingleKleene.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiment/nasdaq/FlashCrashSingleKleene.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/factories/AlgorithmFactory.py" beforeDir="false" afterPath="$PROJECT_DIR$/factories/AlgorithmFactory.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/factories/ON2Factory.py" beforeDir="false" afterPath="$PROJECT_DIR$/factories/ON2Factory.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/factories/ONFactory.py" beforeDir="false" afterPath="$PROJECT_DIR$/factories/ONFactory.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generator/DataGenerator.py" beforeDir="false" afterPath="$PROJECT_DIR$/generator/DataGenerator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lazy_calculate/IncreamentCalculate.py" beforeDir="false" afterPath="$PROJECT_DIR$/lazy_calculate/IncreamentCalculate.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lazy_calculate/TableCalculate.py" beforeDir="false" afterPath="$PROJECT_DIR$/lazy_calculate/TableCalculate.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lazy_calculate/TableTool.py" beforeDir="false" afterPath="$PROJECT_DIR$/lazy_calculate/TableTool.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/ConstraintCollection.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/ConstraintCollection.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/ValueConstraint.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/ValueConstraint.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nfa/NFA.py" beforeDir="false" afterPath="$PROJECT_DIR$/nfa/NFA.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nfa/RegexToState.py" beforeDir="false" afterPath="$PROJECT_DIR$/nfa/RegexToState.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nfa/State.py" beforeDir="false" afterPath="$PROJECT_DIR$/nfa/State.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/ExperimentDrawer.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/ExperimentDrawer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/minimal_test/minimal_test_0.1_0.1_0.8.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/minimal_test/minimal_test_0.1_0.1_0.8.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/minimal_test/minimal_test_0.2_0.2_0.6.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/minimal_test/minimal_test_0.2_0.2_0.6.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/minimal_test/minimal_test_0.3_0.3_0.4.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/minimal_test/minimal_test_0.3_0.3_0.4.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiment/effective/a+b+c.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiment/effective/a+b+c.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiment/effective/lng_rollover.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiment/effective/lng_rollover.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiment/effective/lng_rollover_simulation.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiment/effective/lng_rollover_simulation.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -125,7 +66,7 @@
     &quot;WebServerToolWindowPanel.toolwindow.show.permissions&quot;: &quot;false&quot;,
     &quot;WebServerToolWindowPanel.toolwindow.show.size&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/rillusory/PycharmProjects/PACEP/experiment/effective&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/rillusory/PycharmProjects/PACEP/experiment/showgraph&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -140,11 +81,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/experiment/showgraph" />
+      <recent name="$PROJECT_DIR$/ground_truth" />
       <recent name="$PROJECT_DIR$/experiment/effective" />
       <recent name="$PROJECT_DIR$/data/compare" />
       <recent name="$PROJECT_DIR$/test" />
-      <recent name="$PROJECT_DIR$/data/simulate_data" />
-      <recent name="$PROJECT_DIR$" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/../" />
@@ -154,8 +95,8 @@
       <recent name="$PROJECT_DIR$/algorithm" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.experiment">
-    <configuration name="TestIncrementKeyJoin" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python.lng_rollover_simulation">
+    <configuration name="a+b+c" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="PACEP" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -163,12 +104,13 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="SDK_NAME" value="Python 3.11 (PACEP)" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/experiment/effective" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test/TestIncrementKeyJoin.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/experiment/effective/a+b+c.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -177,7 +119,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="a+bc" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="dash_real_time" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="PACEP" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -185,12 +127,13 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/experiment/effective" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="SDK_NAME" value="Python 3.11 (PACEP)" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/experiment/showgraph" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/experiment/effective/a+bc.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/experiment/showgraph/dash_real_time.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -222,52 +165,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="experiment_matches" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="PACEP" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="SDK_NAME" value="Python 3.11 (PACEP)" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/experiment/effective" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/experiment/effective/experiment_matches.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="experiment_simulation" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="PACEP" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="SDK_NAME" value="Python 3.11 (PACEP)" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/experiment/effective" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/experiment/effective/experiment_simulation.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="hadoop" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="PACEP" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -291,21 +188,90 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="lng_rollover" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="PACEP" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.11 (PACEP)" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/experiment/effective" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/experiment/effective/lng_rollover.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="lng_rollover" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="PACEP" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.11 (PACEP)" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/experiment/showgraph" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/experiment/showgraph/lng_rollover.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="lng_rollover_simulation" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="PACEP" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.11 (PACEP)" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/experiment/effective" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/experiment/effective/lng_rollover_simulation.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Python.hadoop" />
-      <item itemvalue="Python.experiment_matches" />
+      <item itemvalue="Python.lng_rollover_simulation" />
+      <item itemvalue="Python.a+b+c" />
+      <item itemvalue="Python.dash_real_time" />
+      <item itemvalue="Python.lng_rollover" />
       <item itemvalue="Python.experiment" />
-      <item itemvalue="Python.TestIncrementKeyJoin" />
-      <item itemvalue="Python.a+bc" />
-      <item itemvalue="Python.experiment_simulation" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.experiment" />
-        <item itemvalue="Python.experiment_simulation" />
-        <item itemvalue="Python.experiment_matches" />
-        <item itemvalue="Python.TestIncrementKeyJoin" />
-        <item itemvalue="Python.a+bc" />
+        <item itemvalue="Python.lng_rollover_simulation" />
+        <item itemvalue="Python.a+b+c" />
+        <item itemvalue="Python.lng_rollover" />
+        <item itemvalue="Python.lng_rollover" />
+        <item itemvalue="Python.dash_real_time" />
       </list>
     </recent_temporary>
   </component>
@@ -346,7 +312,11 @@
       <workItem from="1738372211446" duration="28179000" />
       <workItem from="1738544227563" duration="127504000" />
       <workItem from="1739186522784" duration="11801000" />
-      <workItem from="1739217152696" duration="32137000" />
+      <workItem from="1739217152696" duration="32963000" />
+      <workItem from="1741324259229" duration="9384000" />
+      <workItem from="1741567418809" duration="3613000" />
+      <workItem from="1742186632067" duration="601000" />
+      <workItem from="1747025143244" duration="15671000" />
     </task>
     <task id="LOCAL-00001" summary="&quot;Pattern generate &amp; data generate &amp; only value constrains&quot;">
       <option name="closed" value="true" />
@@ -404,7 +374,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734692751613</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="&quot;finished!&quot;">
+      <option name="closed" value="true" />
+      <created>1740472078906</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1740472078906</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -432,7 +410,8 @@
     <MESSAGE value="&quot;lazy handle finished&quot;" />
     <MESSAGE value="&quot;change gitnore&quot;" />
     <MESSAGE value="&quot;finished increment calculate&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;finished increment calculate&quot;" />
+    <MESSAGE value="&quot;finished!&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;finished!&quot;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -568,19 +547,9 @@
           <option name="timeStamp" value="890" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/experiment/effective/lng_rollover.py</url>
-          <line>292</line>
-          <option name="timeStamp" value="1051" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/test/TestIncrementSetJoin.py</url>
           <line>320</line>
           <option name="timeStamp" value="1080" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/lazy_calculate/IncreamentCalculate.py</url>
-          <line>619</line>
-          <option name="timeStamp" value="1093" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/lazy_calculate/IncreamentCalculate.py</url>
@@ -609,13 +578,23 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/lazy_calculate/IncreamentCalculate.py</url>
-          <line>612</line>
-          <option name="timeStamp" value="1126" />
+          <line>146</line>
+          <option name="timeStamp" value="1128" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/experiment/showgraph/lng_rollover.py</url>
+          <line>173</line>
+          <option name="timeStamp" value="1130" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/nfa/NFA.py</url>
+          <line>353</line>
+          <option name="timeStamp" value="1135" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/lazy_calculate/IncreamentCalculate.py</url>
-          <line>146</line>
-          <option name="timeStamp" value="1128" />
+          <line>612</line>
+          <option name="timeStamp" value="1137" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -687,6 +666,7 @@
     <SUITE FILE_PATH="coverage/PACEP$EventId.coverage" NAME="EventId Coverage Results" MODIFIED="1723043379621" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/sharedbuffer" />
     <SUITE FILE_PATH="coverage/PACEP$StateTransition.coverage" NAME="StateTransition Coverage Results" MODIFIED="1724119290716" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/nfa" />
     <SUITE FILE_PATH="coverage/PACEP$TestPatternRecognize.coverage" NAME="TestPatternRecognize Coverage Results" MODIFIED="1727011610633" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
+    <SUITE FILE_PATH="coverage/PACEP$dash_real_time.coverage" NAME="dash_real_time Coverage Results" MODIFIED="1741710458727" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/experiment/showgraph" />
     <SUITE FILE_PATH="coverage/PACEP$stock.coverage" NAME="stock Coverage Results" MODIFIED="1737989294666" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data/generator" />
     <SUITE FILE_PATH="coverage/PACEP$ONLogNFactory.coverage" NAME="ONLogNFactory Coverage Results" MODIFIED="1727318252557" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/factories" />
     <SUITE FILE_PATH="coverage/PACEP$MulityKleene.coverage" NAME="MulityKleene Coverage Results" MODIFIED="1728988865609" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/experiment" />
@@ -698,7 +678,7 @@
     <SUITE FILE_PATH="coverage/PACEP$stock_detection.coverage" NAME="stock_detection Coverage Results" MODIFIED="1738594080515" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/experiment/effective" />
     <SUITE FILE_PATH="coverage/PACEP$NodeId.coverage" NAME="NodeId Coverage Results" MODIFIED="1723056765452" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/sharedbuffer" />
     <SUITE FILE_PATH="coverage/PACEP$a_bc.coverage" NAME="a+bc Coverage Results" MODIFIED="1739175394180" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/experiment/effective" />
-    <SUITE FILE_PATH="coverage/PACEP$lng_rollover.coverage" NAME="lng_rollover Coverage Results" MODIFIED="1738945686191" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/experiment/effective" />
+    <SUITE FILE_PATH="coverage/PACEP$lng_rollover.coverage" NAME="lng_rollover Coverage Results" MODIFIED="1747156766315" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/experiment/effective" />
     <SUITE FILE_PATH="coverage/PACEP$minimal_cover_test.coverage" NAME="minimal_cover_test Coverage Results" MODIFIED="1737127518296" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/experiment/effective" />
     <SUITE FILE_PATH="coverage/PACEP$ShareBufferNode.coverage" NAME="ShareBufferNode Coverage Results" MODIFIED="1723050640976" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/sharedbuffer" />
     <SUITE FILE_PATH="coverage/PACEP$NFADrawer.coverage" NAME="NFADrawer Coverage Results" MODIFIED="1723121869124" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/util" />
@@ -706,7 +686,8 @@
     <SUITE FILE_PATH="coverage/PACEP$TestCalculateOrcerInfluence.coverage" NAME="TestCalculateOrcerInfluence Coverage Results" MODIFIED="1726886502984" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
     <SUITE FILE_PATH="coverage/PACEP$TestIncrementSetJoin.coverage" NAME="TestIncrementSetJoin Coverage Results" MODIFIED="1739112661949" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
     <SUITE FILE_PATH="coverage/PACEP$ExpressionCalculate.coverage" NAME="ExpressionCalculate Coverage Results" MODIFIED="1727317296855" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/algorithm" />
-    <SUITE FILE_PATH="coverage/PACEP$lng_rollover_simulation.coverage" NAME="lng_rollover_simulation Coverage Results" MODIFIED="1739114132296" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/experiment/effective" />
+    <SUITE FILE_PATH="coverage/PACEP$real_time.coverage" NAME="real_time Coverage Results" MODIFIED="1741328254503" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/experiment/showgraph" />
+    <SUITE FILE_PATH="coverage/PACEP$lng_rollover_simulation.coverage" NAME="lng_rollover_simulation Coverage Results" MODIFIED="1747157628659" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/experiment/effective" />
     <SUITE FILE_PATH="coverage/PACEP$TestIncrement.coverage" NAME="TestIncrement Coverage Results" MODIFIED="1738594496425" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
     <SUITE FILE_PATH="coverage/PACEP$TimeIndex.coverage" NAME="TimeIndex Coverage Results" MODIFIED="1739112422596" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/lazy_calculate" />
     <SUITE FILE_PATH="coverage/PACEP$MKAdbyIndependence.coverage" NAME="MKAdbyIndependence Coverage Results" MODIFIED="1728878855655" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/experiment" />
@@ -715,7 +696,7 @@
     <SUITE FILE_PATH="coverage/PACEP$SharedBufferEdge.coverage" NAME="SharedBufferEdge Coverage Results" MODIFIED="1723044571382" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/sharedbuffer" />
     <SUITE FILE_PATH="coverage/PACEP$TestCalculateOrderInfluence.coverage" NAME="TestCalculateOrderInfluence Coverage Results" MODIFIED="1727177131789" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
     <SUITE FILE_PATH="coverage/PACEP$CausalKleene.coverage" NAME="CausalKleene Coverage Results" MODIFIED="1728565577215" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/experiment" />
-    <SUITE FILE_PATH="coverage/PACEP$a_b_c.coverage" NAME="a+b+c Coverage Results" MODIFIED="1737534709735" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/experiment/effective" />
+    <SUITE FILE_PATH="coverage/PACEP$a_b_c.coverage" NAME="a+b+c Coverage Results" MODIFIED="1747157271009" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/experiment/effective" />
     <SUITE FILE_PATH="coverage/PACEP$TestIncrementKeyJoin.coverage" NAME="TestIncrementKeyJoin Coverage Results" MODIFIED="1739175552325" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
     <SUITE FILE_PATH="coverage/PACEP$ExperimentDrawer.coverage" NAME="ExperimentDrawer Coverage Results" MODIFIED="1731738082518" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/util" />
     <SUITE FILE_PATH="coverage/PACEP$experiment.coverage" NAME="experiment Coverage Results" MODIFIED="1739441554699" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/experiment/effective" />

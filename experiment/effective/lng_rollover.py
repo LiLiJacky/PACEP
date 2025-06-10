@@ -264,7 +264,8 @@ if __name__ == "__main__":
         # 调用生成数据的方法
         # generate_data_with_pandas_sorted(event_dict, 1000, output_name, start_time, time_interval_seconds=1)
 
-        max_window_times = [18]
+        # max_window_times = [18]
+        max_window_times = [8, 10, 12, 14, 15, 16, 17, 18]
         min_window_time = 0
 
         data_source = '../../data/minimal_test/' + output_name + '.csv'
@@ -348,5 +349,5 @@ if __name__ == "__main__":
     results_df = pd.DataFrame(flat_results)
 
     # 保存为 CSV 文件
-    output_path = "../../output/lng_rollover_example.csv"
+    output_path = "../../output/lng_rollover.csv"
     results_df.to_csv(output_path, index=False)

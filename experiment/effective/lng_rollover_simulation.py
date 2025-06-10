@@ -276,7 +276,7 @@ if __name__ == "__main__":
     experiment_results = []
 
     # 生成 a 从 0.1 到 0.9，b 从 0.9 到 0.1 的数据
-    for i in range(10):  # 10轮实验
+    for i in range(3):  # 10轮实验
         begin_time = time.time()
         run_results = []
         s_t = time.time()
@@ -293,8 +293,8 @@ if __name__ == "__main__":
             generate_lng_data_with_pandas_sorted(event_dict, 1000, output_name, start_time, time_interval_seconds=1)
 
             #max_window_times = [20, 30, 40, 50, 60, 80, 100, 120]
-            max_window_times = [10, 20, 30, 40, 50, 55, 60, 65, 70, 75, 80]
-            # max_window_times = [10, 20, 30, 40, 50, 55, 60, 70]
+            #max_window_times = [10, 20, 30, 40, 50, 55, 60, 65, 70, 75, 80]
+            max_window_times = [10, 20, 30, 40, 50]
             min_window_time = 0
 
             data_source = '../../data/minimal_test/' + output_name + '.csv'
