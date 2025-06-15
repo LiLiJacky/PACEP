@@ -4,22 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="09d9fc46-1900-4950-8fab-5adb2c360a59" name="Changes" comment="&quot;finished!&quot;">
-      <change afterPath="$PROJECT_DIR$/data/minimal_test/minimal_test_0.4_0.4_0.2.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/experiment/effective/LNG_rollover.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/experiment/effective/hadoop.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/experiment/showgraph/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/experiment/showgraph/change.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/experiment/showgraph/dash_real_time.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/experiment/showgraph/lng_rollover.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/experiment/showgraph/real_time.py" afterDir="false" />
+    <list default="true" id="09d9fc46-1900-4950-8fab-5adb2c360a59" name="Changes" comment="&quot;graduated!&quot;">
+      <change afterPath="$PROJECT_DIR$/README.zh.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/png/LNG_rollover_1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/png/LNG_rollover_2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/png/logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/png/related.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/minimal_test/minimal_test_0.1_0.1_0.8.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/minimal_test/minimal_test_0.1_0.1_0.8.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/minimal_test/minimal_test_0.2_0.2_0.6.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/minimal_test/minimal_test_0.2_0.2_0.6.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/minimal_test/minimal_test_0.3_0.3_0.4.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/minimal_test/minimal_test_0.3_0.3_0.4.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiment/effective/a+b+c.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiment/effective/a+b+c.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiment/effective/lng_rollover.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiment/effective/lng_rollover.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiment/effective/lng_rollover_simulation.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiment/effective/lng_rollover_simulation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,48 +43,48 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowPanel.toolwindow.highlight.mappings&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowPanel.toolwindow.highlight.symlinks&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowPanel.toolwindow.show.date&quot;: &quot;false&quot;,
-    &quot;WebServerToolWindowPanel.toolwindow.show.permissions&quot;: &quot;false&quot;,
-    &quot;WebServerToolWindowPanel.toolwindow.show.size&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/rillusory/PycharmProjects/PACEP/experiment/showgraph&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;debugger.dataViews.python.type.renderers&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "true",
+    "WebServerToolWindowPanel.toolwindow.highlight.mappings": "true",
+    "WebServerToolWindowPanel.toolwindow.highlight.symlinks": "true",
+    "WebServerToolWindowPanel.toolwindow.show.date": "false",
+    "WebServerToolWindowPanel.toolwindow.show.permissions": "false",
+    "WebServerToolWindowPanel.toolwindow.show.size": "false",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/Users/rillusory/PycharmProjects/PACEP",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "debugger.dataViews.python.type.renderers",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="PyDebuggerOptionsProvider">
     <option name="mySupportGeventDebugging" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/experiment/showgraph" />
       <recent name="$PROJECT_DIR$/ground_truth" />
       <recent name="$PROJECT_DIR$/experiment/effective" />
       <recent name="$PROJECT_DIR$/data/compare" />
-      <recent name="$PROJECT_DIR$/test" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/png" />
       <recent name="$PROJECT_DIR$/../" />
       <recent name="$PROJECT_DIR$/data/compare" />
       <recent name="$PROJECT_DIR$/experiment/compare/core_experiment/CORE-paper-experiments/jars" />
       <recent name="$PROJECT_DIR$/data/nasdaq" />
-      <recent name="$PROJECT_DIR$/algorithm" />
     </key>
   </component>
   <component name="RunManager" selected="Python.lng_rollover_simulation">
@@ -317,6 +309,8 @@
       <workItem from="1741567418809" duration="3613000" />
       <workItem from="1742186632067" duration="601000" />
       <workItem from="1747025143244" duration="15671000" />
+      <workItem from="1749558532171" duration="235000" />
+      <workItem from="1749949021064" duration="6015000" />
     </task>
     <task id="LOCAL-00001" summary="&quot;Pattern generate &amp; data generate &amp; only value constrains&quot;">
       <option name="closed" value="true" />
@@ -382,7 +376,15 @@
       <option name="project" value="LOCAL" />
       <updated>1740472078906</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="&quot;graduated!&quot;">
+      <option name="closed" value="true" />
+      <created>1749558576479</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1749558576480</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -411,7 +413,8 @@
     <MESSAGE value="&quot;change gitnore&quot;" />
     <MESSAGE value="&quot;finished increment calculate&quot;" />
     <MESSAGE value="&quot;finished!&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;finished!&quot;" />
+    <MESSAGE value="&quot;graduated!&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;graduated!&quot;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
