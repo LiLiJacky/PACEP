@@ -109,7 +109,7 @@ pip install -r requirements.txt
 3. 编写模式查询脚本，例如 ./experiments/effective/lng_rollover.py
 4. 运行脚本
 ```python
-python ./experiments/effective/lng_rollover.py
+python ./lng_rollover.py
 ```
 5. 查看 ./outputs 中的结果
 

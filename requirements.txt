@@ -43,8 +43,6 @@ pillow==10.4.0
 plotly==6.0.0
 psutil==6.1.0
 pybloom_live==4.0.0
-pydot @ file:///Users/cbousseau/work/recipes/ci_py311/pydot_1678000746520/work
-pyparsing @ file:///home/conda/feedstock_root/build_artifacts/pyparsing_1635267989520/work
 python-dateutil==2.9.0.post0
 pytz==2024.2
 qdldl==0.1.7.post4

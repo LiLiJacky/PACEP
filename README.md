@@ -113,7 +113,7 @@ pip install -r requirements.txt
 3. Create pattern scripts (e.g., ./experiments/effective/lng_rollover.py)
 4. Execute
 ```python
-python ./experiments/effective/lng_rollover.py
+python ./lng_rollover.py
 ```
 5. Results appear in ./outputs
 
